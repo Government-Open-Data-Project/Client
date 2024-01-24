@@ -47,23 +47,24 @@ class _MyAppState extends State<MyApp> {
         items: [
           BottomNavigationBarItem(
             label: 'home',
-            icon: Icon(Icons.help_outline,),
-            activeIcon: Icon(Icons.help),
+            icon: Text('뉴스', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+            activeIcon: Text('뉴스', style: TextStyle(color: Color(0xFF00005B), fontSize: 20, fontWeight: FontWeight.bold),)
           ),
           BottomNavigationBarItem(
             label: 'search',
-            icon: Icon(Icons.list_alt_outlined, ),
-            activeIcon: Icon(Icons.list_alt),
+            icon: Text('검색', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+              activeIcon: Text('검색', style: TextStyle(color: Color(0xFF00005B), fontSize: 20, fontWeight: FontWeight.bold),)
           ),
           BottomNavigationBarItem(
             label: 'community',
-            icon: Icon(Icons.calendar_month_outlined, ),
-            activeIcon: Icon(Icons.calendar_month),
+            icon: Text('커뮤니티', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+              activeIcon: Text('커뮤니티', style: TextStyle(color: Color(0xFF00005B), fontSize: 20, fontWeight: FontWeight.bold),)
           ),
           BottomNavigationBarItem(
             label: 'recommend',
-            icon: Icon(Icons.perm_identity_outlined, ),
-            activeIcon: Icon(Icons.person),
+            icon: Text('법안 추천', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+              activeIcon: Text('법안 추천', style: TextStyle(color: Color(0xFF00005B), fontSize: 20, fontWeight: FontWeight.bold),)
+
           ),
         ],
       ),

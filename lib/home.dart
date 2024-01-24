@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-//오늘의 질문 창
 class home extends StatelessWidget {
   home({Key? key}) : super(key: key);
 
@@ -15,6 +13,7 @@ class home extends StatelessWidget {
       child: Container(
         width: sizeX,
         height: sizeY,
+        color: Color(0xFFD0D0D0),
 
       ),
     );
