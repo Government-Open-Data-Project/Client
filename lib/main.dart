@@ -3,6 +3,7 @@ import 'home.dart';
 import 'community.dart';
 import 'recommend.dart';
 import 'search.dart';
+import 'chat.dart';
 
 void main() async{
   runApp(MaterialApp(home: MyApp()));
@@ -31,6 +32,15 @@ class _MyAppState extends State<MyApp> {
           },
           icon: Icon(Icons.menu),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.mic),
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Chat()));
+            },
+          ),
+        ],
       ),
       extendBodyBehindAppBar: true,
       body: [home(), search(), community(), recommend()][tab],
@@ -64,7 +74,6 @@ class _MyAppState extends State<MyApp> {
             label: 'recommend',
             icon: Text('법안 추천', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
               activeIcon: Text('법안 추천', style: TextStyle(color: Color(0xFF00005B), fontSize: 20, fontWeight: FontWeight.bold),)
-
           ),
         ],
       ),
