@@ -22,26 +22,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("PP"),
-        backgroundColor: Color(0xFF00005B),
-        elevation: 0.0,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.menu),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.mic),
-            onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Chat()));
-            },
-          ),
-        ],
-      ),
+      appBar: _getAppBar(),
       extendBodyBehindAppBar: true,
       body: [home(), search(), community(), recommend()][tab],
       bottomNavigationBar: BottomNavigationBar(
@@ -79,4 +60,95 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   } // build
+  AppBar _getAppBar() {
+    switch(tab){
+      case 0:
+        return AppBar(
+          title: Text("PP"),
+          backgroundColor: Color(0xFF00005B),
+          elevation: 0.0,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.menu),
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.mic),
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Chat()));
+              },
+            ),
+          ],
+        );
+      case 1:
+        return AppBar(
+          title: Text("검색"),
+          backgroundColor: Color(0xFF00005B),
+          elevation: 0.0,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.menu),
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.mic),
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Chat()));
+              },
+            ),
+          ],
+        );
+      case 2:
+        return AppBar(
+          title: Text("커뮤니티"),
+          backgroundColor: Color(0xFF00005B),
+          elevation: 0.0,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.menu),
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.mic),
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Chat()));
+              },
+            ),
+          ],
+        );
+      case 3:
+        return AppBar(
+          title: Text("법안추천"),
+          backgroundColor: Color(0xFF00005B),
+          elevation: 0.0,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.menu),
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.mic),
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Chat()));
+              },
+            ),
+          ],
+        );
+      default:
+        return AppBar();
+    }
+  }
 } //_MyAppState
+
