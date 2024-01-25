@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _getAppBar(),
-      extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: false,
       body: [home(), search(), community(), recommend()][tab],
       bottomNavigationBar: BottomNavigationBar(
         showUnselectedLabels: false,
