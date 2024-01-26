@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/physics.dart';
 
 class Chat extends StatefulWidget {
   const Chat({Key? key}) : super(key: key);
@@ -35,13 +36,35 @@ class _ChatState extends State<Chat> {
           child: Column(
             children: [
               Expanded(
-                child: ListView.builder(
-
-                  controller: _scrollController,
-                  itemCount: _messages.length,
-                  itemBuilder: (context, index) {
-                    return _messages[index];
-                  },
+                child: GlowingOverscrollIndicator(
+                  color: Colors.black,
+                  axisDirection: AxisDirection.down,
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: _messages.length,
+                    itemBuilder: (context, index) {
+                      return _messages[index];
+                    },
+                  ),
+                ),
+              ),
+              Container(
+                color: Colors.transparent, // Background color
+                height: 50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                     color: Colors.transparent,
+                      padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                      child: IconButton(
+                        icon: Icon(Icons.mic_none_rounded,color: Colors.white,size: 30,),
+                        onPressed: () {
+                          // Handle voice icon tap
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Padding(
@@ -59,16 +82,16 @@ class _ChatState extends State<Chat> {
                           padding: const EdgeInsets.symmetric(horizontal: 8.0), // Adjust the padding as needed
                           child: TextField(
                             controller: _textController,
+
                             decoration: InputDecoration(
                               hintText: "메세지를 입력해주세요",
-
                               border: InputBorder.none, // Remove TextField default border
                             ),
                           ),
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.send),
+                        icon: Icon(Icons.send,color: Colors.grey,),
                         onPressed: () {
                           sendMessage();
                         },
@@ -77,7 +100,6 @@ class _ChatState extends State<Chat> {
                   ),
                 ),
               ),
-
             ],
           ),
         ),
