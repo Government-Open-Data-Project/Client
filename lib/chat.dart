@@ -27,7 +27,7 @@ class _ChatState extends State<Chat> {
           icon: Icon(Icons.arrow_back_ios_new),
         ),
       ),
-      body: GestureDetector( 
+      body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus(); //  키보드 숨기기
         },
