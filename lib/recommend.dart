@@ -28,21 +28,22 @@ class _recommendState extends State<recommend> {
                   children: [
                     Container(
                       width: sizeX,
-                      height: 180,
+                      height: 150,
                       color: Color(0xFFDEDEDE),
                       child: Container(
                           child: Row(
                             children: [
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
                                     children: [
                                       Container(
-                                          color: Colors.pink,
+                                          //color: Colors.pink,
                                           width: 130,
                                           height: 45,
-                                          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                          padding: EdgeInsets.fromLTRB(7, 0, 0, 0),
                                           child: RichText(
                                               textAlign: TextAlign.end,
                                               text: TextSpan(
@@ -60,7 +61,7 @@ class _recommendState extends State<recommend> {
                                           )
                                       ),
                                       Container(
-                                        color: Colors.blueGrey,
+                                        //color: Colors.blueGrey,
                                           width: 100,
                                           height: 45,
                                           padding: EdgeInsets.fromLTRB(5, 12, 0, 0),
@@ -82,7 +83,7 @@ class _recommendState extends State<recommend> {
                                     ],
                                   ),
                                   Container(
-                                      color: Colors.blueGrey,
+                                      //color: Colors.blueGrey,
                                       width: 250,
                                       height: 35,
                                       padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
@@ -102,7 +103,7 @@ class _recommendState extends State<recommend> {
                                       )
                                   ),
                                   Container(
-                                    color: Colors.pink,
+                                    //color: Colors.pink,
                                       width: 250,
                                       height: 35,
                                       padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
@@ -124,20 +125,37 @@ class _recommendState extends State<recommend> {
                                 ],
                               ),
                               Container(
-                                width: 10,
-                                color: Colors.blue,
+                                margin: EdgeInsets.fromLTRB(40, 80, 0, 0),
+                                width: 110,
+                                height: 30,
+                                //color: Colors.blue,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                  ),
+                                  onPressed: (){},
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Icon(Icons.filter_alt_outlined,size: 20,color: Colors.black),
+                                      Text("맞춤 필터",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)
+                                    ],
+                                  ),
+                                ),
                               )
                             ],
                           ),
                         ),
                     ),
-                    SizedBox(height: 30,),
+                    SizedBox(height: 20,),
                     Container(
                       width: sizeX,
-                      height: 500,
+                      height: 430,
                       color: Color(0xFFDEDEDE),
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 110, 15, 70),
+                        padding: const EdgeInsets.fromLTRB(15, 30, 15, 30),
                         child: Container(
                           width: sizeX*0.7,
                           height: 190,
