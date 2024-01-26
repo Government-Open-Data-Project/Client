@@ -12,6 +12,8 @@ class _ChatState extends State<Chat> {
   final TextEditingController _textController = TextEditingController();
   final List<ChatMessage> _messages = [];
   final ScrollController _scrollController = ScrollController();
+  bool isTyping = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +32,16 @@ class _ChatState extends State<Chat> {
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus(); //  키보드 숨기기
+          setState(() {
+            isTyping = false; // 텍스트필드 외부를 탭하면 입력 중이 아님
+          });
         },
         child: Container(
           color: Color(0xFFDEDEDE), // 배경 색상 설정
           child: Column(
             children: [
               Expanded(
+                //스크롤 다 떙기면? 나오는 색
                 child: GlowingOverscrollIndicator(
                   color: Colors.black,
                   axisDirection: AxisDirection.down,
@@ -48,52 +54,46 @@ class _ChatState extends State<Chat> {
                   ),
                 ),
               ),
-              Container(
-                color: Colors.transparent, // Background color
-                height: 50,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                     color: Colors.transparent,
-                      padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
-                      child: IconButton(
-                        icon: Icon(Icons.mic_none_rounded,color: Colors.white,size: 30,),
-                        onPressed: () {
-                          // Handle voice icon tap
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white, // Background color
-                    borderRadius: BorderRadius.circular(50.0), // Circular border radius
+                    color: Colors.white,
+                    // Background color
+                    borderRadius: BorderRadius.circular(50.0),
+                    // Circular border radius
                     border: Border.all(color: Colors.black), // Black border
                   ),
                   child: Row(
                     children: [
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0), // Adjust the padding as needed
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: TextField(
                             controller: _textController,
-
+                            onTap: () {
+                              setState(() {
+                                isTyping = true; // 텍스트필드를 탭하면 입력 중임
+                              });
+                            },
                             decoration: InputDecoration(
                               hintText: "메세지를 입력해주세요",
-                              border: InputBorder.none, // Remove TextField default border
+                              border: InputBorder.none,
                             ),
                           ),
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.send,color: Colors.grey,),
+                        icon: Icon(
+                          isTyping ? Icons.send : Icons.mic,
+                          color: Colors.grey,
+                        ),
                         onPressed: () {
-                          sendMessage();
+                          if (isTyping) {
+                            sendMessage();
+                          } else {
+                            // 마이크 아이콘을 눌렀을 때의 동작 추가
+                          }
                         },
                       ),
                     ],
@@ -144,7 +144,7 @@ class ChatMessage extends StatelessWidget {
         margin: const EdgeInsets.all(8.0),
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
-          color: isMe ?  Color(0xFFCADFEF): Colors.white, //나면 파랑 봇 흰색
+          color: isMe ? Color(0xFFCADFEF) : Colors.white, //나면 파랑 봇 흰색
           borderRadius: BorderRadius.only(
             topLeft: isMe ? Radius.circular(20.0) : Radius.circular(1.0),
             topRight: isMe ? Radius.circular(1.0) : Radius.circular(20.0),

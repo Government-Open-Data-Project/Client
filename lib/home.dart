@@ -13,6 +13,9 @@ class home extends StatelessWidget {
   final List<PopupInfo> todayNews = [
     PopupInfo(title: "오늘 뉴스 제목 1 ", content: "오늘 내용 1"),
     PopupInfo(title: "오늘 뉴스 제목 2", content: "오늘 내용2"),
+    PopupInfo(title: "오늘 뉴스 제목 3", content: "오늘 내용2"),
+    PopupInfo(title: "오늘 뉴스 제목 4", content: "오늘 내용2"),
+    PopupInfo(title: "오늘 뉴스 제목 5", content: "오늘 내용2"),
   ];
 
   final List<PopupInfo> ageNews = [
