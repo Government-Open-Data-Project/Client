@@ -9,8 +9,495 @@ class recommend extends StatefulWidget {
 }
 
 class _recommendState extends State<recommend> {
-
+  bool _boxColor = false;
   bool _ison = false;
+
+  Future<void> _showDialog(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Color(0xFFDEDEDE),
+          title: Text(
+            "필터 검색",
+            style: TextStyle(
+              fontFamily: 'soojin',
+              color: Color(0xFF5E5E5E)
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 2,
+                    margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                    color: Colors.white,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          child: Text("나이",style: TextStyle(fontWeight: FontWeight.bold),)
+                      ),
+                      Column(
+                          children: [
+                            Row(
+                              children: [
+                                SizedBox(width: 10,),
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      elevation: 0.0,
+                                      backgroundColor: _boxColor ? Color(0xFFCADFEF) : Colors.white,
+                                      minimumSize: Size(20, 30),
+                                    ),
+                                    onPressed: (){},
+                                    child: Text("20대",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                ),
+                                SizedBox(width: 5,),
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      elevation: 0.0,
+                                      backgroundColor: Colors.white,
+                                      minimumSize: Size(20, 30),
+                                    ),
+                                    onPressed: (){},
+                                    child: Text("30대",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                ),
+                                SizedBox(width: 5,),
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      elevation: 0.0,
+                                      backgroundColor: Colors.white,
+                                      minimumSize: Size(20, 30),
+                                    ),
+                                    onPressed: (){},
+                                    child: Text("40대",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                ),
+                                SizedBox(width: 5,),
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      elevation: 0.0,
+                                      backgroundColor: Colors.white,
+                                      minimumSize: Size(20, 30),
+                                    ),
+                                    onPressed: (){},
+                                    child: Text("50대",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                SizedBox(width: 10,),
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      elevation: 0.0,
+                                      backgroundColor: Colors.white,
+                                      minimumSize: Size(20, 30),
+                                    ),
+                                    onPressed: (){},
+                                    child: Text("60대",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                ),
+                                SizedBox(width: 5,),
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      elevation: 0.0,
+                                      backgroundColor: Colors.white,
+                                      minimumSize: Size(20, 30),
+                                    ),
+                                    onPressed: (){},
+                                    child: Text("70대 이상",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 2,
+                    margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                    color: Colors.white,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                          margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          child: Text("결혼 여부",style: TextStyle(fontWeight: FontWeight.bold),)
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(width: 10,),
+                          ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                elevation: 0.0,
+                                backgroundColor: Colors.white,
+                                minimumSize: Size(20, 30),
+                              ),
+                              onPressed: (){},
+                              child: Text("미혼",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                          ),
+                          SizedBox(width: 5,),
+                          ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                elevation: 0.0,
+                                backgroundColor: Colors.white,
+                                minimumSize: Size(20, 30),
+                              ),
+                              onPressed: (){},
+                              child: Text("기혼",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 2,
+                    margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                    color: Colors.white,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                          margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          child: Text("거주 지역",style: TextStyle(fontWeight: FontWeight.bold),)
+                      ),
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              SizedBox(width: 10,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("경기",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),
+                              SizedBox(width: 5,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("충북",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),
+                              SizedBox(width: 5,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("충남",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),
+                              SizedBox(width: 5,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("경북",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),
+                              SizedBox(width: 5,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("경남",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(width: 10,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("전북",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),
+                              SizedBox(width: 5,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("전남",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),
+                              SizedBox(width: 5,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("강원",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),
+                              SizedBox(width: 5,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("제주",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 2,
+                    margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                    color: Colors.white,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                          margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          child: Text("직위",style: TextStyle(fontWeight: FontWeight.bold),)
+                      ),
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              SizedBox(width: 10,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("학생",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),
+                              SizedBox(width: 5,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("회사원",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),
+                              SizedBox(width: 5,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("사업가",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),
+                              SizedBox(width: 5,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("무직",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(width: 10,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("기타",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 2,
+                    margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                    color: Colors.white,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                          margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          child: Text("관심 분야",style: TextStyle(fontWeight: FontWeight.bold),)
+                      ),
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              SizedBox(width: 10,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("IT",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),
+                              SizedBox(width: 5,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("의학/보건",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),
+                              SizedBox(width: 5,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("공학",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),
+                              SizedBox(width: 5,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("경영",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(width: 10,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("교육",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),
+                              SizedBox(width: 5,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("예술",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),SizedBox(width: 5,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("법률",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),SizedBox(width: 5,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("연구",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),SizedBox(width: 5,),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                    minimumSize: Size(20, 30),
+                                  ),
+                                  onPressed: (){},
+                                  child: Text("기타",style: TextStyle(color: Color(0xA5000000),fontWeight: FontWeight.bold),)
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          insetPadding: EdgeInsets.fromLTRB(20, 100, 20, 130),
+          actions: <Widget>[
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    backgroundColor: Colors.white,
+                    minimumSize: Size(130, 30)),
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('초기화',
+                    style: TextStyle(
+                        color: Color(0xA5000000),
+                        fontSize: 20,
+                        fontFamily: 'soojin'))),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    backgroundColor: Color(0xFF00005B),
+                    minimumSize: Size(130, 30)),
+                onPressed: () async {},
+                child: Text('적용하기',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontFamily: 'soojin'))),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,21 +515,22 @@ class _recommendState extends State<recommend> {
                   children: [
                     Container(
                       width: sizeX,
-                      height: 180,
+                      height: 150,
                       color: Color(0xFFDEDEDE),
                       child: Container(
                           child: Row(
                             children: [
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
                                     children: [
                                       Container(
-                                          color: Colors.pink,
+                                          //color: Colors.pink,
                                           width: 130,
                                           height: 45,
-                                          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                          padding: EdgeInsets.fromLTRB(7, 0, 0, 0),
                                           child: RichText(
                                               textAlign: TextAlign.end,
                                               text: TextSpan(
@@ -60,7 +548,7 @@ class _recommendState extends State<recommend> {
                                           )
                                       ),
                                       Container(
-                                        color: Colors.blueGrey,
+                                        //color: Colors.blueGrey,
                                           width: 100,
                                           height: 45,
                                           padding: EdgeInsets.fromLTRB(5, 12, 0, 0),
@@ -82,7 +570,7 @@ class _recommendState extends State<recommend> {
                                     ],
                                   ),
                                   Container(
-                                      color: Colors.blueGrey,
+                                      //color: Colors.blueGrey,
                                       width: 250,
                                       height: 35,
                                       padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
@@ -102,7 +590,7 @@ class _recommendState extends State<recommend> {
                                       )
                                   ),
                                   Container(
-                                    color: Colors.pink,
+                                    //color: Colors.pink,
                                       width: 250,
                                       height: 35,
                                       padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
@@ -124,20 +612,39 @@ class _recommendState extends State<recommend> {
                                 ],
                               ),
                               Container(
-                                width: 10,
-                                color: Colors.blue,
+                                margin: EdgeInsets.fromLTRB(40, 80, 0, 0),
+                                width: 110,
+                                height: 30,
+                                //color: Colors.blue,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    backgroundColor: Colors.white,
+                                  ),
+                                  onPressed: (){
+                                    _showDialog(context);
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Icon(Icons.filter_alt_outlined,size: 20,color: Colors.black),
+                                      Text("맞춤 필터",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)
+                                    ],
+                                  ),
+                                ),
                               )
                             ],
                           ),
                         ),
                     ),
-                    SizedBox(height: 30,),
+                    SizedBox(height: 20,),
                     Container(
                       width: sizeX,
-                      height: 500,
+                      height: 430,
                       color: Color(0xFFDEDEDE),
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 110, 15, 70),
+                        padding: const EdgeInsets.fromLTRB(15, 30, 15, 30),
                         child: Container(
                           width: sizeX*0.7,
                           height: 190,
