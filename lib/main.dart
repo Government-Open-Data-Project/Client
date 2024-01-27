@@ -24,7 +24,33 @@ class _MyAppState extends State<MyApp> {
     return Scaffold(
       appBar: _getAppBar(),
       extendBodyBehindAppBar: false,
-      body: [home(), search(), community(), recommend()][tab],
+      body: [ home(
+        todayNews: [
+          NewsDetail(title: "오늘 뉴스 제목 1 ", content: "오늘 내용1"),
+          NewsDetail(title: "오늘 뉴스 제목 2 ", content: "오늘 내용2"),
+          NewsDetail(title: "오늘 뉴스 제목 3 ", content: "오늘 내용3"),
+          NewsDetail(title: "오늘 뉴스 제목 4 ", content: "오늘 내용4"),
+          NewsDetail(title: "오늘 뉴스 제목 5 ", content: "오늘 내용5"),
+
+
+        ],
+        ageNews: [
+          NewsDetail(title: "50대 제목 1", content: " 내용1"),
+
+        ],
+        localNews: [
+          NewsDetail(title: "지역 제목 1", content: " 내용 1"),
+
+        ],
+        newsTopic: Newstopic(
+          date: DateTime.now(),
+          local: "서울",
+          age: 50,
+
+        ),
+      ),
+
+        search(), community(), recommend()][tab],
       bottomNavigationBar: BottomNavigationBar(
         showUnselectedLabels: false,
         showSelectedLabels: false,
