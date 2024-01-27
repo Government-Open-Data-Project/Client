@@ -251,7 +251,7 @@ class News extends StatelessWidget {
                           height: 64,
                           width: sizeX,
                           decoration: BoxDecoration(
-                            color: Colors.lightGreen,
+                      //      color: Colors.lightGreen,
                             borderRadius: BorderRadius.circular(7),
                             boxShadow: [
                               BoxShadow(
@@ -267,7 +267,7 @@ class News extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsets.fromLTRB(12, 5, 0, 0),
                                 child: Text(
-                                  "으앙",
+                                  "으앙 안돼",
                                 // popupInfos[itemIndex].content,
                                   style: TextStyle(
                                     fontSize: 12,

@@ -46,6 +46,7 @@ class _ChatState extends State<Chat> {
                   color: Colors.black,
                   axisDirection: AxisDirection.down,
                   child: ListView.builder(
+
                     controller: _scrollController,
                     itemCount: _messages.length,
                     itemBuilder: (context, index) {
@@ -118,13 +119,17 @@ class _ChatState extends State<Chat> {
       setState(() {
         _messages.add(message);
         _textController.clear();
+
       });
+
       // 메시지를 전송한 후 스크롤을 아래로 이동
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent + 5,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      });
     }
   }
 }
