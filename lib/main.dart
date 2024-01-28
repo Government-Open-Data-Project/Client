@@ -6,7 +6,7 @@ import 'search.dart';
 import 'chat.dart';
 import 'category.dart';
 
-void main() async{
+void main() async {
   runApp(MaterialApp(home: MyApp()));
 }
 
@@ -25,33 +25,45 @@ class _MyAppState extends State<MyApp> {
     return Scaffold(
       appBar: _getAppBar(),
       extendBodyBehindAppBar: false,
-      body: [ home(
-        todayNews: [
-          NewsDetail(title: "오늘 뉴스 제목 1 ", content: "오늘 내용1"),
-          NewsDetail(title: "오늘 뉴스 제목 2 ", content: "오늘 내용2"),
-          NewsDetail(title: "오늘 뉴스 제목 3 ", content: "오늘 내용3"),
-          NewsDetail(title: "오늘 뉴스 제목 4 ", content: "오늘 내용4"),
-          NewsDetail(title: "오늘 뉴스 제목 5 ", content: "오늘 내용5"),
+      body: [
+        home(
+          todayNews: [
+            NewsDetail(title: "오늘 뉴스 제목 1 ", content: "오늘 내용1"),
+            NewsDetail(title: "오늘 뉴스 제목 2 ", content: "오늘 내용2"),
+            NewsDetail(title: "오늘 뉴스 제목 3 ", content: "오늘 내용3"),
+            NewsDetail(title: "오늘 뉴스 제목 4 ", content: "오늘 내용4"),
+            NewsDetail(title: "오늘 뉴스 제목 5 ", content: "오늘 내용5"),
+            NewsDetail(title: "오늘 뉴스 제목 6 ", content: "오늘 내용5"),
+            NewsDetail(title: "오늘 뉴스 제목7 ", content: "오늘 내용5"),
+
+          ],
+          ageNews: [
+            NewsDetail(title: "50대 제목 1", content: "내용1"),
+            NewsDetail(title: "50대 제목 2", content: "내용2"),
+            NewsDetail(title: "50대 제목 3", content: "내용13"),
+            NewsDetail(title: "50대 제목 1", content: "내용1"),
+            NewsDetail(title: "50대 제목 1", content: "내용1"),
+            NewsDetail(title: "50대 제목 1", content: "내용1"),
 
 
-        ],
-        ageNews: [
-          NewsDetail(title: "50대 제목 1", content: " 내용1"),
-
-        ],
-        localNews: [
-          NewsDetail(title: "지역 제목 1", content: " 내용 1"),
-
-        ],
-        newsTopic: Newstopic(
-          date: DateTime.now(),
-          local: "서울",
-          age: 50,
-
+          ],
+          localNews: [
+            NewsDetail(title: "지역 제목 1", content: "내용 2"),
+            NewsDetail(title: "지역 제목 1", content: "내용 3"),
+            NewsDetail(title: "지역 제목 1", content: "내용 4"),
+            NewsDetail(title: "지역 제목 1", content: "내용 3"),
+            NewsDetail(title: "지역 제목 1", content: "내용 1"),
+          ],
+          newsTopic: Newstopic(
+            date: DateTime.now(),
+            local: "서울",
+            age: 50,
+          ),
         ),
-      ),
-
-        search(), community(), recommend()][tab],
+        search(),
+        community(),
+        recommend()
+      ][tab],
       bottomNavigationBar: BottomNavigationBar(
         showUnselectedLabels: false,
         showSelectedLabels: false,
@@ -64,31 +76,64 @@ class _MyAppState extends State<MyApp> {
         },
         items: [
           BottomNavigationBarItem(
-            label: 'home',
-            icon: Text('뉴스', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-            activeIcon: Text('뉴스', style: TextStyle(color: Color(0xFF00005B), fontSize: 20, fontWeight: FontWeight.bold),)
-          ),
+              label: 'home',
+              icon: Text(
+                '뉴스',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              activeIcon: Text(
+                '뉴스',
+                style: TextStyle(
+                    color: Color(0xFF00005B),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              )),
           BottomNavigationBarItem(
-            label: 'search',
-            icon: Text('검색', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-              activeIcon: Text('검색', style: TextStyle(color: Color(0xFF00005B), fontSize: 20, fontWeight: FontWeight.bold),)
-          ),
+              label: 'search',
+              icon: Text(
+                '검색',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              activeIcon: Text(
+                '검색',
+                style: TextStyle(
+                    color: Color(0xFF00005B),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              )),
           BottomNavigationBarItem(
-            label: 'community',
-            icon: Text('커뮤니티', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-              activeIcon: Text('커뮤니티', style: TextStyle(color: Color(0xFF00005B), fontSize: 20, fontWeight: FontWeight.bold),)
-          ),
+              label: 'community',
+              icon: Text(
+                '커뮤니티',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              activeIcon: Text(
+                '커뮤니티',
+                style: TextStyle(
+                    color: Color(0xFF00005B),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              )),
           BottomNavigationBarItem(
-            label: 'recommend',
-            icon: Text('법안 추천', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-              activeIcon: Text('법안 추천', style: TextStyle(color: Color(0xFF00005B), fontSize: 20, fontWeight: FontWeight.bold),)
-          ),
+              label: 'recommend',
+              icon: Text(
+                '법안 추천',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              activeIcon: Text(
+                '법안 추천',
+                style: TextStyle(
+                    color: Color(0xFF00005B),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              )),
         ],
       ),
     );
   } // build
+
   AppBar _getAppBar() {
-    switch(tab){
+    switch (tab) {
       case 0:
         return AppBar(
           title: Text("PP"),
@@ -98,7 +143,7 @@ class _MyAppState extends State<MyApp> {
             onPressed: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Category()));
-              },
+            },
             icon: Icon(Icons.menu),
           ),
           actions: <Widget>[
@@ -120,7 +165,7 @@ class _MyAppState extends State<MyApp> {
             onPressed: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Category()));
-              },
+            },
             icon: Icon(Icons.menu),
           ),
           actions: <Widget>[
@@ -142,7 +187,7 @@ class _MyAppState extends State<MyApp> {
             onPressed: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Category()));
-              },
+            },
             icon: Icon(Icons.menu),
           ),
           actions: <Widget>[
@@ -164,7 +209,7 @@ class _MyAppState extends State<MyApp> {
             onPressed: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Category()));
-              },
+            },
             icon: Icon(Icons.menu),
           ),
           actions: <Widget>[
@@ -182,4 +227,3 @@ class _MyAppState extends State<MyApp> {
     }
   }
 } //_MyAppState
-
