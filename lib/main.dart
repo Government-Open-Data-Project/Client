@@ -4,6 +4,7 @@ import 'community.dart';
 import 'recommend.dart';
 import 'search.dart';
 import 'chat.dart';
+import 'category.dart';
 
 void main() async{
   runApp(MaterialApp(home: MyApp()));
@@ -95,8 +96,9 @@ class _MyAppState extends State<MyApp> {
           elevation: 0.0,
           leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
-            },
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Category()));
+              },
             icon: Icon(Icons.menu),
           ),
           actions: <Widget>[
@@ -116,8 +118,9 @@ class _MyAppState extends State<MyApp> {
           elevation: 0.0,
           leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
-            },
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Category()));
+              },
             icon: Icon(Icons.menu),
           ),
           actions: <Widget>[
@@ -137,8 +140,9 @@ class _MyAppState extends State<MyApp> {
           elevation: 0.0,
           leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
-            },
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Category()));
+              },
             icon: Icon(Icons.menu),
           ),
           actions: <Widget>[
@@ -158,8 +162,9 @@ class _MyAppState extends State<MyApp> {
           elevation: 0.0,
           leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
-            },
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Category()));
+              },
             icon: Icon(Icons.menu),
           ),
           actions: <Widget>[
