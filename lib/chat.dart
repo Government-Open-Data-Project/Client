@@ -18,6 +18,7 @@ class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true, // true값 할당
       appBar: AppBar(
         title: Text("Chat P.P"),
         backgroundColor: Color(0xFF00005B),
@@ -46,7 +47,6 @@ class _ChatState extends State<Chat> {
                   color: Colors.black,
                   axisDirection: AxisDirection.down,
                   child: ListView.builder(
-
                     controller: _scrollController,
                     itemCount: _messages.length,
                     itemBuilder: (context, index) {
@@ -77,6 +77,7 @@ class _ChatState extends State<Chat> {
                                 isTyping = true; // 텍스트필드를 탭하면 입력 중임
                               });
                             },
+                            maxLines: null,
                             decoration: InputDecoration(
                               hintText: "메세지를 입력해주세요",
                               border: InputBorder.none,
@@ -112,6 +113,7 @@ class _ChatState extends State<Chat> {
   void sendMessage() {
     String messageText = _textController.text.trim();
     if (messageText.isNotEmpty) {
+
       ChatMessage message = ChatMessage(
         text: messageText,
         isMe: true, // 여기에 따라 메시지가 사용자의 것인지.
@@ -146,6 +148,9 @@ class ChatMessage extends StatelessWidget {
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
+        constraints: BoxConstraints(
+          maxWidth: 300.0, // 최대 넓이를 원하는 값으로 설정
+        ),
         margin: const EdgeInsets.all(8.0),
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
