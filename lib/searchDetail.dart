@@ -38,10 +38,18 @@ class _searchDetail extends State<searchDetail> {
               children: [
                 SearchBar(
                   leading: Icon(Icons.search),
+                  trailing: [
+                    IconButton(
+                        onPressed: (){},
+                        icon: Text("검색",
+                          style: TextStyle(fontWeight: FontWeight.bold),))
+                  ],
                   backgroundColor: MaterialStateProperty.all(Color(0xFFCADFEF)),
                   shadowColor: MaterialStateProperty.all(Colors.black12),
                   elevation: MaterialStateProperty.all(10.0),
-                  constraints: const BoxConstraints(maxWidth: 300, minHeight: 50),
+
+                  hintText: "키워드를 입력해주세요.",
+                  constraints: const BoxConstraints(maxWidth: 350, minHeight: 50),
                   shape: MaterialStateProperty.all(const ContinuousRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(20))
                    ),
