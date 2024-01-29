@@ -34,16 +34,21 @@ class _searchDetail extends State<searchDetail> {
           child: Container(
             width: 30,
             height: 30,
-            child: new Flexible(
-              child: new TextField(
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
+            child: Column(
+              children: [
+                SearchBar(
+                  leading: Icon(Icons.search),
+                  backgroundColor: MaterialStateProperty.all(Color(0xFFCADFEF)),
+                  shadowColor: MaterialStateProperty.all(Colors.black12),
+                  elevation: MaterialStateProperty.all(10.0),
+                  constraints: const BoxConstraints(maxWidth: 300, minHeight: 50),
+                  shape: MaterialStateProperty.all(const ContinuousRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20))
+                   ),
                   ),
-                  hintText: "키워드를 입력해주세요.",
-                  labelText: "키워드를 입력해주세요."
                 ),
-              ),
+                Container(height: 500,),
+              ],
             ),
           ),
         ),
