@@ -830,7 +830,6 @@ class _recommendState extends State<recommend> {
                           ),
                         ),
                     ),
-                    SizedBox(height: 20,),
                     Expanded(
                             child: ListView.builder(
                               shrinkWrap: true,
@@ -877,60 +876,65 @@ class _CustomContainerState extends State<CustomContainer> {
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
 
-    return Container(
-      width: sizeX,
-      height: 430,
-      color: Color(0xFFDEDEDE),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(15, 30, 15, 30),
-        child: Container(
-          width: sizeX*0.7,
-          height: 190,
-          decoration: BoxDecoration(
-            color: Color(0xFFE8E8E8),
-            borderRadius: BorderRadius.circular(7),
-            boxShadow:[
-              BoxShadow(
-                color: Colors.black12,
-                spreadRadius: 2,
-                offset: Offset(3,3),
-              ),
-            ],
-          ),
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              Text(widget.vtitle, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),textAlign: TextAlign.center),
-              SizedBox(height: 30,),
-              Text(widget.vcomment, style: TextStyle(fontSize: 20),),
-              SizedBox(height: 10,),
-              Container(
-                height: 2,
-                width: sizeX*0.85,
-                color: Colors.white,
-              ),
-              SizedBox(height: 10,),
-              Row(
-                children: [
-                  SizedBox(width: sizeX*0.38),
-                  Text("법안 해석 도우미", style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),),
-                  SizedBox(
-                    height: 18,
-                    child: CupertinoSwitch(
-                        value: _ison,
-                        activeColor: CupertinoColors.activeGreen,
-                        onChanged: (bool value){
-                          setState((){
-                            _ison = value;
-                          });
-                        }),
+    return Column(
+      children: [
+        SizedBox(height: 20,),
+        Container(
+          width: sizeX,
+          height: 430,
+          color: Color(0xFFDEDEDE),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(15, 30, 15, 30),
+            child: Container(
+              width: sizeX*0.7,
+              height: 190,
+              decoration: BoxDecoration(
+                color: Color(0xFFE8E8E8),
+                borderRadius: BorderRadius.circular(7),
+                boxShadow:[
+                  BoxShadow(
+                    color: Colors.black12,
+                    spreadRadius: 2,
+                    offset: Offset(3,3),
                   ),
                 ],
               ),
-            ],
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  Text(widget.vtitle, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),textAlign: TextAlign.center),
+                  SizedBox(height: 30,),
+                  Text(widget.vcomment, style: TextStyle(fontSize: 20),),
+                  SizedBox(height: 10,),
+                  Container(
+                    height: 2,
+                    width: sizeX*0.85,
+                    color: Colors.white,
+                  ),
+                  SizedBox(height: 10,),
+                  Row(
+                    children: [
+                      SizedBox(width: sizeX*0.38),
+                      Text("법안 해석 도우미", style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),),
+                      SizedBox(
+                        height: 18,
+                        child: CupertinoSwitch(
+                            value: _ison,
+                            activeColor: CupertinoColors.activeGreen,
+                            onChanged: (bool value){
+                              setState((){
+                                _ison = value;
+                              });
+                            }),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }
