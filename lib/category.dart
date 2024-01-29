@@ -43,38 +43,44 @@ class _CategoryState extends State<Category> {
             ],
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(height: 30,),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    elevation: 1.0,
-                    backgroundColor: Color(0xFFd9d9d9),
-                    minimumSize: Size(sizeX*0.75, 50)),
-                  onPressed: (){
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (context) => EditProfile()));
-                  },
-                  child: Text("프로필 수정",style: TextStyle(color: Colors.black),),
+              Container(
+                child: Column(
+                  children: [
+                    SizedBox(height: 30,),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          elevation: 1.0,
+                          backgroundColor: Color(0xFFd9d9d9),
+                          minimumSize: Size(sizeX*0.75, 50)),
+                      onPressed: (){
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => EditProfile()));
+                      },
+                      child: Text("프로필 수정",style: TextStyle(color: Colors.black),),
+                    ),
+                    SizedBox(height: 30,),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          elevation: 1.0,
+                          backgroundColor: Color(0xFFd9d9d9),
+                          minimumSize: Size(sizeX*0.75, 50)),
+                      onPressed: (){},
+                      child: Text("앱 정보",style: TextStyle(color: Colors.black),),
+                    ),
+                    SizedBox(height: 30,),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          elevation: 1.0,
+                          backgroundColor: Color(0xFFd9d9d9),
+                          minimumSize: Size(sizeX*0.75, 50)),
+                      onPressed: (){},
+                      child: Text("알림설정",style: TextStyle(color: Colors.black),),
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(height: 30,),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    elevation: 1.0,
-                    backgroundColor: Color(0xFFd9d9d9),
-                    minimumSize: Size(sizeX*0.75, 50)),
-                  onPressed: (){},
-                  child: Text("앱 정보",style: TextStyle(color: Colors.black),),
-              ),
-              SizedBox(height: 30,),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    elevation: 1.0,
-                    backgroundColor: Color(0xFFd9d9d9),
-                    minimumSize: Size(sizeX*0.75, 50)),
-                  onPressed: (){},
-                  child: Text("알림설정",style: TextStyle(color: Colors.black),),
-              ),
-              SizedBox(height: sizeY*0.5,),
               Container(
                 padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
                 child: Row(
