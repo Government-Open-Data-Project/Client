@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'editProfile.dart';
 
 class Category extends StatefulWidget {
   const Category({super.key});
@@ -49,9 +50,13 @@ class _CategoryState extends State<Category> {
                     elevation: 1.0,
                     backgroundColor: Color(0xFFd9d9d9),
                     minimumSize: Size(sizeX*0.75, 50)),
-                  onPressed: (){},
+                  onPressed: (){
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (context) => EditProfile()));
+                  },
                   child: Text("프로필 수정",style: TextStyle(color: Colors.black),),
-              ),SizedBox(height: 30,),
+              ),
+              SizedBox(height: 30,),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     elevation: 1.0,
@@ -59,7 +64,8 @@ class _CategoryState extends State<Category> {
                     minimumSize: Size(sizeX*0.75, 50)),
                   onPressed: (){},
                   child: Text("앱 정보",style: TextStyle(color: Colors.black),),
-              ),SizedBox(height: 30,),
+              ),
+              SizedBox(height: 30,),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     elevation: 1.0,

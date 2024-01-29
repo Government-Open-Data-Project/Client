@@ -1,19 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class recommend extends StatefulWidget {
-  recommend({Key? key}) : super(key: key);
+class EditProfile extends StatefulWidget {
+  const EditProfile({super.key});
 
   @override
-  State<recommend> createState() => _recommendState();
+  State<EditProfile> createState() => _EditProfileState();
 }
 
-bool _ison = false;
-List<String> title = ['1법률안','2법률안'];
-List<String> comment = ['1법률안 내용','2법률안 내용'];
-List<bool> help = [false,true];
-
-class _recommendState extends State<recommend> {
+class _EditProfileState extends State<EditProfile> {
   bool button1State = false;
   bool button2State = false;
   bool button3State = false;
@@ -86,19 +80,19 @@ class _recommendState extends State<recommend> {
                                   children: [
                                     SizedBox(width: 10,),
                                     ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      elevation: 0.0,
-                                      backgroundColor: button1State ? Color(0xFFCADFEF) : Colors.white,
-                                      minimumSize: Size(20, 30),
+                                        style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: button1State ? Color(0xFFCADFEF) : Colors.white,
+                                          minimumSize: Size(20, 30),
+                                        ),
+                                        onPressed: (){
+                                          setState(() {
+                                            button1State = !button1State;
+                                            print(button1State);
+                                          });
+                                        },
+                                        child: Text("20대",style: TextStyle(color: button1State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                     ),
-                                    onPressed: (){
-                                      setState(() {
-                                        button1State = !button1State;
-                                        print(button1State);
-                                      });
-                                    },
-                                    child: Text("20대",style: TextStyle(color: button1State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                ),
                                     SizedBox(width: 5,),
                                     ElevatedButton(
                                         onPressed: (){
@@ -698,243 +692,84 @@ class _recommendState extends State<recommend> {
     final sizeY = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Color(0xFFD0D0D0),
-      body: Column(
-        children: [
-          SizedBox(height: 20,),
-          Expanded(
-            child: Column(
-                  children: [
-                    Container(
-                      width: sizeX,
-                      height: 150,
-                      color: Color(0xFFDEDEDE),
-                      child: Container(
-                          child: Row(
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                          //color: Colors.pink,
-                                          width: 130,
-                                          height: 45,
-                                          padding: EdgeInsets.fromLTRB(7, 0, 0, 0),
-                                          child: RichText(
-                                              textAlign: TextAlign.end,
-                                              text: TextSpan(
-                                                  style: TextStyle(
-                                                    fontFamily: 'soojin',
-                                                    fontSize: 30,
-                                                    color: Colors.black,
-                                                  ),
-                                                  children: [
-                                                    TextSpan(
-                                                      text: "김민재님",
-                                                    ),
-                                                  ]
-                                              )
-                                          )
-                                      ),
-                                      Container(
-                                        //color: Colors.blueGrey,
-                                          width: 100,
-                                          height: 45,
-                                          padding: EdgeInsets.fromLTRB(5, 12, 0, 0),
-                                          child: RichText(
-                                              textAlign: TextAlign.start,
-                                              text: TextSpan(
-                                                  style: TextStyle(
-                                                    fontFamily: 'soojin',
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: Colors.black,
-                                                  ),
-                                                  children: [
-                                                    TextSpan(text: '의'),
-                                                  ]
-                                              )
-                                          )
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                      //color: Colors.blueGrey,
-                                      width: 250,
-                                      height: 35,
-                                      padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                      child: RichText(
-                                          textAlign: TextAlign.start,
-                                          text: TextSpan(
-                                              style: TextStyle(
-                                                fontFamily: 'soojin',
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.black,
-                                              ),
-                                              children: [
-                                                TextSpan(text: '관심사나 성향을 기반으로'),
-                                              ]
-                                          )
-                                      )
-                                  ),
-                                  Container(
-                                    //color: Colors.pink,
-                                      width: 250,
-                                      height: 35,
-                                      padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                      child: RichText(
-                                          textAlign: TextAlign.start,
-                                          text: TextSpan(
-                                              style: TextStyle(
-                                                fontFamily: 'soojin',
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.black,
-                                              ),
-                                              children: [
-                                                TextSpan(text: '법안을 찾았어요.'),
-                                              ]
-                                          )
-                                      )
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                margin: EdgeInsets.fromLTRB(40, 80, 0, 0),
-                                width: 110,
-                                height: 30,
-                                //color: Colors.blue,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 0.0,
-                                    backgroundColor: Colors.white,
-                                  ),
-                                  onPressed: (){
-                                    _showDialog(context);
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Icon(Icons.filter_alt_outlined,size: 20,color: Colors.black),
-                                      Text("맞춤 필터",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                    ),
-                    Expanded(
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              padding: const EdgeInsets.all(10),
-                              itemCount: title.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return CustomContainer(
-                                  vtitle: title[index],
-                                  vcomment: comment[index],
-                                  vhelp: help[index],
-                                );
-                              },
-                            )
-                    ),
-                  ],
-                ),
-              ),
-        ],
+      appBar: AppBar(
+        title: Text("Edit Profile"),
+        backgroundColor: Color(0xFF00005B),
+        elevation: 0.0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios_new),
+        ),
       ),
-    );
-  }
-}
-
-
-class CustomContainer extends StatefulWidget {
-  final bool vhelp;
-  final String vtitle;
-  final String vcomment;
-
-  CustomContainer({
-    super.key,
-    required this.vhelp,
-    required this.vtitle,
-    required this.vcomment,
-  });
-
-  @override
-  State<CustomContainer> createState() => _CustomContainerState();
-}
-
-class _CustomContainerState extends State<CustomContainer> {
-  @override
-  Widget build(BuildContext context) {
-    final sizeX = MediaQuery.of(context).size.width;
-    final sizeY = MediaQuery.of(context).size.height;
-
-    return Column(
-      children: [
-        SizedBox(height: 20,),
-        Container(
-          width: sizeX,
-          height: 430,
-          color: Color(0xFFDEDEDE),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(15, 30, 15, 30),
-            child: Container(
-              width: sizeX*0.7,
-              height: 190,
-              decoration: BoxDecoration(
-                color: Color(0xFFE8E8E8),
-                borderRadius: BorderRadius.circular(7),
-                boxShadow:[
-                  BoxShadow(
-                    color: Colors.black12,
-                    spreadRadius: 2,
-                    offset: Offset(3,3),
-                  ),
-                ],
-              ),
-              padding: const EdgeInsets.all(10),
+      backgroundColor: Color(0xFFD0D0D0),
+      body: Center(
+        child: Container(
+            width: sizeX * 0.87,
+            height: sizeY * 0.83,
+            decoration: BoxDecoration(
+              color: Color(0xFFDEDEDE),
+              borderRadius: BorderRadius.circular(7),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  spreadRadius: 2,
+                  offset: Offset(3, 3),
+                ),
+              ],
+            ),
+            child: Center(
               child: Column(
                 children: [
-                  Text(widget.vtitle, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),textAlign: TextAlign.center),
-                  SizedBox(height: 30,),
-                  Text(widget.vcomment, style: TextStyle(fontSize: 20),),
-                  SizedBox(height: 10,),
+                  SizedBox(height: 40,),
                   Container(
-                    height: 2,
-                    width: sizeX*0.85,
-                    color: Colors.white,
+                      //color: Colors.pink,
+                      width: sizeX*0.8,
+                      height: 45,
+                      padding: EdgeInsets.fromLTRB(7, 0, 0, 0),
+                      child: RichText(
+                          textAlign: TextAlign.start,
+                          text: TextSpan(
+                              style: TextStyle(
+                                fontFamily: 'soojin',
+                                fontSize: 30,
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: "김민재님,",
+                                ),
+                              ]
+                          )
+                      )
                   ),
-                  SizedBox(height: 10,),
-                  Row(
-                    children: [
-                      SizedBox(width: sizeX*0.38),
-                      Text("법안 해석 도우미", style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),),
-                      SizedBox(
-                        height: 18,
-                        child: CupertinoSwitch(
-                            value: _ison,
-                            activeColor: CupertinoColors.activeGreen,
-                            onChanged: (bool value){
-                              setState((){
-                                _ison = value;
-                              });
-                            }),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    width: sizeX*0.7,
+                    height: 30,
+                    //color: Colors.blue,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0.0,
+                        backgroundColor: Colors.white,
                       ),
-                    ],
-                  ),
+                      onPressed: (){
+                        _showDialog(context);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("관심사 변경",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)
+                        ],
+                      ),
+                    ),
+                  )
                 ],
               ),
-            ),
-          ),
-        ),
-      ],
+            )),
+      ),
     );
   }
 }
