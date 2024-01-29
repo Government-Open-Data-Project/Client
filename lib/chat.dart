@@ -18,6 +18,7 @@ class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true, // true값 할당
       appBar: AppBar(
         title: Text("Chat P.P"),
         backgroundColor: Color(0xFF00005B),
@@ -76,6 +77,7 @@ class _ChatState extends State<Chat> {
                                 isTyping = true; // 텍스트필드를 탭하면 입력 중임
                               });
                             },
+                            maxLines: null,
                             decoration: InputDecoration(
                               hintText: "메세지를 입력해주세요",
                               border: InputBorder.none,
@@ -111,6 +113,7 @@ class _ChatState extends State<Chat> {
   void sendMessage() {
     String messageText = _textController.text.trim();
     if (messageText.isNotEmpty) {
+
       ChatMessage message = ChatMessage(
         text: messageText,
         isMe: true, // 여기에 따라 메시지가 사용자의 것인지.
@@ -118,13 +121,17 @@ class _ChatState extends State<Chat> {
       setState(() {
         _messages.add(message);
         _textController.clear();
+
       });
+
       // 메시지를 전송한 후 스크롤을 아래로 이동
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent + 5,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      });
     }
   }
 }
@@ -141,6 +148,9 @@ class ChatMessage extends StatelessWidget {
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
+        constraints: BoxConstraints(
+          maxWidth: 300.0, // 최대 넓이를 원하는 값으로 설정
+        ),
         margin: const EdgeInsets.all(8.0),
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
