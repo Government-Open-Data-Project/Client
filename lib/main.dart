@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp> {
 
           ],
           localNews: [
-            NewsDetail(title: "지역 제목 1", content: "내용 2"),
+            NewsDetail(title: " 지역 뉴스 제목 1", content: "내용 2"),
             NewsDetail(title: "지역 제목 1", content: "내용 3"),
             NewsDetail(title: "지역 제목 1", content: "내용 4"),
             NewsDetail(title: "지역 제목 1", content: "내용 3"),
