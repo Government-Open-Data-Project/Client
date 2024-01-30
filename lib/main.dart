@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nation/network/api_manager.dart';
 import 'home.dart';
 import 'community.dart';
 import 'recommend.dart';
@@ -18,10 +19,15 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+  ApiManager apiManager = ApiManager().getApiManager();
+
   var tab = 0;
 
   @override
   Widget build(BuildContext context) {
+    apiManager.getGPTMessages();
+
     return Scaffold(
       appBar: _getAppBar(),
       extendBodyBehindAppBar: false,
@@ -151,6 +157,7 @@ class _MyAppState extends State<MyApp> {
               icon: Icon(Icons.mic),
               onPressed: () {
                 Navigator.push(
+
                     context, MaterialPageRoute(builder: (context) => Chat()));
               },
             ),

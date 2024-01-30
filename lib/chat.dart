@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
+import 'package:nation/network/api_manager.dart';
 
 //stt
 import 'package:speech_to_text/speech_recognition_result.dart';
@@ -24,24 +25,43 @@ class _ChatState extends State<Chat> {
   //TTS
   FlutterTts flutterTts = FlutterTts();
 
-  void textToSpeech() async {
-    await flutterTts.setLanguage("ko-KR");
-    await flutterTts.setVolume(0.6);
-    await flutterTts.setSpeechRate(0.5);
-    await flutterTts.setPitch(1);
-    await flutterTts.speak(_wordSpoken);
-  }
-
 //STT
   final SpeechToText _speechToText = SpeechToText();
   bool _speechEnabled = false;
   String _wordSpoken = " ";
   double _confidenceLevel = 0;
 
+  ApiManager apiManager = ApiManager().getApiManager();
+
   @override
   void initState() {
     super.initState();
     initSpeech();
+    fetchDataFromServer();
+  }
+
+  Future<void> fetchDataFromServer() async {
+    try {
+      final data = await apiManager.getGPTMessages();
+
+      List<ChatMessage> newMessages = [];
+
+      // 데이터를 ChatMessage 객체로 변환하여 newMessages에 추가
+      for (var message in data) {
+        newMessages.add(ChatMessage(
+          text: message["value"],
+          isMe: message["role"] == "user" ? true : false,
+        ));
+      }
+
+
+      // 기존의 _messages 리스트에 새로운 메시지들을 추가
+      setState(() {
+        _messages.addAll(newMessages.reversed);
+      });
+    } catch (error) {
+      print('Error fetching getGPTMessages data: $error');
+    }
   }
 
   void initSpeech() async {
@@ -282,15 +302,44 @@ class ChatMessage extends StatelessWidget {
             ),
           ),
         ),
-        if (isMe) // Show play button only for TTS messages
+        if (isMe && text.startsWith('STT:'))// Show play button only for user's messages
           Padding(
-            padding: const EdgeInsets.only(right: 10.0),
-            child: IconButton(
-              icon: Icon(Icons.play_arrow),
-              onPressed: () {},
+          padding: EdgeInsets.fromLTRB(1, 1, 2, 1),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.play_arrow,size: 20,color: Colors.grey,),
+                  onPressed: () {
+                    _speakTTS(text);
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.play_disabled,size: 20,color: Colors.grey,),
+                  onPressed: () {
+                    _stopTTS(text);
+                  },
+                ),
+              ],
             ),
           ),
       ],
     );
   }
+
+  //TTS 말하기
+  void _speakTTS(String message) async {
+    FlutterTts flutterTts = FlutterTts();
+    await flutterTts.setLanguage("ko-KR");
+    await flutterTts.setVolume(0.6);
+    await flutterTts.setSpeechRate(0.5);
+    await flutterTts.setPitch(1);
+    await flutterTts.speak(message);
+  }
+  //TTS 멈추기
+  void _stopTTS(String message) async {
+    FlutterTts flutterTts = FlutterTts();
+    await flutterTts.stop();
+  }
+
 }
