@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
+import 'package:nation/network/api_manager.dart';
 
 //stt
 import 'package:speech_to_text/speech_recognition_result.dart';
@@ -21,7 +22,6 @@ class _ChatState extends State<Chat> {
   final ScrollController _scrollController = ScrollController();
   bool isTyping = false;
 
-
   //TTS
   FlutterTts flutterTts = FlutterTts();
 
@@ -31,10 +31,37 @@ class _ChatState extends State<Chat> {
   String _wordSpoken = " ";
   double _confidenceLevel = 0;
 
+  ApiManager apiManager = ApiManager().getApiManager();
+
   @override
   void initState() {
     super.initState();
     initSpeech();
+    fetchDataFromServer();
+  }
+
+  Future<void> fetchDataFromServer() async {
+    try {
+      final data = await apiManager.getGPTMessages();
+
+      List<ChatMessage> newMessages = [];
+
+      // 데이터를 ChatMessage 객체로 변환하여 newMessages에 추가
+      for (var message in data) {
+        newMessages.add(ChatMessage(
+          text: message["value"],
+          isMe: message["role"] == "user" ? true : false,
+        ));
+      }
+
+
+      // 기존의 _messages 리스트에 새로운 메시지들을 추가
+      setState(() {
+        _messages.addAll(newMessages.reversed);
+      });
+    } catch (error) {
+      print('Error fetching getGPTMessages data: $error');
+    }
   }
 
   void initSpeech() async {
@@ -241,8 +268,6 @@ class _ChatState extends State<Chat> {
 class ChatMessage extends StatelessWidget {
   final String text;
   final bool isMe; // true 이면 나 false면 봇
-
-
 
   const ChatMessage({required this.text, required this.isMe});
 
