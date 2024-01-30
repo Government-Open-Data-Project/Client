@@ -21,16 +21,9 @@ class _ChatState extends State<Chat> {
   final ScrollController _scrollController = ScrollController();
   bool isTyping = false;
 
+
   //TTS
   FlutterTts flutterTts = FlutterTts();
-
-  void textToSpeech() async {
-    await flutterTts.setLanguage("ko-KR");
-    await flutterTts.setVolume(0.6);
-    await flutterTts.setSpeechRate(0.5);
-    await flutterTts.setPitch(1);
-    await flutterTts.speak(_wordSpoken);
-  }
 
 //STT
   final SpeechToText _speechToText = SpeechToText();
@@ -249,6 +242,8 @@ class ChatMessage extends StatelessWidget {
   final String text;
   final bool isMe; // true 이면 나 false면 봇
 
+
+
   const ChatMessage({required this.text, required this.isMe});
 
   @override
@@ -282,15 +277,44 @@ class ChatMessage extends StatelessWidget {
             ),
           ),
         ),
-        if (isMe) // Show play button only for TTS messages
+        if (isMe && text.startsWith('STT:'))// Show play button only for user's messages
           Padding(
-            padding: const EdgeInsets.only(right: 10.0),
-            child: IconButton(
-              icon: Icon(Icons.play_arrow),
-              onPressed: () {},
+          padding: EdgeInsets.fromLTRB(1, 1, 2, 1),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.play_arrow,size: 20,color: Colors.grey,),
+                  onPressed: () {
+                    _speakTTS(text);
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.play_disabled,size: 20,color: Colors.grey,),
+                  onPressed: () {
+                    _stopTTS(text);
+                  },
+                ),
+              ],
             ),
           ),
       ],
     );
   }
+
+  //TTS 말하기
+  void _speakTTS(String message) async {
+    FlutterTts flutterTts = FlutterTts();
+    await flutterTts.setLanguage("ko-KR");
+    await flutterTts.setVolume(0.6);
+    await flutterTts.setSpeechRate(0.5);
+    await flutterTts.setPitch(1);
+    await flutterTts.speak(message);
+  }
+  //TTS 멈추기
+  void _stopTTS(String message) async {
+    FlutterTts flutterTts = FlutterTts();
+    await flutterTts.stop();
+  }
+
 }
