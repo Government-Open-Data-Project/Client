@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:http/http.dart' as http;
+import 'package:nation/models/Law.dart';
 import 'package:dio/dio.dart';
 import 'package:nation/home.dart';
 import 'package:intl/intl.dart';
+
 
 
 class ApiManager {
@@ -59,6 +61,33 @@ class ApiManager {
     }
   }
 
+
+  Future<List<Law>> getLawData() async {
+    String endPoint = "/api/law";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("law List Data: " + response.body);
+
+      List<Law> laws = rawData.map((data) {
+        return Law(
+          title: data['title'],
+          content: data['content'],
+        );
+      }).toList();
+
+      return laws;
+    } else {
+      throw Exception("Fail to load diary data from the API");
+    }
+  }
+
   //GPT POST
   void sendMessage(String message) async {
     String endpoint = "/api/assistant/messages";
@@ -104,6 +133,9 @@ class ApiManager {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
+
+
+}
 
       // "newsList" 키에 해당하는 값을 가져옵니다.
       List<dynamic> rawData = responseData['newsList'];
