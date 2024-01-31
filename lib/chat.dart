@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 import 'package:nation/network/api_manager.dart';
-
-//stt
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-
-//tts
 import 'package:flutter_tts/flutter_tts.dart';
 
 class Chat extends StatefulWidget {
@@ -54,13 +50,42 @@ class _ChatState extends State<Chat> {
         ));
       }
 
-
       // 기존의 _messages 리스트에 새로운 메시지들을 추가
       setState(() {
         _messages.addAll(newMessages.reversed);
       });
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: Duration(microseconds: 100),
+          curve: Curves.easeOut,
+        );
+      });
     } catch (error) {
       print('Error fetching getGPTMessages data: $error');
+    }
+  }
+
+  //메세지 보내는 함수
+  void sendMessage() {
+    String messageText = _textController.text;
+
+    if (messageText.isNotEmpty) {
+      apiManager.sendMessage(messageText);
+
+      print("보낸 말 + $messageText");
+      _textController.clear();
+      Future.delayed(Duration(milliseconds: 300), () {
+        fetchDataFromServer();  // 데이터를 가져온 후에 스크롤 이동
+      });
+      // 메시지를 전송한 후 스크롤을 아래로 이동
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent + 5,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      });
     }
   }
 
@@ -237,32 +262,8 @@ class _ChatState extends State<Chat> {
       ),
     );
   }
-
-  //메세지 보내는 함슈
-  void sendMessage() {
-    String messageText = _textController.text.trim();
-    if (messageText.isNotEmpty) {
-      ChatMessage message = ChatMessage(
-        text: messageText,
-        isMe: true, // 여기에 따라 메시지가 사용자의 것인지.
-      );
-
-      setState(() {
-        _messages.add(message);
-        _textController.clear();
-      });
-
-      // 메시지를 전송한 후 스크롤을 아래로 이동
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent + 5,
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
-      });
-    }
-  }
 }
+
 
 //메세지를 보여주는 위젯임
 class ChatMessage extends StatelessWidget {
@@ -300,23 +301,35 @@ class ChatMessage extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
+
           ),
         ),
-        if (isMe && text.startsWith('STT:'))// Show play button only for user's messages
+        if (isMe &&
+            text.startsWith(
+                'STT:')) // Show play button only for user's messages
           Padding(
-          padding: EdgeInsets.fromLTRB(1, 1, 2, 1),
+            padding: EdgeInsets.fromLTRB(1, 1, 2, 1),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 IconButton(
-                  icon: Icon(Icons.play_arrow,size: 20,color: Colors.grey,),
+                  icon: Icon(
+                    Icons.play_arrow,
+                    size: 20,
+                    color: Colors.grey,
+                  ),
                   onPressed: () {
                     _speakTTS(text);
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.play_disabled,size: 20,color: Colors.grey,),
+                  icon: Icon(
+                    Icons.play_disabled,
+                    size: 20,
+                    color: Colors.grey,
+                  ),
                   onPressed: () {
+
                     _stopTTS(text);
                   },
                 ),
@@ -336,10 +349,10 @@ class ChatMessage extends StatelessWidget {
     await flutterTts.setPitch(1);
     await flutterTts.speak(message);
   }
+
   //TTS 멈추기
   void _stopTTS(String message) async {
     FlutterTts flutterTts = FlutterTts();
     await flutterTts.stop();
   }
-
 }

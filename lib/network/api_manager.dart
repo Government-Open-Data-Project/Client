@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 class ApiManager {
   static ApiManager apiManager = new ApiManager();
@@ -11,6 +12,8 @@ class ApiManager {
 
   String baseUrl = "http://34.64.78.56:8080";
 
+
+  //GPT - get
   Future<List<Map<String, dynamic>>> getGPTMessages() async {
     print("getGPTMessages 실행");
 
@@ -19,7 +22,7 @@ class ApiManager {
     final response = await http.get(
       Uri.parse('$baseUrl$endpoint'),
       headers: <String, String>{
-        'Content-Type': 'application/json', // 예시로 Content-Type을 추가했습니다.
+        'Content-Type': 'application/json',
       },
     );
 
@@ -61,6 +64,41 @@ class ApiManager {
       throw Exception('Failed to load data from the API' );
     }
   }
+
+  //GPT POST
+  void sendMessage(String message) async {
+    String endpoint = "/api/assistant/messages";
+
+    Dio _dio = Dio();
+    Map<String, dynamic> headers = {
+      'Content-Type': 'application/json',
+    };
+
+    try {
+      var response = await _dio.post(
+        '$baseUrl$endpoint',
+        data: message, // 요청 데이터
+       options: Options(headers: headers), // 요청 헤더 설정
+      );
+
+      if (response.statusCode == 201) {
+        print("post 응답 성공 $message");
+
+      } else {
+        print("응답 코드: ${response.statusCode}");
+        throw Exception(
+            'Failed to make a POST request. Status code: ${response
+                .statusCode}');
+      }
+    } catch (e) {
+      print('에러 발생: $e');
+
+      throw e;
+    }
+  }
+
+
+
 }
 
 
