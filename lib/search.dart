@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'login.dart';
 import 'searchDetail.dart';
 
 class search extends StatefulWidget {
@@ -123,7 +124,7 @@ class _search extends State<search> {
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => searchDetail()));
+                            context, MaterialPageRoute(builder: (context) => login()));
                         },
                         style: ElevatedButton.styleFrom(backgroundColor: Color(0xFFEAEAEA)),
                         child: Text("검색", style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),),

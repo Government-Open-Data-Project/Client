@@ -53,7 +53,6 @@ class ApiManager {
       for (var extractedMessage in extractedMessages) {
         print("role: ${extractedMessage["role"]}, value: ${extractedMessage["value"]}");
       }
-
       return extractedMessages;
 
     } else {
