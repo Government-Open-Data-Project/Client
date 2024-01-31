@@ -19,7 +19,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   ApiManager apiManager = ApiManager().getApiManager();
 
   var tab = 0;
@@ -33,33 +32,9 @@ class _MyAppState extends State<MyApp> {
       extendBodyBehindAppBar: false,
       body: [
         home(
-          todayNews: [
-            NewsDetail(title: "오늘 뉴스 제목 1 ", content: "오늘 내용1"),
-            NewsDetail(title: "오늘 뉴스 제목 2 ", content: "오늘 내용2"),
-            NewsDetail(title: "오늘 뉴스 제목 3 ", content: "오늘 내용3"),
-            NewsDetail(title: "오늘 뉴스 제목 4 ", content: "오늘 내용4"),
-            NewsDetail(title: "오늘 뉴스 제목 5 ", content: "오늘 내용5"),
-            NewsDetail(title: "오늘 뉴스 제목 6 ", content: "오늘 내용5"),
-            NewsDetail(title: "오늘 뉴스 제목7 ", content: "오늘 내용5"),
-
-          ],
-          ageNews: [
-            NewsDetail(title: "50대 제목 1", content: "내용1"),
-            NewsDetail(title: "50대 제목 2", content: "내용2"),
-            NewsDetail(title: "50대 제목 3", content: "내용13"),
-            NewsDetail(title: "50대 제목 1", content: "내용1"),
-            NewsDetail(title: "50대 제목 1", content: "내용1"),
-            NewsDetail(title: "50대 제목 1", content: "내용1"),
-
-
-          ],
-          localNews: [
-            NewsDetail(title: " 지역 뉴스 제목 1", content: "내용 2"),
-            NewsDetail(title: "지역 제목 1", content: "내용 3"),
-            NewsDetail(title: "지역 제목 1", content: "내용 4"),
-            NewsDetail(title: "지역 제목 1", content: "내용 3"),
-            NewsDetail(title: "지역 제목 1", content: "내용 1"),
-          ],
+          todayNews: [],
+          ageNews: [],
+          localNews: [],
           newsTopic: Newstopic(
             date: DateTime.now(),
             local: "서울",
@@ -157,7 +132,6 @@ class _MyAppState extends State<MyApp> {
               icon: Icon(Icons.mic),
               onPressed: () {
                 Navigator.push(
-
                     context, MaterialPageRoute(builder: (context) => Chat()));
               },
             ),
