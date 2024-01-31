@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:http/http.dart' as http;
+import 'package:nation/models/Law.dart';
 
 class ApiManager {
   static ApiManager apiManager = new ApiManager();
@@ -59,6 +60,32 @@ class ApiManager {
     } else {
       print("getGPTMessages 오류: ${response.body}");
       throw Exception('Failed to load data from the API' );
+    }
+  }
+
+  Future<List<Law>> getLawData() async {
+    String endPoint = "/api/law";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("law List Data: " + response.body);
+
+      List<Law> laws = rawData.map((data) {
+        return Law(
+          title: data['title'],
+          content: data['content'],
+        );
+      }).toList();
+
+      return laws;
+    } else {
+      throw Exception("Fail to load diary data from the API");
     }
   }
 }
