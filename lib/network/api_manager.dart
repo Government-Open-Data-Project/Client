@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
+import 'package:nation/home.dart';
+import 'package:intl/intl.dart';
+
 
 class ApiManager {
   static ApiManager apiManager = new ApiManager();
@@ -11,7 +14,6 @@ class ApiManager {
   }
 
   String baseUrl = "http://34.64.78.56:8080";
-
 
   //GPT - get
   Future<List<Map<String, dynamic>>> getGPTMessages() async {
@@ -33,7 +35,6 @@ class ApiManager {
 
       final data = json.decode(utf8.decode(response.bodyBytes)); // UTF-8로 디코딩
 
-
       if (data["object"] == "list" && data["data"] != null) {
         for (var message in data["data"]) {
           if (message["object"] == "thread.message" &&
@@ -51,17 +52,10 @@ class ApiManager {
         }
       }
 
-      // 출력
-      print("extractedMessages의 값들:");
-      for (var extractedMessage in extractedMessages) {
-        print("role: ${extractedMessage["role"]}, value: ${extractedMessage["value"]}");
-      }
-
       return extractedMessages;
-
     } else {
       print("getGPTMessages 오류: ${response.body}");
-      throw Exception('Failed to load data from the API' );
+      throw Exception('Failed to load data from the API');
     }
   }
 
@@ -78,17 +72,15 @@ class ApiManager {
       var response = await _dio.post(
         '$baseUrl$endpoint',
         data: message, // 요청 데이터
-       options: Options(headers: headers), // 요청 헤더 설정
+        options: Options(headers: headers), // 요청 헤더 설정
       );
 
       if (response.statusCode == 201) {
         print("post 응답 성공 $message");
-
       } else {
         print("응답 코드: ${response.statusCode}");
         throw Exception(
-            'Failed to make a POST request. Status code: ${response
-                .statusCode}');
+            'Failed to make a POST request. Status code: ${response.statusCode}');
       }
     } catch (e) {
       print('에러 발생: $e');
@@ -97,9 +89,41 @@ class ApiManager {
     }
   }
 
+//뉴스 get
+  Future<List<NewsDetail>> getNews() async {
+    String endPoint = "/api/news";
 
+    String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime(2024, 1, 17));
 
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint?date=$formattedDate'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
+
+      // "newsList" 키에 해당하는 값을 가져옵니다.
+      List<dynamic> rawData = responseData['newsList'];
+
+      print("News statistics data: " + response.body);
+      print("뉴스 성공 ");
+
+      List<NewsDetail> MSatisdata = rawData.map((data) {
+        return NewsDetail(
+          reg_date: DateTime.parse(data['REG_DATE']),
+          link_url: data['LINK_URL'] ?? '',
+          comp_main_title: data['COMP_MAIN_TITLE'] ?? '',
+          comp_content: data['COMP_CONTENT'] ?? '',
+        );
+      }).toList();
+
+      return MSatisdata;
+    } else {
+      print("News data response: " + response.body);
+      throw Exception("Fail to load News data from the API");
+    }
+  }
 }
-
-
-
