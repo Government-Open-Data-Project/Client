@@ -67,7 +67,7 @@ class _ChatState extends State<Chat> {
   }
 
   //메세지 보내는 함수
-  void sendMessage() {
+  void sendMessage()  {
     String messageText = _textController.text;
 
     if (messageText.isNotEmpty) {
@@ -75,9 +75,11 @@ class _ChatState extends State<Chat> {
 
       print("보낸 말 + $messageText");
       _textController.clear();
-      Future.delayed(Duration(milliseconds: 300), () {
-        fetchDataFromServer();  // 데이터를 가져온 후에 스크롤 이동
+
+      Future.delayed(Duration(milliseconds: 500), () {
+        fetchDataFromServer();
       });
+
       // 메시지를 전송한 후 스크롤을 아래로 이동
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         _scrollController.animateTo(
