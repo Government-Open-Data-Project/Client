@@ -44,6 +44,9 @@ dependencies:
   dots_indicator: ^3.0.0
   dio: ^4.0.0
 
+  toggle_switch: ^2.1.0
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
