@@ -306,9 +306,7 @@ class ChatMessage extends StatelessWidget {
 
           ),
         ),
-        if (isMe &&
-            text.startsWith(
-                'STT:')) // Show play button only for user's messages
+        if (isMe) // Show play button only for user's messages
           Padding(
             padding: EdgeInsets.fromLTRB(1, 1, 2, 1),
             child: Row(

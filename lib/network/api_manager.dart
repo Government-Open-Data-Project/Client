@@ -135,8 +135,6 @@ class ApiManager {
       Map<String, dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
 
 
-}
-
       // "newsList" 키에 해당하는 값을 가져옵니다.
       List<dynamic> rawData = responseData['newsList'];
 
