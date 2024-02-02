@@ -12,23 +12,25 @@ class Chat extends StatefulWidget {
   State<Chat> createState() => _ChatState();
 }
 
+bool _speechEnabled = false;
+final SpeechToText _speechToText = SpeechToText();
+
+
+
 class _ChatState extends State<Chat> {
   final TextEditingController _textController = TextEditingController();
   final List<ChatMessage> _messages = [];
   final ScrollController _scrollController = ScrollController();
   bool isTyping = false;
-  double _keyboardHeight = 0;
-
 
   //TTS
   FlutterTts flutterTts = FlutterTts();
 
 //STT
-  final SpeechToText _speechToText = SpeechToText();
-  bool _speechEnabled = false;
+ // final SpeechToText _speechToText = SpeechToText();
+  //bool _speechEnabled = false;
   String _wordSpoken = " ";
   double _confidenceLevel = 0;
-
 
   ApiManager apiManager = ApiManager().getApiManager();
 
@@ -203,7 +205,6 @@ class _ChatState extends State<Chat> {
                   ),
                 ),
               ),
-              
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
@@ -223,7 +224,18 @@ class _ChatState extends State<Chat> {
                             controller: _textController,
                             onTap: () {
                               setState(() {
-                                isTyping = true; // 텍스트필드를 탭하면 입력 중임
+                                isTyping = true;
+                                //텍스트 필드 누르면 스크롤 제일 하단으로 내려감
+                                WidgetsBinding.instance?.addPostFrameCallback((_) {
+                                  Future.delayed(Duration(milliseconds: 300), () {
+                                    _scrollController.animateTo(
+                                      _scrollController.position.maxScrollExtent + 5,
+                                      duration: Duration(milliseconds: 300),
+                                      curve: Curves.easeOut,
+                                    );
+                                  });
+                                });
+
                               });
                             },
                             maxLines: null,
@@ -313,7 +325,7 @@ class ChatMessage extends StatelessWidget {
 
           ),
         ),
-        if (!isMe) // Show play button only for user's messages
+        if (!isMe)
           Padding(
             padding: EdgeInsets.fromLTRB(1, 1, 2, 1),
             child: Row(
