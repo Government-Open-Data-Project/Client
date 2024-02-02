@@ -6,8 +6,10 @@ import 'recommend.dart';
 import 'search.dart';
 import 'chat.dart';
 import 'category.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
+  await dotenv.load(fileName: '.env');
   runApp(MaterialApp(home: MyApp()));
 }
 

@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:nation/models/Law.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nation/home.dart';
 import 'package:intl/intl.dart';
-
 
 
 class ApiManager {
@@ -14,8 +14,8 @@ class ApiManager {
   ApiManager getApiManager() {
     return apiManager;
   }
-
-  String baseUrl = "http://34.64.78.56:8080";
+  
+  String? baseUrl = dotenv.env['BASE_URL'];
 
   //GPT - get
   Future<List<Map<String, dynamic>>> getGPTMessages() async {
