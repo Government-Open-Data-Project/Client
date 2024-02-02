@@ -444,16 +444,19 @@ void showsPopup(BuildContext context, NewsDetail popupInfo) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text(HtmlUnescape().convert(popupInfo.comp_main_title)),
+        title: Text(HtmlUnescape().convert(popupInfo.comp_main_title),
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),),
         content: SingleChildScrollView(
           // Scrollable content
           child: Container(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(2.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(HtmlUnescape().convert(popupInfo.comp_content)),
-                SizedBox(height: 10),
+                SizedBox(height: 8),
                 GestureDetector(
                   onTap: () {
                     launch(popupInfo.link_url);

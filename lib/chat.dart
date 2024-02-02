@@ -17,6 +17,8 @@ class _ChatState extends State<Chat> {
   final List<ChatMessage> _messages = [];
   final ScrollController _scrollController = ScrollController();
   bool isTyping = false;
+  double _keyboardHeight = 0;
+
 
   //TTS
   FlutterTts flutterTts = FlutterTts();
@@ -26,6 +28,7 @@ class _ChatState extends State<Chat> {
   bool _speechEnabled = false;
   String _wordSpoken = " ";
   double _confidenceLevel = 0;
+
 
   ApiManager apiManager = ApiManager().getApiManager();
 
@@ -67,7 +70,7 @@ class _ChatState extends State<Chat> {
   }
 
   //메세지 보내는 함수
-  void sendMessage()  {
+  void sendMessage() {
     String messageText = _textController.text;
 
     if (messageText.isNotEmpty) {
@@ -89,6 +92,7 @@ class _ChatState extends State<Chat> {
         );
       });
     }
+
   }
 
   void initSpeech() async {
@@ -199,6 +203,7 @@ class _ChatState extends State<Chat> {
                   ),
                 ),
               ),
+              
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
@@ -238,9 +243,11 @@ class _ChatState extends State<Chat> {
                                   : Icons.mic_none,
                           color: _speechEnabled ? Colors.blue : Colors.grey,
                         ),
-                        onPressed: () {
+                        onPressed: () async{
                           if (isTyping) {
                             sendMessage();
+                            Future.delayed( Duration(milliseconds:100),);
+                            await fetchDataFromServer();
                           } else {
                             if (_speechToText.isListening) {
                               _stopListening();
@@ -306,7 +313,7 @@ class ChatMessage extends StatelessWidget {
 
           ),
         ),
-        if (isMe) // Show play button only for user's messages
+        if (!isMe) // Show play button only for user's messages
           Padding(
             padding: EdgeInsets.fromLTRB(1, 1, 2, 1),
             child: Row(
