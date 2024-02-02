@@ -29,88 +29,90 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     apiManager.getGPTMessages();
 
-    return Scaffold(
-      appBar: _getAppBar(),
-      extendBodyBehindAppBar: false,
-      body: [
-        home(
-          todayNews: [],
-          ageNews: [],
-          localNews: [],
-          newsTopic: Newstopic(
-            date: DateTime.now(),
-            local: "서울",
-            age: 50,
+    return SafeArea(
+      child: Scaffold(
+        appBar: _getAppBar(),
+        extendBodyBehindAppBar: false,
+        body: [
+          home(
+            todayNews: [],
+            ageNews: [],
+            localNews: [],
+            newsTopic: Newstopic(
+              date: DateTime.now(),
+              local: "서울",
+              age: 50,
+            ),
           ),
+          search(),
+          community(),
+          recommend()
+        ][tab],
+        bottomNavigationBar: BottomNavigationBar(
+          showUnselectedLabels: false,
+          showSelectedLabels: false,
+          currentIndex: tab,
+          type: BottomNavigationBarType.fixed,
+          onTap: (i) {
+            setState(() {
+              tab = i;
+            });
+          },
+          items: [
+            BottomNavigationBarItem(
+                label: 'home',
+                icon: Text(
+                  '뉴스',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                activeIcon: Text(
+                  '뉴스',
+                  style: TextStyle(
+                      color: Color(0xFF00005B),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                )),
+            BottomNavigationBarItem(
+                label: 'search',
+                icon: Text(
+                  '검색',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                activeIcon: Text(
+                  '검색',
+                  style: TextStyle(
+                      color: Color(0xFF00005B),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                )),
+            BottomNavigationBarItem(
+                label: 'community',
+                icon: Text(
+                  '커뮤니티',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                activeIcon: Text(
+                  '커뮤니티',
+                  style: TextStyle(
+                      color: Color(0xFF00005B),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                )),
+            BottomNavigationBarItem(
+                label: 'recommend',
+                icon: Text(
+                  '법안 추천',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                activeIcon: Text(
+                  '법안 추천',
+                  style: TextStyle(
+                      color: Color(0xFF00005B),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                )),
+          ],
         ),
-        search(),
-        community(),
-        recommend()
-      ][tab],
-      bottomNavigationBar: BottomNavigationBar(
-        showUnselectedLabels: false,
-        showSelectedLabels: false,
-        currentIndex: tab,
-        type: BottomNavigationBarType.fixed,
-        onTap: (i) {
-          setState(() {
-            tab = i;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-              label: 'home',
-              icon: Text(
-                '뉴스',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              activeIcon: Text(
-                '뉴스',
-                style: TextStyle(
-                    color: Color(0xFF00005B),
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              )),
-          BottomNavigationBarItem(
-              label: 'search',
-              icon: Text(
-                '검색',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              activeIcon: Text(
-                '검색',
-                style: TextStyle(
-                    color: Color(0xFF00005B),
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              )),
-          BottomNavigationBarItem(
-              label: 'community',
-              icon: Text(
-                '커뮤니티',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              activeIcon: Text(
-                '커뮤니티',
-                style: TextStyle(
-                    color: Color(0xFF00005B),
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              )),
-          BottomNavigationBarItem(
-              label: 'recommend',
-              icon: Text(
-                '법안 추천',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              activeIcon: Text(
-                '법안 추천',
-                style: TextStyle(
-                    color: Color(0xFF00005B),
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              )),
-        ],
       ),
     );
   } // build
