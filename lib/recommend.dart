@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nation/network/api_manager.dart';
+import 'package:nation/models/Law.dart';
 
 class recommend extends StatefulWidget {
   recommend({Key? key}) : super(key: key);
@@ -9,8 +11,6 @@ class recommend extends StatefulWidget {
 }
 
 bool _ison = false;
-List<String> title = ['1법률안','2법률안'];
-List<String> comment = ['1법률안 내용','2법률안 내용'];
 List<bool> help = [false,true];
 
 class _recommendState extends State<recommend> {
@@ -45,6 +45,31 @@ class _recommendState extends State<recommend> {
   bool button29State = false;
   bool button30State = false;
   bool button31State = false;
+
+
+  List<Law> laws = [];
+  @override
+  void initState() {
+    super.initState();
+    fetchDataFromServer();
+  }
+
+  ApiManager apiManager = ApiManager().getApiManager();
+  //통신부분
+  Future<void> fetchDataFromServer() async {
+    try {
+
+      final data = await apiManager.getLawData();
+
+      setState(() {
+        laws = data!;
+      });
+
+      print("통신성공");
+    } catch (error) {
+      print('Error fetching data: $error');
+    }
+  }
 
   Future<void> _showDialog(BuildContext context) {
     return showDialog<void>(
@@ -834,12 +859,12 @@ class _recommendState extends State<recommend> {
                             child: ListView.builder(
                               shrinkWrap: true,
                               padding: const EdgeInsets.all(10),
-                              itemCount: title.length,
+                              itemCount: laws.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return CustomContainer(
-                                  vtitle: title[index],
-                                  vcomment: comment[index],
-                                  vhelp: help[index],
+                                  vtitle: laws[index].title,
+                                  vcomment: laws[index].content,
+                                  //vhelp: help[index],
                                 );
                               },
                             )
@@ -855,13 +880,13 @@ class _recommendState extends State<recommend> {
 
 
 class CustomContainer extends StatefulWidget {
-  final bool vhelp;
+  //final bool vhelp;
   final String vtitle;
   final String vcomment;
 
   CustomContainer({
     super.key,
-    required this.vhelp,
+    //required this.vhelp,
     required this.vtitle,
     required this.vcomment,
   });

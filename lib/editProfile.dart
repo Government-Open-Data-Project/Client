@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -9,28 +8,6 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  bool button1State = false;
-  bool button2State = false;
-  bool button3State = false;
-  bool button4State = false;
-  bool button5State = false;
-  bool button6State = false;
-  bool button7State = false;
-  bool button8State = false;
-  bool button9State = false;
-  bool button10State = false;
-  bool button11State = false;
-  bool button12State = false;
-  bool button13State = false;
-  bool button14State = false;
-  bool button15State = false;
-  bool button16State = false;
-  bool button17State = false;
-  bool button18State = false;
-  bool button19State = false;
-  bool button20State = false;
-  bool button21State = false;
-  bool button22State = false;
   bool button23State = false;
   bool button24State = false;
   bool button25State = false;
@@ -40,6 +17,35 @@ class _EditProfileState extends State<EditProfile> {
   bool button29State = false;
   bool button30State = false;
   bool button31State = false;
+
+  int selectedAge = 0;
+  int selectedPosition = 0;
+  int selectedRegion = 0;
+  int selectedMarry = 0;
+
+  void updateAgeState(int ageNumber) {
+    setState(() {
+      selectedAge = (selectedAge == ageNumber) ? 0 : ageNumber;
+    });
+  }
+
+  void updatePositionState(int positionNumber) {
+    setState(() {
+      selectedPosition = (selectedPosition == positionNumber) ? 0 : positionNumber;
+    });
+  }
+
+  void updateRegionState(int regionNumber) {
+    setState(() {
+      selectedRegion = (selectedRegion == regionNumber) ? 0 : regionNumber;
+    });
+  }
+
+  void updateMarryState(int marryNumber) {
+    setState(() {
+      selectedMarry = (selectedMarry == marryNumber) ? 0 : marryNumber;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,488 +108,223 @@ class _EditProfileState extends State<EditProfile> {
                               ]))),
                   Container(
                       margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                      width: sizeX * 0.7,
+                      width: sizeX * 0.8,
                       height: 30,
                       //color: Colors.blue,
                       child: Text(
                         "관심사 변경",
                         style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.bold),
+                            color: Colors.black, fontWeight: FontWeight.bold,fontSize: 20),
                       ),
                   ),
-                  SingleChildScrollView(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Column(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 2,
-                            margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                            color: Colors.white,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                  child: Text("나이",style: TextStyle(fontWeight: FontWeight.bold),)
-                              ),
-                              Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      SizedBox(width: 10,),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: button1State ? Color(0xFFCADFEF) : Colors.white,
-                                            minimumSize: Size(20, 30),
-                                          ),
-                                          onPressed: (){
-                                            setState(() {
-                                              button1State = !button1State;
-                                              print(button1State);
-                                            });
-                                          },
-                                          child: Text("20대",style: TextStyle(color: button1State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                      ),
-                                      SizedBox(width: 5,),
-                                      ElevatedButton(
-                                          onPressed: (){
-                                            setState(() {
-                                              button2State = !button2State;
-                                              print(button2State);
-                                            });
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: button2State ? Color(0xFFCADFEF) : Colors.white,
-                                            minimumSize: Size(20, 30),
-                                          ),
-                                          child: Text("30대",style: TextStyle(color: button2State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                      ),
-                                      SizedBox(width: 5,),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: button3State ? Color(0xFFCADFEF) : Colors.white,
-                                            minimumSize: Size(20, 30),
-                                          ),
-                                          onPressed: (){
-                                            setState(() {
-                                              button3State = !button3State;
-                                              print(button3State);
-                                            });
-                                          },
-                                          child: Text("40대",style: TextStyle(color: button3State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                      ),
-                                      SizedBox(width: 5,),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: button4State ? Color(0xFFCADFEF) : Colors.white,
-                                            minimumSize: Size(20, 30),
-                                          ),
-                                          onPressed: (){
-                                            setState(() {
-                                              button4State = !button4State;
-                                              print(button4State);
-                                            });
-                                          },
-                                          child: Text("50대",style: TextStyle(color: button4State ? Colors.grey :Color(0xA5000000), fontWeight: FontWeight.bold),)
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      SizedBox(width: 10,),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: button5State ? Color(0xFFCADFEF) : Colors.white,
-                                            minimumSize: Size(20, 30),
-                                          ),
-                                          onPressed: (){
-                                            setState(() {
-                                              button5State = !button5State;
-                                              print(button5State);
-                                            });
-                                          },
-                                          child: Text("60대",style: TextStyle(color: button5State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                      ),
-                                      SizedBox(width: 5,),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: button6State ? Color(0xFFCADFEF) : Colors.white,
-                                            minimumSize: Size(20, 30),
-                                          ),
-                                          onPressed: (){
-                                            setState(() {
-                                              button6State = !button6State;
-                                              print(button6State);
-                                            });
-                                          },
-                                          child: Text("70대 이상",style: TextStyle(color: button6State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 2,
-                            margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                            color: Colors.white,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                  child: Text("결혼 여부",style: TextStyle(fontWeight: FontWeight.bold),)
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(width: 10,),
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        elevation: 0.0,
-                                        backgroundColor: button7State ? Color(0xFFCADFEF) : Colors.white,
-                                        minimumSize: Size(20, 30),
-                                      ),
-                                      onPressed: (){
-                                        setState(() {
-                                          button7State = !button7State;
-                                          print(button7State);
-                                        });
-                                      },
-                                      child: Text("미혼",style: TextStyle(color: button7State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                  ),
-                                  SizedBox(width: 5,),
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        elevation: 0.0,
-                                        backgroundColor: button8State ? Color(0xFFCADFEF) : Colors.white,
-                                        minimumSize: Size(20, 30),
-                                      ),
-                                      onPressed: (){
-                                        setState(() {
-                                          button8State = !button8State;
-                                          print(button8State);
-                                        });
-                                      },
-                                      child: Text("기혼",style: TextStyle(color: button8State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 2,
-                            margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                            color: Colors.white,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                  child: Text("거주 지역",style: TextStyle(fontWeight: FontWeight.bold),)
-                              ),
-                              Row(
-                                    children: [
-                                      SizedBox(width: 10), // SizedBox 제거
-                                      Expanded(
-                                        child: SingleChildScrollView(
-                                          scrollDirection: Axis.horizontal,
-                                          child: ToggleSwitch(
-                                            minWidth: 90.0,
-                                            minHeight: 90.0,
-                                            fontSize: 16.0,
-                                            initialLabelIndex: 1,
-                                            activeBgColor: [Colors.green],
-                                            activeFgColor: Colors.white,
-                                            inactiveBgColor: Colors.grey,
-                                            inactiveFgColor: Colors.grey[900],
-                                            totalSwitches: 4,
-                                            labels: ['서울', '경기', '강원','충북','충남','경북','경남','제주','전북','전남'],
-                                            onToggle: (index) {
-                                              print('switched to: $index');
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 2,
+                              margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                              color: Colors.white,
+                            ),
+                            buildAgeWidget(),
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 2,
+                              margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                              color: Colors.white,
+                            ),
+                            buildMaritalStatusWidget(),
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 2,
+                              margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                              color: Colors.white,
+                            ),
+                            buildRegionWidget(),
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 2,
+                              margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                              color: Colors.white,
+                            ),
+                            buildPositionWidget(),
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 2,
+                              margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                              color: Colors.white,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                    child: Text("관심 분야",style: TextStyle(fontWeight: FontWeight.bold),)
+                                ),
+                                Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        SizedBox(width: 10,),
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              elevation: 0.0,
+                                              backgroundColor: button23State ? Color(0xFFCADFEF) : Colors.white,
+                                              minimumSize: Size(20, 30),
+                                            ),
+                                            onPressed: (){
+                                              setState(() {
+                                                button23State = !button23State;
+                                                print(button23State);
+                                              });
                                             },
-                                          ),
+                                            child: Text("IT",style: TextStyle(color: button23State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 2,
-                            margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                            color: Colors.white,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                  child: Text("직위",style: TextStyle(fontWeight: FontWeight.bold),)
-                              ),
-                              Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      SizedBox(width: 10,),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: button18State ? Color(0xFFCADFEF) : Colors.white,
-                                            minimumSize: Size(20, 30),
-                                          ),
-                                          onPressed: (){
-                                            setState(() {
-                                              button18State = !button18State;
-                                              print(button18State);
-                                            });
-                                          },
-                                          child: Text("학생",style: TextStyle(color: button19State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                      ),
-                                      SizedBox(width: 5,),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: button19State ? Color(0xFFCADFEF) : Colors.white,
-                                            minimumSize: Size(20, 30),
-                                          ),
-                                          onPressed: (){
-                                            setState(() {
-                                              button19State = !button19State;
-                                              print(button19State);
-                                            });
-                                          },
-                                          child: Text("회사원",style: TextStyle(color: button19State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                      ),
-                                      SizedBox(width: 5,),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: button20State ? Color(0xFFCADFEF) : Colors.white,
-                                            minimumSize: Size(20, 30),
-                                          ),
-                                          onPressed: (){
-                                            setState(() {
-                                              button20State = !button20State;
-                                              print(button20State);
-                                            });
-                                          },
-                                          child: Text("사업가",style: TextStyle(color: button20State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                      ),
-                                      SizedBox(width: 5,),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: button21State ? Color(0xFFCADFEF) : Colors.white,
-                                            minimumSize: Size(20, 30),
-                                          ),
-                                          onPressed: (){
-                                            setState(() {
-                                              button21State = !button21State;
-                                              print(button21State);
-                                            });
-                                          },
-                                          child: Text("무직",style: TextStyle(color: button21State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      SizedBox(width: 10,),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: button22State ? Color(0xFFCADFEF) : Colors.white,
-                                            minimumSize: Size(20, 30),
-                                          ),
-                                          onPressed: (){
-                                            setState(() {
-                                              button22State = !button22State;
-                                              print(button22State);
-                                            });
-                                          },
-                                          child: Text("기타",style: TextStyle(color: button22State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 2,
-                            margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                            color: Colors.white,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                  child: Text("관심 분야",style: TextStyle(fontWeight: FontWeight.bold),)
-                              ),
-                              Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      SizedBox(width: 10,),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: button23State ? Color(0xFFCADFEF) : Colors.white,
-                                            minimumSize: Size(20, 30),
-                                          ),
-                                          onPressed: (){
-                                            setState(() {
-                                              button23State = !button23State;
-                                              print(button23State);
-                                            });
-                                          },
-                                          child: Text("IT",style: TextStyle(color: button23State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                      ),
-                                      SizedBox(width: 5,),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: button24State ? Color(0xFFCADFEF) : Colors.white,
-                                            minimumSize: Size(20, 30),
-                                          ),
-                                          onPressed: (){
-                                            setState(() {
-                                              button24State = !button24State;
-                                              print(button24State);
-                                            });
-                                          },
-                                          child: Text("의학/보건",style: TextStyle(color: button24State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                      ),
-                                      SizedBox(width: 5,),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: button25State ? Color(0xFFCADFEF) : Colors.white,
-                                            minimumSize: Size(20, 30),
-                                          ),
-                                          onPressed: (){
-                                            setState(() {
-                                              button25State = !button25State;
-                                              print(button25State);
-                                            });
-                                          },
-                                          child: Text("공학",style: TextStyle(color: button25State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                      ),
-                                      SizedBox(width: 5,),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: button26State ? Color(0xFFCADFEF) : Colors.white,
-                                            minimumSize: Size(20, 30),
-                                          ),
-                                          onPressed: (){
-                                            setState(() {
-                                              button26State = !button26State;
-                                              print(button26State);
-                                            });
-                                          },
-                                          child: Text("경영",style: TextStyle(color: button26State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      SizedBox(width: 10,),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: button27State ? Color(0xFFCADFEF) : Colors.white,
-                                            minimumSize: Size(20, 30),
-                                          ),
-                                          onPressed: (){
-                                            setState(() {
-                                              button27State = !button27State;
-                                              print(button27State);
-                                            });
-                                          },
-                                          child: Text("교육",style: TextStyle(color: button27State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                      ),
-                                      SizedBox(width: 5,),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: button28State ? Color(0xFFCADFEF) : Colors.white,
-                                            minimumSize: Size(20, 30),
-                                          ),
-                                          onPressed: (){
-                                            setState(() {
-                                              button28State = !button28State;
-                                              print(button28State);
-                                            });
-                                          },
-                                          child: Text("예술",style: TextStyle(color: button28State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                      ),SizedBox(width: 5,),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: button29State ? Color(0xFFCADFEF) : Colors.white,
-                                            minimumSize: Size(20, 30),
-                                          ),
-                                          onPressed: (){
-                                            setState(() {
-                                              button29State = !button29State;
-                                              print(button29State);
-                                            });
-                                          },
-                                          child: Text("법률",style: TextStyle(color: button29State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                      ),SizedBox(width: 5,),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: button30State ? Color(0xFFCADFEF) : Colors.white,
-                                            minimumSize: Size(20, 30),
-                                          ),
-                                          onPressed: (){
-                                            setState(() {
-                                              button30State = !button30State;
-                                              print(button30State);
-                                            });
-                                          },
-                                          child: Text("연구",style: TextStyle(color: button30State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                      ),SizedBox(width: 5,),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            elevation: 0.0,
-                                            backgroundColor: button31State ? Color(0xFFCADFEF) : Colors.white,
-                                            minimumSize: Size(20, 30),
-                                          ),
-                                          onPressed: (){
-                                            setState(() {
-                                              button31State = !button31State;
-                                              print(button31State);
-                                            });
-                                          },
-                                          child: Text("기타",style: TextStyle(color: button31State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
+                                        SizedBox(width: 5,),
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              elevation: 0.0,
+                                              backgroundColor: button24State ? Color(0xFFCADFEF) : Colors.white,
+                                              minimumSize: Size(20, 30),
+                                            ),
+                                            onPressed: (){
+                                              setState(() {
+                                                button24State = !button24State;
+                                                print(button24State);
+                                              });
+                                            },
+                                            child: Text("의학/보건",style: TextStyle(color: button24State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        ),
+                                        SizedBox(width: 5,),
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              elevation: 0.0,
+                                              backgroundColor: button25State ? Color(0xFFCADFEF) : Colors.white,
+                                              minimumSize: Size(20, 30),
+                                            ),
+                                            onPressed: (){
+                                              setState(() {
+                                                button25State = !button25State;
+                                                print(button25State);
+                                              });
+                                            },
+                                            child: Text("공학",style: TextStyle(color: button25State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        ),
+                                        SizedBox(width: 5,),
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              elevation: 0.0,
+                                              backgroundColor: button26State ? Color(0xFFCADFEF) : Colors.white,
+                                              minimumSize: Size(20, 30),
+                                            ),
+                                            onPressed: (){
+                                              setState(() {
+                                                button26State = !button26State;
+                                                print(button26State);
+                                              });
+                                            },
+                                            child: Text("경영",style: TextStyle(color: button26State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(width: 10,),
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              elevation: 0.0,
+                                              backgroundColor: button27State ? Color(0xFFCADFEF) : Colors.white,
+                                              minimumSize: Size(20, 30),
+                                            ),
+                                            onPressed: (){
+                                              setState(() {
+                                                button27State = !button27State;
+                                                print(button27State);
+                                              });
+                                            },
+                                            child: Text("교육",style: TextStyle(color: button27State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        ),
+                                        SizedBox(width: 5,),
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              elevation: 0.0,
+                                              backgroundColor: button28State ? Color(0xFFCADFEF) : Colors.white,
+                                              minimumSize: Size(20, 30),
+                                            ),
+                                            onPressed: (){
+                                              setState(() {
+                                                button28State = !button28State;
+                                                print(button28State);
+                                              });
+                                            },
+                                            child: Text("예술",style: TextStyle(color: button28State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        ),SizedBox(width: 5,),
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              elevation: 0.0,
+                                              backgroundColor: button29State ? Color(0xFFCADFEF) : Colors.white,
+                                              minimumSize: Size(20, 30),
+                                            ),
+                                            onPressed: (){
+                                              setState(() {
+                                                button29State = !button29State;
+                                                print(button29State);
+                                              });
+                                            },
+                                            child: Text("법률",style: TextStyle(color: button29State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        ),SizedBox(width: 5,),
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              elevation: 0.0,
+                                              backgroundColor: button30State ? Color(0xFFCADFEF) : Colors.white,
+                                              minimumSize: Size(20, 30),
+                                            ),
+                                            onPressed: (){
+                                              setState(() {
+                                                button30State = !button30State;
+                                                print(button30State);
+                                              });
+                                            },
+                                            child: Text("연구",style: TextStyle(color: button30State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        ),SizedBox(width: 5,),
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              elevation: 0.0,
+                                              backgroundColor: button31State ? Color(0xFFCADFEF) : Colors.white,
+                                              minimumSize: Size(20, 30),
+                                            ),
+                                            onPressed: (){
+                                              setState(() {
+                                                button31State = !button31State;
+                                                print(button31State);
+                                              });
+                                            },
+                                            child: Text("기타",style: TextStyle(color: button31State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Container(
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      elevation: 0.0,
+                                      backgroundColor: Color(0xFF00005B),
+                                      minimumSize: Size(130, 30)),
+                                  onPressed: () async {},
+                                  child: Text('저장',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontFamily: 'soojin'))),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -592,5 +333,182 @@ class _EditProfileState extends State<EditProfile> {
             )),
       ),
     );
+  }
+
+  Widget buildAgeWidget() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+          child: Text("나이", style: TextStyle(fontWeight: FontWeight.bold)),
+        ),
+        Column(
+          children: [
+            Row(
+              children: [
+                SizedBox(width: 10,),
+                buildElevatedButton(1, "20대"),
+                SizedBox(width: 5,),
+                buildElevatedButton(2, "30대"),
+                SizedBox(width: 5,),
+                buildElevatedButton(3, "40대"),
+                SizedBox(width: 5,),
+                buildElevatedButton(4, "50대"),
+              ],
+            ),
+            Row(
+              children: [
+                SizedBox(width: 10,),
+                buildElevatedButton(5, "60대"),
+                SizedBox(width: 5,),
+                buildElevatedButton(6, "70대 이상"),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget buildPositionWidget() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+          child: Text("직위", style: TextStyle(fontWeight: FontWeight.bold)),
+        ),
+        Column(
+          children: [
+            Row(
+              children: [
+                SizedBox(width: 10,),
+                buildElevatedButton(18, "학생"),
+                SizedBox(width: 5,),
+                buildElevatedButton(19, "회사원"),
+                SizedBox(width: 5,),
+                buildElevatedButton(20, "사업가"),
+                SizedBox(width: 5,),
+                buildElevatedButton(21, "무직"),
+              ],
+            ),
+            Row(
+              children: [
+                SizedBox(width: 10,),
+                buildElevatedButton(22, "기타"),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget buildRegionWidget() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+          child: Text("거주 지역", style: TextStyle(fontWeight: FontWeight.bold)),
+        ),
+        Column(
+          children: [
+            Row(
+              children: [
+                SizedBox(width: 10,),
+                buildElevatedButton(9, "경기"),
+                SizedBox(width: 5,),
+                buildElevatedButton(10, "충북"),
+                SizedBox(width: 5,),
+                buildElevatedButton(11, "충남"),
+                SizedBox(width: 5,),
+                buildElevatedButton(12, "경북"),
+                SizedBox(width: 5,),
+                buildElevatedButton(13, "경남"),
+              ],
+            ),
+            Row(
+              children: [
+                SizedBox(width: 10,),
+                buildElevatedButton(14, "전북"),
+                SizedBox(width: 5,),
+                buildElevatedButton(15, "전남"),
+                SizedBox(width: 5,),
+                buildElevatedButton(16, "강원"),
+                SizedBox(width: 5,),
+                buildElevatedButton(17, "제주"),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget buildMaritalStatusWidget() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+          child: Text("결혼 여부", style: TextStyle(fontWeight: FontWeight.bold)),
+        ),
+        Row(
+          children: [
+            SizedBox(width: 10,),
+            buildElevatedButton(7, "미혼"),
+            SizedBox(width: 5,),
+            buildElevatedButton(8, "기혼"),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget buildElevatedButton(int number, String buttonText) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        elevation: 0.0,
+        backgroundColor: getSelectedState(number) ? Color(0xFFCADFEF) : Colors.white,
+        minimumSize: Size(20, 30),
+      ),
+      onPressed: () {
+        if (number >= 1 && number <= 6) {
+          updateAgeState(number);
+          print(getSelectedState(number));
+        } else if (number >= 18 && number <= 22) {
+          updatePositionState(number);
+          print(getSelectedState(number));
+        } else if (number >= 9 && number <= 17) {
+          updateRegionState(number);
+          print(getSelectedState(number));
+        } else if (number == 7 || number == 8) {
+          updateMarryState(number);
+          print(getSelectedState(number));
+        }
+      },
+      child: Text(
+        buttonText,
+        style: TextStyle(
+          color: getSelectedState(number) ? Colors.grey : Color(0xA5000000),
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  bool getSelectedState(int number) {
+    if (number >= 1 && number <= 6) {
+      return selectedAge == number;
+    } else if (number >= 18 && number <= 22) {
+      return selectedPosition == number;
+    } else if (number >= 9 && number <= 17) {
+      return selectedRegion == number;
+    } else if (number == 7 || number == 8) {
+      return selectedMarry == number;
+    }
+    return false;
   }
 }
