@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'network/api_manager.dart';
+
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
 
@@ -8,6 +10,26 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
+  ApiManager apiManager = ApiManager().getApiManager();
+
+  void sendProfile() async {
+    try {
+      String age = selectedAgeText;
+      String region = selectedRegionText;
+      String position = selectedPositionText;
+      List<String> interests = selectedInterestsText;
+      String married = selectedMarryText;
+
+      apiManager.sendProfile(age,region, position, interests, married);
+
+      // Use a separate function to handle the asynchronous operations
+      //await _updateMyPage();
+
+    } catch (error) {
+      print('Error sending MyPage: $error');
+    }
+  }
+
   bool button23State = false;
   bool button24State = false;
   bool button25State = false;
@@ -23,6 +45,24 @@ class _EditProfileState extends State<EditProfile> {
   int selectedRegion = 0;
   int selectedMarry = 0;
 
+  String selectedAgeText="";
+  String selectedPositionText="";
+  String selectedRegionText = "";
+  String selectedMarryText = "";
+  List<String> selectedInterestsText =[];
+
+  void saveSelectedOptions() {
+    selectedAgeText = getButtonText(selectedAge);
+    selectedPositionText = getButtonText(selectedPosition);
+    selectedRegionText = getButtonText(selectedRegion);
+    selectedMarryText = getButtonText(selectedMarry);
+
+    // print("선택된 나이: $selectedAgeText");
+    // print("선택된 직위: $selectedPositionText");
+    // print("선택된 거주 지역: $selectedRegionText");
+    // print("선택된 결혼 여부: $selectedMarryText");
+  }
+
   void updateAgeState(int ageNumber) {
     setState(() {
       selectedAge = (selectedAge == ageNumber) ? 0 : ageNumber;
@@ -31,7 +71,8 @@ class _EditProfileState extends State<EditProfile> {
 
   void updatePositionState(int positionNumber) {
     setState(() {
-      selectedPosition = (selectedPosition == positionNumber) ? 0 : positionNumber;
+      selectedPosition =
+          (selectedPosition == positionNumber) ? 0 : positionNumber;
     });
   }
 
@@ -107,15 +148,17 @@ class _EditProfileState extends State<EditProfile> {
                                 ),
                               ]))),
                   Container(
-                      margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                      width: sizeX * 0.8,
-                      height: 30,
-                      //color: Colors.blue,
-                      child: Text(
-                        "관심사 변경",
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.bold,fontSize: 20),
-                      ),
+                    margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    width: sizeX * 0.8,
+                    height: 30,
+                    //color: Colors.blue,
+                    child: Text(
+                      "관심사 변경",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
+                    ),
                   ),
                   Expanded(
                     child: SingleChildScrollView(
@@ -162,148 +205,244 @@ class _EditProfileState extends State<EditProfile> {
                               children: [
                                 Container(
                                     margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                    child: Text("관심 분야",style: TextStyle(fontWeight: FontWeight.bold),)
-                                ),
+                                    child: Text(
+                                      "관심 분야",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    )),
                                 Column(
                                   children: [
                                     Row(
                                       children: [
-                                        SizedBox(width: 10,),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
                                         ElevatedButton(
                                             style: ElevatedButton.styleFrom(
                                               elevation: 0.0,
-                                              backgroundColor: button23State ? Color(0xFFCADFEF) : Colors.white,
+                                              backgroundColor: button23State
+                                                  ? Color(0xFFCADFEF)
+                                                  : Colors.white,
                                               minimumSize: Size(20, 30),
                                             ),
-                                            onPressed: (){
+                                            onPressed: () {
                                               setState(() {
                                                 button23State = !button23State;
                                                 print(button23State);
                                               });
                                             },
-                                            child: Text("IT",style: TextStyle(color: button23State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                            child: Text(
+                                              "IT",
+                                              style: TextStyle(
+                                                  color: button23State
+                                                      ? Colors.grey
+                                                      : Color(0xA5000000),
+                                                  fontWeight: FontWeight.bold),
+                                            )),
+                                        SizedBox(
+                                          width: 5,
                                         ),
-                                        SizedBox(width: 5,),
                                         ElevatedButton(
                                             style: ElevatedButton.styleFrom(
                                               elevation: 0.0,
-                                              backgroundColor: button24State ? Color(0xFFCADFEF) : Colors.white,
+                                              backgroundColor: button24State
+                                                  ? Color(0xFFCADFEF)
+                                                  : Colors.white,
                                               minimumSize: Size(20, 30),
                                             ),
-                                            onPressed: (){
+                                            onPressed: () {
                                               setState(() {
                                                 button24State = !button24State;
                                                 print(button24State);
                                               });
                                             },
-                                            child: Text("의학/보건",style: TextStyle(color: button24State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                            child: Text(
+                                              "의학/보건",
+                                              style: TextStyle(
+                                                  color: button24State
+                                                      ? Colors.grey
+                                                      : Color(0xA5000000),
+                                                  fontWeight: FontWeight.bold),
+                                            )),
+                                        SizedBox(
+                                          width: 5,
                                         ),
-                                        SizedBox(width: 5,),
                                         ElevatedButton(
                                             style: ElevatedButton.styleFrom(
                                               elevation: 0.0,
-                                              backgroundColor: button25State ? Color(0xFFCADFEF) : Colors.white,
+                                              backgroundColor: button25State
+                                                  ? Color(0xFFCADFEF)
+                                                  : Colors.white,
                                               minimumSize: Size(20, 30),
                                             ),
-                                            onPressed: (){
+                                            onPressed: () {
                                               setState(() {
                                                 button25State = !button25State;
                                                 print(button25State);
                                               });
                                             },
-                                            child: Text("공학",style: TextStyle(color: button25State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                            child: Text(
+                                              "공학",
+                                              style: TextStyle(
+                                                  color: button25State
+                                                      ? Colors.grey
+                                                      : Color(0xA5000000),
+                                                  fontWeight: FontWeight.bold),
+                                            )),
+                                        SizedBox(
+                                          width: 5,
                                         ),
-                                        SizedBox(width: 5,),
                                         ElevatedButton(
                                             style: ElevatedButton.styleFrom(
                                               elevation: 0.0,
-                                              backgroundColor: button26State ? Color(0xFFCADFEF) : Colors.white,
+                                              backgroundColor: button26State
+                                                  ? Color(0xFFCADFEF)
+                                                  : Colors.white,
                                               minimumSize: Size(20, 30),
                                             ),
-                                            onPressed: (){
+                                            onPressed: () {
                                               setState(() {
                                                 button26State = !button26State;
                                                 print(button26State);
                                               });
                                             },
-                                            child: Text("경영",style: TextStyle(color: button26State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                        ),
+                                            child: Text(
+                                              "경영",
+                                              style: TextStyle(
+                                                  color: button26State
+                                                      ? Colors.grey
+                                                      : Color(0xA5000000),
+                                                  fontWeight: FontWeight.bold),
+                                            )),
                                       ],
                                     ),
                                     Row(
                                       children: [
-                                        SizedBox(width: 10,),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
                                         ElevatedButton(
                                             style: ElevatedButton.styleFrom(
                                               elevation: 0.0,
-                                              backgroundColor: button27State ? Color(0xFFCADFEF) : Colors.white,
+                                              backgroundColor: button27State
+                                                  ? Color(0xFFCADFEF)
+                                                  : Colors.white,
                                               minimumSize: Size(20, 30),
                                             ),
-                                            onPressed: (){
+                                            onPressed: () {
                                               setState(() {
                                                 button27State = !button27State;
                                                 print(button27State);
                                               });
                                             },
-                                            child: Text("교육",style: TextStyle(color: button27State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                            child: Text(
+                                              "교육",
+                                              style: TextStyle(
+                                                  color: button27State
+                                                      ? Colors.grey
+                                                      : Color(0xA5000000),
+                                                  fontWeight: FontWeight.bold),
+                                            )),
+                                        SizedBox(
+                                          width: 5,
                                         ),
-                                        SizedBox(width: 5,),
                                         ElevatedButton(
                                             style: ElevatedButton.styleFrom(
                                               elevation: 0.0,
-                                              backgroundColor: button28State ? Color(0xFFCADFEF) : Colors.white,
+                                              backgroundColor: button28State
+                                                  ? Color(0xFFCADFEF)
+                                                  : Colors.white,
                                               minimumSize: Size(20, 30),
                                             ),
-                                            onPressed: (){
+                                            onPressed: () {
                                               setState(() {
                                                 button28State = !button28State;
                                                 print(button28State);
                                               });
                                             },
-                                            child: Text("예술",style: TextStyle(color: button28State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                        ),SizedBox(width: 5,),
+                                            child: Text(
+                                              "예술",
+                                              style: TextStyle(
+                                                  color: button28State
+                                                      ? Colors.grey
+                                                      : Color(0xA5000000),
+                                                  fontWeight: FontWeight.bold),
+                                            )),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
                                         ElevatedButton(
                                             style: ElevatedButton.styleFrom(
                                               elevation: 0.0,
-                                              backgroundColor: button29State ? Color(0xFFCADFEF) : Colors.white,
+                                              backgroundColor: button29State
+                                                  ? Color(0xFFCADFEF)
+                                                  : Colors.white,
                                               minimumSize: Size(20, 30),
                                             ),
-                                            onPressed: (){
+                                            onPressed: () {
                                               setState(() {
                                                 button29State = !button29State;
                                                 print(button29State);
                                               });
                                             },
-                                            child: Text("법률",style: TextStyle(color: button29State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                        ),SizedBox(width: 5,),
+                                            child: Text(
+                                              "법률",
+                                              style: TextStyle(
+                                                  color: button29State
+                                                      ? Colors.grey
+                                                      : Color(0xA5000000),
+                                                  fontWeight: FontWeight.bold),
+                                            )),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
                                         ElevatedButton(
                                             style: ElevatedButton.styleFrom(
                                               elevation: 0.0,
-                                              backgroundColor: button30State ? Color(0xFFCADFEF) : Colors.white,
+                                              backgroundColor: button30State
+                                                  ? Color(0xFFCADFEF)
+                                                  : Colors.white,
                                               minimumSize: Size(20, 30),
                                             ),
-                                            onPressed: (){
+                                            onPressed: () {
                                               setState(() {
                                                 button30State = !button30State;
                                                 print(button30State);
                                               });
                                             },
-                                            child: Text("연구",style: TextStyle(color: button30State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                        ),SizedBox(width: 5,),
+                                            child: Text(
+                                              "연구",
+                                              style: TextStyle(
+                                                  color: button30State
+                                                      ? Colors.grey
+                                                      : Color(0xA5000000),
+                                                  fontWeight: FontWeight.bold),
+                                            )),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
                                         ElevatedButton(
                                             style: ElevatedButton.styleFrom(
                                               elevation: 0.0,
-                                              backgroundColor: button31State ? Color(0xFFCADFEF) : Colors.white,
+                                              backgroundColor: button31State
+                                                  ? Color(0xFFCADFEF)
+                                                  : Colors.white,
                                               minimumSize: Size(20, 30),
                                             ),
-                                            onPressed: (){
+                                            onPressed: () {
                                               setState(() {
                                                 button31State = !button31State;
                                                 print(button31State);
                                               });
                                             },
-                                            child: Text("기타",style: TextStyle(color: button31State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                        ),
+                                            child: Text(
+                                              "기타",
+                                              style: TextStyle(
+                                                  color: button31State
+                                                      ? Colors.grey
+                                                      : Color(0xA5000000),
+                                                  fontWeight: FontWeight.bold),
+                                            )),
                                       ],
                                     ),
                                   ],
@@ -316,7 +455,20 @@ class _EditProfileState extends State<EditProfile> {
                                       elevation: 0.0,
                                       backgroundColor: Color(0xFF00005B),
                                       minimumSize: Size(130, 30)),
-                                  onPressed: () async {},
+                                  onPressed: () async {
+                                    List<String> selectedInterests = [];
+
+                                    if (button23State) selectedInterests.add("IT");
+                                    if (button24State) selectedInterests.add("의학/보건");
+                                    if (button25State) selectedInterests.add("공학");
+                                    if (button26State) selectedInterests.add("경영");
+                                    if (button27State) selectedInterests.add("교육");
+                                    if (button28State) selectedInterests.add("예술");
+                                    if (button29State) selectedInterests.add("법률");
+                                    if (button30State) selectedInterests.add("연구");
+                                    if (button31State) selectedInterests.add("기타");
+
+                                  },
                                   child: Text('저장',
                                       style: TextStyle(
                                           color: Colors.white,
@@ -347,21 +499,33 @@ class _EditProfileState extends State<EditProfile> {
           children: [
             Row(
               children: [
-                SizedBox(width: 10,),
+                SizedBox(
+                  width: 10,
+                ),
                 buildElevatedButton(1, "20대"),
-                SizedBox(width: 5,),
+                SizedBox(
+                  width: 5,
+                ),
                 buildElevatedButton(2, "30대"),
-                SizedBox(width: 5,),
+                SizedBox(
+                  width: 5,
+                ),
                 buildElevatedButton(3, "40대"),
-                SizedBox(width: 5,),
+                SizedBox(
+                  width: 5,
+                ),
                 buildElevatedButton(4, "50대"),
               ],
             ),
             Row(
               children: [
-                SizedBox(width: 10,),
+                SizedBox(
+                  width: 10,
+                ),
                 buildElevatedButton(5, "60대"),
-                SizedBox(width: 5,),
+                SizedBox(
+                  width: 5,
+                ),
                 buildElevatedButton(6, "70대 이상"),
               ],
             ),
@@ -383,19 +547,29 @@ class _EditProfileState extends State<EditProfile> {
           children: [
             Row(
               children: [
-                SizedBox(width: 10,),
+                SizedBox(
+                  width: 10,
+                ),
                 buildElevatedButton(18, "학생"),
-                SizedBox(width: 5,),
+                SizedBox(
+                  width: 5,
+                ),
                 buildElevatedButton(19, "회사원"),
-                SizedBox(width: 5,),
+                SizedBox(
+                  width: 5,
+                ),
                 buildElevatedButton(20, "사업가"),
-                SizedBox(width: 5,),
+                SizedBox(
+                  width: 5,
+                ),
                 buildElevatedButton(21, "무직"),
               ],
             ),
             Row(
               children: [
-                SizedBox(width: 10,),
+                SizedBox(
+                  width: 10,
+                ),
                 buildElevatedButton(22, "기타"),
               ],
             ),
@@ -417,27 +591,45 @@ class _EditProfileState extends State<EditProfile> {
           children: [
             Row(
               children: [
-                SizedBox(width: 10,),
+                SizedBox(
+                  width: 10,
+                ),
                 buildElevatedButton(9, "경기"),
-                SizedBox(width: 5,),
+                SizedBox(
+                  width: 5,
+                ),
                 buildElevatedButton(10, "충북"),
-                SizedBox(width: 5,),
+                SizedBox(
+                  width: 5,
+                ),
                 buildElevatedButton(11, "충남"),
-                SizedBox(width: 5,),
+                SizedBox(
+                  width: 5,
+                ),
                 buildElevatedButton(12, "경북"),
-                SizedBox(width: 5,),
+                SizedBox(
+                  width: 5,
+                ),
                 buildElevatedButton(13, "경남"),
               ],
             ),
             Row(
               children: [
-                SizedBox(width: 10,),
+                SizedBox(
+                  width: 10,
+                ),
                 buildElevatedButton(14, "전북"),
-                SizedBox(width: 5,),
+                SizedBox(
+                  width: 5,
+                ),
                 buildElevatedButton(15, "전남"),
-                SizedBox(width: 5,),
+                SizedBox(
+                  width: 5,
+                ),
                 buildElevatedButton(16, "강원"),
-                SizedBox(width: 5,),
+                SizedBox(
+                  width: 5,
+                ),
                 buildElevatedButton(17, "제주"),
               ],
             ),
@@ -457,9 +649,13 @@ class _EditProfileState extends State<EditProfile> {
         ),
         Row(
           children: [
-            SizedBox(width: 10,),
+            SizedBox(
+              width: 10,
+            ),
             buildElevatedButton(7, "미혼"),
-            SizedBox(width: 5,),
+            SizedBox(
+              width: 5,
+            ),
             buildElevatedButton(8, "기혼"),
           ],
         ),
@@ -471,7 +667,8 @@ class _EditProfileState extends State<EditProfile> {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         elevation: 0.0,
-        backgroundColor: getSelectedState(number) ? Color(0xFFCADFEF) : Colors.white,
+        backgroundColor:
+            getSelectedState(number) ? Color(0xFFCADFEF) : Colors.white,
         minimumSize: Size(20, 30),
       ),
       onPressed: () {
@@ -510,5 +707,56 @@ class _EditProfileState extends State<EditProfile> {
       return selectedMarry == number;
     }
     return false;
+  }
+
+  String getButtonText(int number) {
+    switch (number) {
+      case 1:
+        return "20대";
+      case 2:
+        return "30대";
+      case 3:
+        return "40대";
+      case 4:
+        return "50대";
+      case 5:
+        return "60대";
+      case 6:
+        return "70대 이상";
+      case 7:
+        return "미혼";
+      case 8:
+        return "기혼";
+      case 9:
+        return "경기";
+      case 10:
+        return "충북";
+      case 11:
+        return "충남";
+      case 12:
+        return "경북";
+      case 13:
+        return "경남";
+      case 14:
+        return "전북";
+      case 15:
+        return "전남";
+      case 16:
+        return "강원";
+      case 17:
+        return "제주";
+      case 18:
+        return "학생";
+      case 19:
+        return "회사원";
+      case 20:
+        return "사업가";
+      case 21:
+        return "무직";
+      case 22:
+        return "기타";
+      default:
+        return " ";
+    }
   }
 }
