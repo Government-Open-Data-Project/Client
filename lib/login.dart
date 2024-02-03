@@ -1,4 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_naver_login/flutter_naver_login.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:nation/main.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting();
+
+  runApp(MaterialApp(home: login()));
+}
 
 class login extends StatefulWidget {
   login({Key? key}) : super(key: key);
@@ -8,6 +18,65 @@ class login extends StatefulWidget {
 }
 
 class _login extends State<login> {
+  bool isLogin = false;
+  String? accessToken;
+  String? expiresAt;
+  String? tokenType;
+  String? name;
+  String? refreshToken;
+  String? tel;
+  String? sex;
+  String? birth;
+
+  void signInWithNaver() async {
+    try {
+      final NaverLoginResult result = await FlutterNaverLogin.logIn();
+      NaverAccessToken accessTokenRes =
+          await FlutterNaverLogin.currentAccessToken;
+
+      if (result.status == NaverLoginStatus.loggedIn) {
+
+        setState(() {
+          isLogin = true;
+
+          name = result.account.name;
+          tel = result.account.mobile
+              .replaceAll('+82', '0')
+              .replaceAll('-', '')
+              .replaceAll(' ', '')
+              .replaceAll('+', '');
+          sex = result.account.gender;
+          birth = result.account.birthyear;
+          accessToken = accessTokenRes.accessToken;
+          expiresAt = accessTokenRes.expiresAt;
+          tokenType = accessTokenRes.tokenType;
+          refreshToken = accessTokenRes.refreshToken;
+          print(accessTokenRes);
+          print(result.accessToken.tokenType);
+        });
+
+        print('이름: $name, 전화번호: $tel,성별: $sex, 출생년도: $birth');
+        print("$isLogin, 토큰 : [$accessToken, $refreshToken, $tokenType]");
+
+        //여기에 우리서버에 accessToken post요청하는 함수 예정
+      }
+
+    } catch (error) {
+      setState(() {
+        isLogin = false;
+      });
+      print(error.toString());
+
+    }
+    if (isLogin == true) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => MyApp()));
+    }
+    else{
+      print('로그인 실패');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
@@ -62,10 +131,16 @@ class _login extends State<login> {
               ),
             ),
             Center(
-                child: IconButton(
-              onPressed: () {},
-              icon: Image.asset('images/login/naverlogin.png'),
-              iconSize: 200,
+                child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 17, 0, 0),
+              child: IconButton(
+                onPressed: () async {
+                  signInWithNaver();
+                },
+                icon: Image.asset('images/login/btnW.png'),
+                iconSize: 200,
+                style: ButtonStyle(),
+              ),
             )),
           ],
         ),
