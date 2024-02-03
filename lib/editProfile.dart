@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});

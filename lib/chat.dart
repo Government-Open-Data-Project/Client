@@ -12,6 +12,11 @@ class Chat extends StatefulWidget {
   State<Chat> createState() => _ChatState();
 }
 
+bool _speechEnabled = false;
+final SpeechToText _speechToText = SpeechToText();
+
+
+
 class _ChatState extends State<Chat> {
   final TextEditingController _textController = TextEditingController();
   final List<ChatMessage> _messages = [];
@@ -22,8 +27,8 @@ class _ChatState extends State<Chat> {
   FlutterTts flutterTts = FlutterTts();
 
 //STT
-  final SpeechToText _speechToText = SpeechToText();
-  bool _speechEnabled = false;
+ // final SpeechToText _speechToText = SpeechToText();
+  //bool _speechEnabled = false;
   String _wordSpoken = " ";
   double _confidenceLevel = 0;
 
@@ -67,7 +72,7 @@ class _ChatState extends State<Chat> {
   }
 
   //메세지 보내는 함수
-  void sendMessage()  {
+  void sendMessage() {
     String messageText = _textController.text;
 
     if (messageText.isNotEmpty) {
@@ -89,6 +94,7 @@ class _ChatState extends State<Chat> {
         );
       });
     }
+
   }
 
   void initSpeech() async {
@@ -218,7 +224,18 @@ class _ChatState extends State<Chat> {
                             controller: _textController,
                             onTap: () {
                               setState(() {
-                                isTyping = true; // 텍스트필드를 탭하면 입력 중임
+                                isTyping = true;
+                                //텍스트 필드 누르면 스크롤 제일 하단으로 내려감
+                                WidgetsBinding.instance?.addPostFrameCallback((_) {
+                                  Future.delayed(Duration(milliseconds: 300), () {
+                                    _scrollController.animateTo(
+                                      _scrollController.position.maxScrollExtent + 5,
+                                      duration: Duration(milliseconds: 300),
+                                      curve: Curves.easeOut,
+                                    );
+                                  });
+                                });
+
                               });
                             },
                             maxLines: null,
@@ -238,9 +255,11 @@ class _ChatState extends State<Chat> {
                                   : Icons.mic_none,
                           color: _speechEnabled ? Colors.blue : Colors.grey,
                         ),
-                        onPressed: () {
+                        onPressed: () async{
                           if (isTyping) {
                             sendMessage();
+                            Future.delayed( Duration(milliseconds:100),);
+                            await fetchDataFromServer();
                           } else {
                             if (_speechToText.isListening) {
                               _stopListening();
@@ -306,9 +325,7 @@ class ChatMessage extends StatelessWidget {
 
           ),
         ),
-        if (isMe &&
-            text.startsWith(
-                'STT:')) // Show play button only for user's messages
+        if (!isMe)
           Padding(
             padding: EdgeInsets.fromLTRB(1, 1, 2, 1),
             child: Row(

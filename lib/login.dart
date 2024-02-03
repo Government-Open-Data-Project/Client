@@ -64,7 +64,7 @@ class _login extends State<login> {
             Center(
                 child: IconButton(
               onPressed: () {},
-              icon: Image.asset('images/login/kakao.png'),
+              icon: Image.asset('images/login/naverlogin.png'),
               iconSize: 200,
             )),
           ],
