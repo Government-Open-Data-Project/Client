@@ -45,6 +45,7 @@ class _recommendState extends State<recommend> {
   bool button29State = false;
   bool button30State = false;
   bool button31State = false;
+  bool button32State = false;
 
 
   List<Law> laws = [];
@@ -288,7 +289,7 @@ class _recommendState extends State<recommend> {
                                             print(button9State);
                                           });
                                         },
-                                        child: Text("경기",style: TextStyle(color: button9State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        child: Text("서울",style: TextStyle(color: button9State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                     ),
                                     SizedBox(width: 5,),
                                     ElevatedButton(
@@ -303,7 +304,7 @@ class _recommendState extends State<recommend> {
                                             print(button10State);
                                           });
                                         },
-                                        child: Text("충북",style: TextStyle(color: button10State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        child: Text("경기",style: TextStyle(color: button10State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                     ),
                                     SizedBox(width: 5,),
                                     ElevatedButton(
@@ -318,7 +319,7 @@ class _recommendState extends State<recommend> {
                                             print(button11State);
                                           });
                                         },
-                                        child: Text("충남",style: TextStyle(color: button11State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        child: Text("충북",style: TextStyle(color: button11State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                     ),
                                     SizedBox(width: 5,),
                                     ElevatedButton(
@@ -333,7 +334,7 @@ class _recommendState extends State<recommend> {
                                             print(button12State);
                                           });
                                         },
-                                        child: Text("경북",style: TextStyle(color: button12State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        child: Text("충남",style: TextStyle(color: button12State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                     ),
                                     SizedBox(width: 5,),
                                     ElevatedButton(
@@ -348,7 +349,7 @@ class _recommendState extends State<recommend> {
                                             print(button13State);
                                           });
                                         },
-                                        child: Text("경남",style: TextStyle(color: button13State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        child: Text("경북",style: TextStyle(color: button13State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                     ),
                                   ],
                                 ),
@@ -367,7 +368,7 @@ class _recommendState extends State<recommend> {
                                             print(button14State);
                                           });
                                         },
-                                        child: Text("전북",style: TextStyle(color: button14State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        child: Text("경남",style: TextStyle(color: button14State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                     ),
                                     SizedBox(width: 5,),
                                     ElevatedButton(
@@ -382,7 +383,7 @@ class _recommendState extends State<recommend> {
                                             print(button15State);
                                           });
                                         },
-                                        child: Text("전남",style: TextStyle(color: button15State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        child: Text("전북",style: TextStyle(color: button15State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                     ),
                                     SizedBox(width: 5,),
                                     ElevatedButton(
@@ -397,7 +398,7 @@ class _recommendState extends State<recommend> {
                                             print(button16State);
                                           });
                                         },
-                                        child: Text("강원",style: TextStyle(color: button16State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        child: Text("전남",style: TextStyle(color: button16State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                     ),
                                     SizedBox(width: 5,),
                                     ElevatedButton(
@@ -412,7 +413,22 @@ class _recommendState extends State<recommend> {
                                             print(button17State);
                                           });
                                         },
-                                        child: Text("제주",style: TextStyle(color: button17State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        child: Text("강원",style: TextStyle(color: button17State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                    ),
+                                    SizedBox(width: 5,),
+                                    ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: button18State ? Color(0xFFCADFEF) : Colors.white,
+                                          minimumSize: Size(20, 30),
+                                        ),
+                                        onPressed: (){
+                                          setState(() {
+                                            button18State = !button18State;
+                                            print(button18State);
+                                          });
+                                        },
+                                        child: Text("제주",style: TextStyle(color: button18State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                     ),
                                   ],
                                 ),
@@ -441,21 +457,6 @@ class _recommendState extends State<recommend> {
                                     ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           elevation: 0.0,
-                                          backgroundColor: button18State ? Color(0xFFCADFEF) : Colors.white,
-                                          minimumSize: Size(20, 30),
-                                        ),
-                                        onPressed: (){
-                                          setState(() {
-                                            button18State = !button18State;
-                                            print(button18State);
-                                          });
-                                        },
-                                        child: Text("학생",style: TextStyle(color: button19State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                    ),
-                                    SizedBox(width: 5,),
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          elevation: 0.0,
                                           backgroundColor: button19State ? Color(0xFFCADFEF) : Colors.white,
                                           minimumSize: Size(20, 30),
                                         ),
@@ -465,7 +466,7 @@ class _recommendState extends State<recommend> {
                                             print(button19State);
                                           });
                                         },
-                                        child: Text("회사원",style: TextStyle(color: button19State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        child: Text("학생",style: TextStyle(color: button19State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                     ),
                                     SizedBox(width: 5,),
                                     ElevatedButton(
@@ -480,7 +481,7 @@ class _recommendState extends State<recommend> {
                                             print(button20State);
                                           });
                                         },
-                                        child: Text("사업가",style: TextStyle(color: button20State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        child: Text("회사원",style: TextStyle(color: button20State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                     ),
                                     SizedBox(width: 5,),
                                     ElevatedButton(
@@ -495,13 +496,9 @@ class _recommendState extends State<recommend> {
                                             print(button21State);
                                           });
                                         },
-                                        child: Text("무직",style: TextStyle(color: button21State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        child: Text("사업가",style: TextStyle(color: button21State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                     ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    SizedBox(width: 10,),
+                                    SizedBox(width: 5,),
                                     ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           elevation: 0.0,
@@ -514,7 +511,26 @@ class _recommendState extends State<recommend> {
                                             print(button22State);
                                           });
                                         },
-                                        child: Text("기타",style: TextStyle(color: button22State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        child: Text("무직",style: TextStyle(color: button22State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(width: 10,),
+                                    ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: button23State ? Color(0xFFCADFEF) : Colors.white,
+                                          minimumSize: Size(20, 30),
+                                        ),
+                                        onPressed: (){
+                                          setState(() {
+                                            button23State = !button23State;
+                                            print(button23State);
+                                          });
+                                        },
+                                        child: Text("기타",style: TextStyle(color: button23State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                     ),
                                   ],
                                 ),
@@ -543,21 +559,6 @@ class _recommendState extends State<recommend> {
                                     ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           elevation: 0.0,
-                                          backgroundColor: button23State ? Color(0xFFCADFEF) : Colors.white,
-                                          minimumSize: Size(20, 30),
-                                        ),
-                                        onPressed: (){
-                                          setState(() {
-                                            button23State = !button23State;
-                                            print(button23State);
-                                          });
-                                        },
-                                        child: Text("IT",style: TextStyle(color: button23State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                    ),
-                                    SizedBox(width: 5,),
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          elevation: 0.0,
                                           backgroundColor: button24State ? Color(0xFFCADFEF) : Colors.white,
                                           minimumSize: Size(20, 30),
                                         ),
@@ -567,7 +568,7 @@ class _recommendState extends State<recommend> {
                                             print(button24State);
                                           });
                                         },
-                                        child: Text("의학/보건",style: TextStyle(color: button24State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        child: Text("IT",style: TextStyle(color: button24State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                     ),
                                     SizedBox(width: 5,),
                                     ElevatedButton(
@@ -582,7 +583,7 @@ class _recommendState extends State<recommend> {
                                             print(button25State);
                                           });
                                         },
-                                        child: Text("공학",style: TextStyle(color: button25State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        child: Text("의학/보건",style: TextStyle(color: button25State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                     ),
                                     SizedBox(width: 5,),
                                     ElevatedButton(
@@ -597,13 +598,9 @@ class _recommendState extends State<recommend> {
                                             print(button26State);
                                           });
                                         },
-                                        child: Text("경영",style: TextStyle(color: button26State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        child: Text("공학",style: TextStyle(color: button26State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                     ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    SizedBox(width: 10,),
+                                    SizedBox(width: 5,),
                                     ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           elevation: 0.0,
@@ -616,9 +613,13 @@ class _recommendState extends State<recommend> {
                                             print(button27State);
                                           });
                                         },
-                                        child: Text("교육",style: TextStyle(color: button27State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        child: Text("경영",style: TextStyle(color: button27State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                     ),
-                                    SizedBox(width: 5,),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(width: 10,),
                                     ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           elevation: 0.0,
@@ -631,8 +632,9 @@ class _recommendState extends State<recommend> {
                                             print(button28State);
                                           });
                                         },
-                                        child: Text("예술",style: TextStyle(color: button28State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                    ),SizedBox(width: 5,),
+                                        child: Text("교육",style: TextStyle(color: button28State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                    ),
+                                    SizedBox(width: 5,),
                                     ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           elevation: 0.0,
@@ -645,7 +647,7 @@ class _recommendState extends State<recommend> {
                                             print(button29State);
                                           });
                                         },
-                                        child: Text("법률",style: TextStyle(color: button29State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        child: Text("예술",style: TextStyle(color: button29State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                     ),SizedBox(width: 5,),
                                     ElevatedButton(
                                         style: ElevatedButton.styleFrom(
@@ -659,7 +661,7 @@ class _recommendState extends State<recommend> {
                                             print(button30State);
                                           });
                                         },
-                                        child: Text("연구",style: TextStyle(color: button30State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        child: Text("법률",style: TextStyle(color: button30State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                     ),SizedBox(width: 5,),
                                     ElevatedButton(
                                         style: ElevatedButton.styleFrom(
@@ -673,7 +675,21 @@ class _recommendState extends State<recommend> {
                                             print(button31State);
                                           });
                                         },
-                                        child: Text("기타",style: TextStyle(color: button31State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                        child: Text("연구",style: TextStyle(color: button31State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                    ),SizedBox(width: 5,),
+                                    ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          backgroundColor: button32State ? Color(0xFFCADFEF) : Colors.white,
+                                          minimumSize: Size(20, 30),
+                                        ),
+                                        onPressed: (){
+                                          setState(() {
+                                            button32State = !button32State;
+                                            print(button32State);
+                                          });
+                                        },
+                                        child: Text("기타",style: TextStyle(color: button32State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
                                     ),
                                   ],
                                 ),
@@ -829,8 +845,8 @@ class _recommendState extends State<recommend> {
                                 ],
                               ),
                               Container(
-                                margin: EdgeInsets.fromLTRB(40, 80, 0, 0),
-                                width: 110,
+                                margin: EdgeInsets.fromLTRB(30, 80, 0, 0),
+                                width: sizeX*0.3,
                                 height: 30,
                                 //color: Colors.blue,
                                 child: ElevatedButton(

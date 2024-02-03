@@ -61,7 +61,7 @@ class ApiManager {
     }
   }
 
-
+  //법안 GET
   Future<List<Law>> getLawData() async {
     String endPoint = "/api/law";
 
@@ -85,6 +85,42 @@ class ApiManager {
       return laws;
     } else {
       throw Exception("Fail to load diary data from the API");
+    }
+  }
+
+  //프로필 Post
+  void sendProfile(String age, String region, String position, List<String> interests, String married) async {
+    String endpoint = "/api/user/profile";
+
+    Dio _dio = Dio();
+    Map<String, dynamic> headers = {
+      'Content-Type': 'application/json',
+    };
+
+    try {
+      var response = await _dio.post(
+        '$baseUrl$endpoint',
+        data: {
+          "age" : age,
+          "region" : region,
+          "position" : position,
+          "interests" : interests,
+          "married" : married,
+        }, // 요청 데이터
+        options: Options(headers: headers), // 요청 헤더 설정
+      );
+
+      if (response.statusCode == 201) {
+        print("post 응답 성공");
+      } else {
+        print("응답 코드: ${response.statusCode}");
+        throw Exception(
+            'Failed to make a POST request. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('에러 발생: $e');
+
+      throw e;
     }
   }
 
