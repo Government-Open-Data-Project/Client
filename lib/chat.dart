@@ -4,6 +4,7 @@ import 'package:nation/network/api_manager.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'dart:async';
 
 class Chat extends StatefulWidget {
   const Chat({Key? key}) : super(key: key);
@@ -13,28 +14,18 @@ class Chat extends StatefulWidget {
 }
 
 
-bool isPaused = false;
-
 class _ChatState extends State<Chat> {
   final TextEditingController _textController = TextEditingController();
   final List<ChatMessage> _messages = [];
   final ScrollController _scrollController = ScrollController();
   bool isTyping = false;
-  bool _speechEnabled = false;
-  final SpeechToText _speechToText = SpeechToText();
-
-
-
-
-
-
 
   //TTS
   FlutterTts flutterTts = FlutterTts();
 
 //STT
-  // final SpeechToText _speechToText = SpeechToText();
-  //bool _speechEnabled = false;
+  final SpeechToText _speechToText = SpeechToText();
+  bool _speechEnabled = false;
   String _wordSpoken = " ";
   double _confidenceLevel = 0;
 
@@ -45,6 +36,15 @@ class _ChatState extends State<Chat> {
     super.initState();
     initSpeech();
     fetchDataFromServer();
+    startMessageUpdateTimer();
+  }
+
+  // 일정 간격으로 서버에서 메시지 가져오기
+  void startMessageUpdateTimer() {
+    const updateInterval = Duration(seconds: 4);
+    Timer.periodic(updateInterval, (timer) {
+      fetchDataFromServer();
+    });
   }
 
   Future<void> fetchDataFromServer() async {
@@ -78,7 +78,8 @@ class _ChatState extends State<Chat> {
   }
 
   //메세지 보내는 함수
-  void sendMessage() {
+// 메세지 보내는 함수
+  void sendMessage() async {
     String messageText = _textController.text;
 
     if (messageText.isNotEmpty) {
@@ -87,9 +88,12 @@ class _ChatState extends State<Chat> {
       print("보낸 말 + $messageText");
       _textController.clear();
 
-      Future.delayed(Duration(milliseconds: 500), () {
-        fetchDataFromServer();
+
+      Future.delayed(Duration(milliseconds: 500), () async
+      {
+        await fetchDataFromServer();
       });
+
 
       // 메시지를 전송한 후 스크롤을 아래로 이동
       WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -101,6 +105,7 @@ class _ChatState extends State<Chat> {
       });
     }
   }
+
 
   void initSpeech() async {
     _speechEnabled = await _speechToText.initialize();
@@ -300,7 +305,6 @@ class ChatMessage extends StatefulWidget {
   final String text;
   final bool isMe; // true 이면 나 false면 봇
 
-
   const ChatMessage({required this.text, required this.isMe});
 
   @override
@@ -308,6 +312,13 @@ class ChatMessage extends StatefulWidget {
 }
 
 class _ChatMessageState extends State<ChatMessage> {
+
+  //tts
+  FlutterTts flutterTts = FlutterTts();
+  bool isPaused = false;
+
+
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -322,10 +333,13 @@ class _ChatMessageState extends State<ChatMessage> {
             margin: const EdgeInsets.all(5.0),
             padding: const EdgeInsets.all(16.0),
             decoration: BoxDecoration(
-              color: widget.isMe ? Color(0xFFCADFEF) : Colors.white, //나면 파랑 봇 흰색
+              color: widget.isMe ? Color(0xFFCADFEF) : Colors.white,
+              //나면 파랑 봇 흰색
               borderRadius: BorderRadius.only(
-                topLeft: widget.isMe ? Radius.circular(20.0) : Radius.circular(1.0),
-                topRight: widget.isMe ? Radius.circular(1.0) : Radius.circular(20.0),
+                topLeft:
+                widget.isMe ? Radius.circular(20.0) : Radius.circular(1.0),
+                topRight:
+                widget.isMe ? Radius.circular(1.0) : Radius.circular(20.0),
                 bottomLeft: Radius.circular(20.0),
                 bottomRight: Radius.circular(20.0),
               ),
@@ -345,7 +359,6 @@ class _ChatMessageState extends State<ChatMessage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-
                 IconButton(
                   icon: Image.asset(
                     isPaused
@@ -355,14 +368,19 @@ class _ChatMessageState extends State<ChatMessage> {
                     height: 13,
                     color: Colors.grey,
                   ),
-                  onPressed: () {
+                  onPressed: () async{
                     setState(() {
                       isPaused = !isPaused;
                     });
                     if (isPaused) {
-                      _speakTTS(widget.text);
+                      await _speakTTS(widget.text);
+                      flutterTts.setCompletionHandler(() {
+                        setState(() {
+                          isPaused = false;
+                        });
+                      });
                     } else {
-                      _pauseTTS();
+                    await  _pauseTTS();
                     }
                   },
                 ),
@@ -387,30 +405,40 @@ class _ChatMessageState extends State<ChatMessage> {
     );
   }
 
+
+
   //TTS 말하기
-  void _speakTTS(String message) async {
-    FlutterTts flutterTts = FlutterTts();
+  Future<void> _speakTTS(String message) async {
     await flutterTts.setLanguage("ko-KR");
     await flutterTts.setVolume(0.6);
     await flutterTts.setSpeechRate(0.5);
     await flutterTts.setPitch(1);
 
+    // speak 메소드의 onCompletion 콜백을 활용
     await flutterTts.speak(message);
+
+
+    flutterTts.setCompletionHandler(() {
+      setState(() {
+        isPaused = false;
+      });
+      // 상태가 변경되었음을 확실히 알려줌
+      if (mounted) {
+        setState(() {});
+      }
+
+    });
+
   }
 
 
-// TTS 일시 정지
-  void _pauseTTS() async {
-    FlutterTts flutterTts = FlutterTts();
+  // TTS 일시 정지
+  Future<void>  _pauseTTS() async {
     await flutterTts.pause();
-  }
 
+  }
   //TTS 멈추기
-  void _stopTTS(String message) async {
-    FlutterTts flutterTts = FlutterTts();
+  Future<void>  _stopTTS(String message) async {
     await flutterTts.stop();
-
   }
-
-
 }
