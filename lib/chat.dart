@@ -36,15 +36,7 @@ class _ChatState extends State<Chat> {
     super.initState();
     initSpeech();
     fetchDataFromServer();
-    startMessageUpdateTimer();
-  }
 
-  // 일정 간격으로 서버에서 메시지 가져오기
-  void startMessageUpdateTimer() {
-    const updateInterval = Duration(seconds: 4);
-    Timer.periodic(updateInterval, (timer) {
-      fetchDataFromServer();
-    });
   }
 
   Future<void> fetchDataFromServer() async {
@@ -65,10 +57,11 @@ class _ChatState extends State<Chat> {
       setState(() {
         _messages.addAll(newMessages.reversed);
       });
+
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
-          duration: Duration(microseconds: 100),
+          duration: Duration(microseconds: 300),
           curve: Curves.easeOut,
         );
       });
@@ -78,8 +71,8 @@ class _ChatState extends State<Chat> {
   }
 
   //메세지 보내는 함수
-// 메세지 보내는 함수
-  void sendMessage() async {
+
+  void sendMessage()  {
     String messageText = _textController.text;
 
     if (messageText.isNotEmpty) {
@@ -88,12 +81,10 @@ class _ChatState extends State<Chat> {
       print("보낸 말 + $messageText");
       _textController.clear();
 
-
-      Future.delayed(Duration(milliseconds: 500), () async
+      Future.delayed(Duration(milliseconds: 200), ()
       {
-        await fetchDataFromServer();
+         fetchDataFromServer();
       });
-
 
       // 메시지를 전송한 후 스크롤을 아래로 이동
       WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -271,11 +262,10 @@ class _ChatState extends State<Chat> {
                         onPressed: () async {
                           if (isTyping) {
                             sendMessage();
-                            Future.delayed(
-                              Duration(milliseconds: 100),
-                            );
+                           await Future.delayed(Duration(seconds: 11));
                             await fetchDataFromServer();
-                          } else {
+                          }
+                          else {
                             if (_speechToText.isListening) {
                               _stopListening();
                               setState(() {
@@ -405,8 +395,6 @@ class _ChatMessageState extends State<ChatMessage> {
     );
   }
 
-
-
   //TTS 말하기
   Future<void> _speakTTS(String message) async {
     await flutterTts.setLanguage("ko-KR");
@@ -426,11 +414,8 @@ class _ChatMessageState extends State<ChatMessage> {
       if (mounted) {
         setState(() {});
       }
-
     });
-
   }
-
 
   // TTS 일시 정지
   Future<void>  _pauseTTS() async {
