@@ -219,4 +219,45 @@ class ApiManager {
       throw Exception("Fail to load search data from the API");
     }
   }
+
+  Future<String?> sendToken(String accessToken, String type) async {
+    String endpoint = "/api/v1/login/oauth";
+
+    Dio _dio = Dio();
+    // 요청 헤더를 Map으로 정의
+    Map<String, dynamic> headers = {
+      'Content-Type': 'application/json',
+    };
+
+    try {
+      var response = await _dio.post(
+        '$baseUrl$endpoint',
+        data: {
+          "accessToken": accessToken,
+          "type": type,
+        }, // 요청 데이터
+        options: Options(headers: headers), // 요청 헤더 설정
+      );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = json.decode(response.toString());
+
+        // 응답에서 jwtAccessToken을 추출
+        String jwtAccessToken = responseData['jwtAccessToken'];
+
+        print("post 응답 성공");
+        print("jwtAccessToken: $jwtAccessToken");
+        return jwtAccessToken;
+      } else {
+        print("응답 코드: ${response.statusCode}");
+        throw Exception(
+            'Failed to make a POST request. Status code: ${response
+                .statusCode}');
+      }
+    } catch (e) {
+      print('에러 발생: $e');
+
+      throw e;
+    }
+  }
 }
