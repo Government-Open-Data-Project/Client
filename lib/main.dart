@@ -44,7 +44,9 @@ class _MyAppState extends State<MyApp> {
               age: 50,
             ),
           ),
-          search(),
+          search(
+            laws: [],
+          ),
           community(),
           recommend()
         ][tab],
