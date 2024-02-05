@@ -5,8 +5,7 @@ import 'package:nation/models/Law.dart';
 import 'package:dio/dio.dart';
 import 'package:nation/home.dart';
 import 'package:intl/intl.dart';
-
-
+import '../models/Lawsearch.dart';
 
 class ApiManager {
   static ApiManager apiManager = new ApiManager();
@@ -190,6 +189,34 @@ class ApiManager {
     } else {
       print("News data response: " + response.body);
       throw Exception("Fail to load News data from the API");
+    }
+  }
+
+  Future<List<Lawsearch>> getLawSearchData() async {
+    String endPoint = "/api/law/search";
+    String keyword = "string"; // 키워드를 원하는 값으로 변경
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint?keyword=$keyword'),
+      headers: <String, String>{
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("law List Data: " + response.body);
+
+      List<Lawsearch> lawsea = rawData.map((data) {
+        return Lawsearch(
+          content: data['content'],
+          BILL_NAME: data['BILL_NAME'],
+          LINK_URL: data['LINK_URL'],
+        );
+      }).toList();
+
+      return lawsea;
+    } else {
+      throw Exception("Fail to load search data from the API");
     }
   }
 }
