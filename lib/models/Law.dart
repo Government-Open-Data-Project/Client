@@ -1,11 +1,12 @@
 class Law {
-  String title;
+  String BILL_NAME;
   String content;
+  String LINK_URL;
 
 
   Law({
-    required this.title,
+    required this.BILL_NAME,
     required this.content,
-
+    required this.LINK_URL,
   });
 }
