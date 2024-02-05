@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'network/api_manager.dart';
 import 'models/Profile.dart';
 
@@ -11,6 +12,27 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   ApiManager apiManager = ApiManager().getApiManager();
+  String? name;
+
+  void signInWithNaver() async {
+    try {
+      final NaverLoginResult result = await FlutterNaverLogin.logIn();
+      NaverAccessToken accessTokenRes =
+      await FlutterNaverLogin.currentAccessToken;
+
+      if (result.status == NaverLoginStatus.loggedIn) {
+
+        setState(() {
+          name = result.account.name;
+        });
+
+        print('이름: $name');
+
+      }
+    } catch (error) {
+      print(error.toString());
+    }
+  }
 
   //post
   void sendProfile() async {
@@ -274,7 +296,7 @@ class _EditProfileState extends State<EditProfile> {
                               ),
                               children: [
                                 TextSpan(
-                                  text: "김민재님,",
+                                  text: name,
                                 ),
                               ]))),
                   Container(
