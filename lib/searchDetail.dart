@@ -20,7 +20,9 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
             prefixIcon: Icon(Icons.search),
             prefixIconColor: Colors.black,
             suffixIcon: IconButton(
-              onPressed: () {},
+              onPressed: () {
+
+              },
               icon: Text(
                 "검색",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),

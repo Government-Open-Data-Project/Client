@@ -124,7 +124,7 @@ class _search extends State<search> {
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => login()));
+                            context, MaterialPageRoute(builder: (context) => searchDetail()));
                         },
                         style: ElevatedButton.styleFrom(backgroundColor: Color(0xFFEAEAEA)),
                         child: Text("검색", style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),),
