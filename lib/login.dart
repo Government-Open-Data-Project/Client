@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:nation/main.dart';
@@ -8,6 +9,8 @@ import 'network/api_manager.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting();
+  await dotenv.load(); // dotenv를 초기화합니다.
+
 
   runApp(MaterialApp(home: login()));
 }
@@ -29,6 +32,12 @@ class _login extends State<login> {
   String? tel;
   String? sex;
   String? birth;
+
+  @override
+  void initState() {
+    super.initState();
+    // 필요한 초기화 작업 수행
+  }
 
   ApiManager apiManager = ApiManager().getApiManager();
 
