@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:nation/home.dart';
 import 'package:intl/intl.dart';
 import '../models/Lawsearch.dart';
+import 'package:nation/models/Profile.dart';
 
 class ApiManager {
   static ApiManager apiManager = new ApiManager();
@@ -76,12 +77,53 @@ class ApiManager {
 
       List<Law> laws = rawData.map((data) {
         return Law(
-          title: data['title'],
+          BILL_NAME: data['BILL_NAME'],
           content: data['content'],
+          LINK_URL: data['LINK_URL'],
         );
       }).toList();
 
       return laws;
+    } else {
+      throw Exception("Fail to load diary data from the API");
+    }
+  }
+
+  //프로필 GET
+  Future<Profile> getProfileData() async {
+    String endPoint = "/api/user/profile";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+      },
+    );
+
+    if (response.statusCode == 200) {
+      dynamic rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("profile List Data: " + response.body);
+
+      // List<Profile> profiles = rawData.map((data) {
+      //   return Profile(
+      //     name: data['name'],
+      //     age: data['age'],
+      //     isMarried: data['isMarried'],
+      //     region: data['region'],
+      //     position: data['position'],
+      //     interests: List<String>.from(data['interests']),
+      //   );
+      // }).toList();
+
+      Profile profiles = Profile(
+        name: rawData['name'],
+        age: rawData['age'],
+        isMarried: rawData['isMarried'],
+        region: rawData['region'],
+        position: rawData['position'],
+        interests: List<String>.from(rawData['interests']),
+      );
+
+      return profiles;
     } else {
       throw Exception("Fail to load diary data from the API");
     }
