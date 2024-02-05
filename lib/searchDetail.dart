@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nation/search.dart';
+import 'package:nation/searchScreen.dart';
 
 class CustomSearchBar extends StatefulWidget {
   @override
@@ -23,7 +24,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
             suffixIcon: IconButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => search(laws: [],)));
+                    MaterialPageRoute(builder: (context) => searchScreen(laws: [])));
               },
               icon: Text(
                 "검색",
