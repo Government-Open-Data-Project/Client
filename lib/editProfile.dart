@@ -30,6 +30,7 @@ class _EditProfileState extends State<EditProfile> {
     }
   }
 
+
   bool button23State = false;
   bool button24State = false;
   bool button25State = false;
@@ -468,6 +469,11 @@ class _EditProfileState extends State<EditProfile> {
                                     if (button30State) selectedInterests.add("연구");
                                     if (button31State) selectedInterests.add("기타");
 
+                                    setState(() {
+                                      selectedInterestsText = selectedInterests;
+                                    });
+
+                                    sendProfile();
                                   },
                                   child: Text('저장',
                                       style: TextStyle(

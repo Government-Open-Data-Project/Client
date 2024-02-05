@@ -4,6 +4,7 @@ import 'package:nation/network/api_manager.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'dart:async';
 
 class Chat extends StatefulWidget {
   const Chat({Key? key}) : super(key: key);
@@ -11,10 +12,6 @@ class Chat extends StatefulWidget {
   @override
   State<Chat> createState() => _ChatState();
 }
-
-bool _speechEnabled = false;
-final SpeechToText _speechToText = SpeechToText();
-
 
 
 class _ChatState extends State<Chat> {
@@ -27,8 +24,8 @@ class _ChatState extends State<Chat> {
   FlutterTts flutterTts = FlutterTts();
 
 //STT
- // final SpeechToText _speechToText = SpeechToText();
-  //bool _speechEnabled = false;
+  final SpeechToText _speechToText = SpeechToText();
+  bool _speechEnabled = false;
   String _wordSpoken = " ";
   double _confidenceLevel = 0;
 
@@ -39,6 +36,7 @@ class _ChatState extends State<Chat> {
     super.initState();
     initSpeech();
     fetchDataFromServer();
+
   }
 
   Future<void> fetchDataFromServer() async {
@@ -59,10 +57,11 @@ class _ChatState extends State<Chat> {
       setState(() {
         _messages.addAll(newMessages.reversed);
       });
+
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
-          duration: Duration(microseconds: 100),
+          duration: Duration(microseconds: 300),
           curve: Curves.easeOut,
         );
       });
@@ -72,7 +71,8 @@ class _ChatState extends State<Chat> {
   }
 
   //메세지 보내는 함수
-  void sendMessage() {
+
+  void sendMessage()  {
     String messageText = _textController.text;
 
     if (messageText.isNotEmpty) {
@@ -81,8 +81,9 @@ class _ChatState extends State<Chat> {
       print("보낸 말 + $messageText");
       _textController.clear();
 
-      Future.delayed(Duration(milliseconds: 500), () {
-        fetchDataFromServer();
+      Future.delayed(Duration(milliseconds: 200), ()
+      {
+         fetchDataFromServer();
       });
 
       // 메시지를 전송한 후 스크롤을 아래로 이동
@@ -94,8 +95,8 @@ class _ChatState extends State<Chat> {
         );
       });
     }
-
   }
+
 
   void initSpeech() async {
     _speechEnabled = await _speechToText.initialize();
@@ -115,8 +116,8 @@ class _ChatState extends State<Chat> {
         });
         _speechToText.listen(
             onResult: (val) => setState(() {
-                  _wordSpoken = val.recognizedWords;
-                }));
+              _wordSpoken = val.recognizedWords;
+            }));
       } else {
         setState(() {
           _speechEnabled = false;
@@ -226,16 +227,19 @@ class _ChatState extends State<Chat> {
                               setState(() {
                                 isTyping = true;
                                 //텍스트 필드 누르면 스크롤 제일 하단으로 내려감
-                                WidgetsBinding.instance?.addPostFrameCallback((_) {
-                                  Future.delayed(Duration(milliseconds: 300), () {
-                                    _scrollController.animateTo(
-                                      _scrollController.position.maxScrollExtent + 5,
-                                      duration: Duration(milliseconds: 300),
-                                      curve: Curves.easeOut,
-                                    );
-                                  });
+                                WidgetsBinding.instance
+                                    ?.addPostFrameCallback((_) {
+                                  Future.delayed(Duration(milliseconds: 300),
+                                          () {
+                                        _scrollController.animateTo(
+                                          _scrollController
+                                              .position.maxScrollExtent +
+                                              5,
+                                          duration: Duration(milliseconds: 300),
+                                          curve: Curves.easeOut,
+                                        );
+                                      });
                                 });
-
                               });
                             },
                             maxLines: null,
@@ -251,16 +255,17 @@ class _ChatState extends State<Chat> {
                           isTyping
                               ? Icons.send
                               : _speechToText.isListening
-                                  ? Icons.mic
-                                  : Icons.mic_none,
+                              ? Icons.mic
+                              : Icons.mic_none,
                           color: _speechEnabled ? Colors.blue : Colors.grey,
                         ),
-                        onPressed: () async{
+                        onPressed: () async {
                           if (isTyping) {
                             sendMessage();
-                            Future.delayed( Duration(milliseconds:100),);
+                           await Future.delayed(Duration(seconds: 11));
                             await fetchDataFromServer();
-                          } else {
+                          }
+                          else {
                             if (_speechToText.isListening) {
                               _stopListening();
                               setState(() {
@@ -285,13 +290,24 @@ class _ChatState extends State<Chat> {
   }
 }
 
-
 //메세지를 보여주는 위젯임
-class ChatMessage extends StatelessWidget {
+class ChatMessage extends StatefulWidget {
   final String text;
   final bool isMe; // true 이면 나 false면 봇
 
   const ChatMessage({required this.text, required this.isMe});
+
+  @override
+  State<ChatMessage> createState() => _ChatMessageState();
+}
+
+class _ChatMessageState extends State<ChatMessage> {
+
+  //tts
+  FlutterTts flutterTts = FlutterTts();
+  bool isPaused = false;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -299,57 +315,77 @@ class ChatMessage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Align(
-          alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+          alignment: widget.isMe ? Alignment.centerRight : Alignment.centerLeft,
           child: Container(
             constraints: BoxConstraints(
               maxWidth: 300.0, // 최대 넓이를 원하는 값으로 설정
             ),
-            margin: const EdgeInsets.all(8.0),
+            margin: const EdgeInsets.all(5.0),
             padding: const EdgeInsets.all(16.0),
             decoration: BoxDecoration(
-              color: isMe ? Color(0xFFCADFEF) : Colors.white, //나면 파랑 봇 흰색
+              color: widget.isMe ? Color(0xFFCADFEF) : Colors.white,
+              //나면 파랑 봇 흰색
               borderRadius: BorderRadius.only(
-                topLeft: isMe ? Radius.circular(20.0) : Radius.circular(1.0),
-                topRight: isMe ? Radius.circular(1.0) : Radius.circular(20.0),
+                topLeft:
+                widget.isMe ? Radius.circular(20.0) : Radius.circular(1.0),
+                topRight:
+                widget.isMe ? Radius.circular(1.0) : Radius.circular(20.0),
                 bottomLeft: Radius.circular(20.0),
                 bottomRight: Radius.circular(20.0),
               ),
             ),
             child: Text(
-              text,
+              widget.text,
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.w500,
               ),
             ),
-
           ),
         ),
-        if (!isMe)
+        if (!widget.isMe)
           Padding(
-            padding: EdgeInsets.fromLTRB(1, 1, 2, 1),
+            padding: EdgeInsets.fromLTRB(7, 1, 2, 1),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 IconButton(
-                  icon: Icon(
-                    Icons.play_arrow,
-                    size: 20,
+                  icon: Image.asset(
+                    isPaused
+                        ? 'images/login/pause-button (2).png'
+                        : 'images/login/play (1).png',
+                    width: 13,
+                    height: 13,
                     color: Colors.grey,
                   ),
-                  onPressed: () {
-                    _speakTTS(text);
+                  onPressed: () async{
+                    setState(() {
+                      isPaused = !isPaused;
+                    });
+                    if (isPaused) {
+                      await _speakTTS(widget.text);
+                      flutterTts.setCompletionHandler(() {
+                        setState(() {
+                          isPaused = false;
+                        });
+                      });
+                    } else {
+                    await  _pauseTTS();
+                    }
                   },
                 ),
                 IconButton(
-                  icon: Icon(
-                    Icons.play_disabled,
-                    size: 20,
+                  icon: Image.asset(
+                    'images/login/stop.png',
+                    width: 11,
+                    height: 11,
                     color: Colors.grey,
                   ),
                   onPressed: () {
-
-                    _stopTTS(text);
+                    _stopTTS(widget.text);
+                    setState(() {
+                      isPaused = false;
+                    });
                   },
                 ),
               ],
@@ -360,18 +396,34 @@ class ChatMessage extends StatelessWidget {
   }
 
   //TTS 말하기
-  void _speakTTS(String message) async {
-    FlutterTts flutterTts = FlutterTts();
+  Future<void> _speakTTS(String message) async {
     await flutterTts.setLanguage("ko-KR");
     await flutterTts.setVolume(0.6);
     await flutterTts.setSpeechRate(0.5);
     await flutterTts.setPitch(1);
+
+    // speak 메소드의 onCompletion 콜백을 활용
     await flutterTts.speak(message);
+
+
+    flutterTts.setCompletionHandler(() {
+      setState(() {
+        isPaused = false;
+      });
+      // 상태가 변경되었음을 확실히 알려줌
+      if (mounted) {
+        setState(() {});
+      }
+    });
   }
 
+  // TTS 일시 정지
+  Future<void>  _pauseTTS() async {
+    await flutterTts.pause();
+
+  }
   //TTS 멈추기
-  void _stopTTS(String message) async {
-    FlutterTts flutterTts = FlutterTts();
+  Future<void>  _stopTTS(String message) async {
     await flutterTts.stop();
   }
 }
