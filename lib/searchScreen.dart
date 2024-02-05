@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
 import 'models/Lawsearch.dart';
+import 'network/api_manager.dart';
 
 class searchScreen extends StatefulWidget {
   final List<Lawsearch> laws;
@@ -14,13 +15,25 @@ class searchScreen extends StatefulWidget {
 }
 
 class _search extends State<searchScreen> {
-  final PageController _pageController = PageController();
+  ApiManager apiManager = ApiManager().getApiManager();
 
-  final List<List<String>> pages = [
-    ["1", "2", "3"],
-    ["4", "5", "6"],
-    ["7", "8", "9"],
-  ];
+  @override
+  void initState() {
+    super.initState();
+    fetchDataFromServer();
+  }
+
+  Future<void> fetchDataFromServer() async {
+    try {
+      final data = await apiManager.getLawSearchData();
+
+      setState(() {
+        widget.laws.addAll(data);
+      });
+    } catch (error) {
+      print('Error fetching data: ${error.toString()}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +50,7 @@ class _search extends State<searchScreen> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.menu),
+          icon: Icon(Icons.arrow_back_ios_new_outlined),
         ),
       ),
       body: Container(
@@ -63,17 +76,11 @@ class _search extends State<searchScreen> {
                   child: Column(
                     children: [
                       Expanded(
-                        child: PageView.builder(
-                          controller: _pageController,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: pages.length,
-                          itemBuilder: (context, index) {
-                            if(index< laws.length){
-                              return ListView.separated(
+                        child: ListView.separated(
                                 shrinkWrap: true,
-                                itemCount: pages[index].length,
+                                itemCount: laws.length,
                                 itemBuilder:
-                                    (BuildContext context, int innerIndex) {
+                                    (BuildContext context, int index) {
                                   return Container(
                                     child: Column(
                                       crossAxisAlignment:
@@ -129,14 +136,10 @@ class _search extends State<searchScreen> {
                                   height: 5,
                                   color: Colors.white,
                                 ),
-                              );
-                            }
-                            else
-                            {
-                              return Container();
-                            }
-                          },
-                        ),
+                              ),
+
+
+
                       ),
                     ],
                   ),
