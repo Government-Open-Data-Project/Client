@@ -50,7 +50,7 @@ class _search extends State<searchScreen> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.menu),
+          icon: Icon(Icons.arrow_back_ios_new_outlined),
         ),
       ),
       body: Container(

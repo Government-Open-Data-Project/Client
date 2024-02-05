@@ -140,7 +140,7 @@ class _searchDetail extends State<searchDetail> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.menu),
+          icon: Icon(Icons.arrow_back_ios_new_outlined),
         ),
       ),
       body: Container(
