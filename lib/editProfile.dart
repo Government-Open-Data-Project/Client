@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'network/api_manager.dart';
+import 'models/Profile.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -12,6 +12,7 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   ApiManager apiManager = ApiManager().getApiManager();
 
+  //post
   void sendProfile() async {
     try {
       String age = selectedAgeText;
@@ -20,18 +21,37 @@ class _EditProfileState extends State<EditProfile> {
       List<String> interests = selectedInterestsText;
       String married = selectedMarryText;
 
-      apiManager.sendProfile(age,region, position, interests, married);
+      apiManager.sendProfile(age, region, position, interests, married);
 
       // Use a separate function to handle the asynchronous operations
       //await _updateMyPage();
-
     } catch (error) {
       print('Error sending MyPage: $error');
     }
   }
 
+  Profile? profiles;
 
-  bool button23State = false;
+  //get
+  Future<void> fetchDataFromServerProfile() async {
+    try {
+      final data = await apiManager.getProfileData();
+
+      setState(() {
+        profiles = data!;
+        getAgeButtonNum(profiles!.age);
+        getMarryButtonNum(profiles!.isMarried);
+        getRegionButtonNum(profiles!.region);
+        getPositionButtonNum(profiles!.position);
+        getInterestsButtonNum(profiles!.interests);
+      });
+
+      print("통신성공");
+    } catch (error) {
+      print('Error fetching data: $error');
+    }
+  }
+
   bool button24State = false;
   bool button25State = false;
   bool button26State = false;
@@ -40,28 +60,131 @@ class _EditProfileState extends State<EditProfile> {
   bool button29State = false;
   bool button30State = false;
   bool button31State = false;
+  bool button32State = false;
+
+  Object getAgeButtonNum(String button) {
+    switch (button) {
+      case "20대":
+        return selectedAge = 1;
+      case "30대":
+        return selectedAge = 2;
+      case "40대":
+        return selectedAge = 3;
+      case "50대":
+        return selectedAge = 4;
+      case "60대":
+        return selectedAge = 5;
+      case "70대이상":
+        return selectedAge = 6;
+      default:
+        return " ";
+    }
+  }
+
+  Object getMarryButtonNum(String button) {
+    switch (button) {
+      case "미혼":
+        return selectedMarry = 7;
+      case "기혼":
+        return selectedMarry = 8;
+      default:
+        return " ";
+    }
+  }
+
+  Object getRegionButtonNum(String button) {
+    switch (button) {
+      case "서울":
+        return selectedRegion = 9;
+      case "경기":
+        return selectedRegion = 10;
+      case "충북":
+        return selectedRegion = 11;
+      case "충남":
+        return selectedRegion = 12;
+      case "경북":
+        return selectedRegion = 13;
+      case "경남":
+        return selectedRegion = 14;
+      case "전북":
+        return selectedRegion = 15;
+      case "전남":
+        return selectedRegion = 16;
+      case "강원":
+        return selectedRegion = 17;
+      case "제주":
+        return selectedRegion = 18;
+      default:
+        return " ";
+    }
+  }
+
+  Object getPositionButtonNum(String button) {
+    switch (button) {
+      case "학생":
+        return selectedPosition = 19;
+      case "회사원":
+        return selectedPosition = 20;
+      case "사업가":
+        return selectedPosition = 21;
+      case "무직":
+        return selectedPosition = 22;
+      case "기타":
+        return selectedPosition = 23;
+      default:
+        return " ";
+    }
+  }
+
+  Object getInterestsButtonNum(List<String> button) {
+    for (int i = 0; i < button.length; i++) {
+      if (button[i] == "IT") {
+        button24State = true;
+      }
+      else if (button[i] == "의학/보건") {
+        button25State = true;
+      }
+      else if (button[i] == "공학") {
+        button26State = true;
+      }
+      else if (button[i] == "경영") {
+        button27State = true;
+      }
+      else if (button[i] == "교육") {
+        button28State = true;
+      }
+      else if (button[i] == "예술") {
+        button29State = true;
+      }
+      else if (button[i] == "법률") {
+        button30State = true;
+      }
+      else if (button[i] == "연구") {
+        button31State = true;
+      }
+      else if (button[i] == "기타") {
+        button32State = true;
+      }
+    }
+    return 0;
+  }
 
   int selectedAge = 0;
   int selectedPosition = 0;
   int selectedRegion = 0;
   int selectedMarry = 0;
 
-  String selectedAgeText="";
-  String selectedPositionText="";
+  String selectedAgeText = "";
+  String selectedPositionText = "";
   String selectedRegionText = "";
   String selectedMarryText = "";
-  List<String> selectedInterestsText =[];
+  List<String> selectedInterestsText = [];
 
   void saveSelectedOptions() {
     selectedAgeText = getButtonText(selectedAge);
     selectedPositionText = getButtonText(selectedPosition);
     selectedRegionText = getButtonText(selectedRegion);
     selectedMarryText = getButtonText(selectedMarry);
-
-    // print("선택된 나이: $selectedAgeText");
-    // print("선택된 직위: $selectedPositionText");
-    // print("선택된 거주 지역: $selectedRegionText");
-    // print("선택된 결혼 여부: $selectedMarryText");
   }
 
   void updateAgeState(int ageNumber) {
@@ -87,6 +210,12 @@ class _EditProfileState extends State<EditProfile> {
     setState(() {
       selectedMarry = (selectedMarry == marryNumber) ? 0 : marryNumber;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDataFromServerProfile();
   }
 
   @override
@@ -221,31 +350,6 @@ class _EditProfileState extends State<EditProfile> {
                                         ElevatedButton(
                                             style: ElevatedButton.styleFrom(
                                               elevation: 0.0,
-                                              backgroundColor: button23State
-                                                  ? Color(0xFFCADFEF)
-                                                  : Colors.white,
-                                              minimumSize: Size(20, 30),
-                                            ),
-                                            onPressed: () {
-                                              setState(() {
-                                                button23State = !button23State;
-                                                print(button23State);
-                                              });
-                                            },
-                                            child: Text(
-                                              "IT",
-                                              style: TextStyle(
-                                                  color: button23State
-                                                      ? Colors.grey
-                                                      : Color(0xA5000000),
-                                                  fontWeight: FontWeight.bold),
-                                            )),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              elevation: 0.0,
                                               backgroundColor: button24State
                                                   ? Color(0xFFCADFEF)
                                                   : Colors.white,
@@ -258,7 +362,7 @@ class _EditProfileState extends State<EditProfile> {
                                               });
                                             },
                                             child: Text(
-                                              "의학/보건",
+                                              "IT",
                                               style: TextStyle(
                                                   color: button24State
                                                       ? Colors.grey
@@ -283,7 +387,7 @@ class _EditProfileState extends State<EditProfile> {
                                               });
                                             },
                                             child: Text(
-                                              "공학",
+                                              "의학/보건",
                                               style: TextStyle(
                                                   color: button25State
                                                       ? Colors.grey
@@ -308,19 +412,15 @@ class _EditProfileState extends State<EditProfile> {
                                               });
                                             },
                                             child: Text(
-                                              "경영",
+                                              "공학",
                                               style: TextStyle(
                                                   color: button26State
                                                       ? Colors.grey
                                                       : Color(0xA5000000),
                                                   fontWeight: FontWeight.bold),
                                             )),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
                                         SizedBox(
-                                          width: 10,
+                                          width: 5,
                                         ),
                                         ElevatedButton(
                                             style: ElevatedButton.styleFrom(
@@ -337,15 +437,19 @@ class _EditProfileState extends State<EditProfile> {
                                               });
                                             },
                                             child: Text(
-                                              "교육",
+                                              "경영",
                                               style: TextStyle(
                                                   color: button27State
                                                       ? Colors.grey
                                                       : Color(0xA5000000),
                                                   fontWeight: FontWeight.bold),
                                             )),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
                                         SizedBox(
-                                          width: 5,
+                                          width: 10,
                                         ),
                                         ElevatedButton(
                                             style: ElevatedButton.styleFrom(
@@ -362,7 +466,7 @@ class _EditProfileState extends State<EditProfile> {
                                               });
                                             },
                                             child: Text(
-                                              "예술",
+                                              "교육",
                                               style: TextStyle(
                                                   color: button28State
                                                       ? Colors.grey
@@ -387,7 +491,7 @@ class _EditProfileState extends State<EditProfile> {
                                               });
                                             },
                                             child: Text(
-                                              "법률",
+                                              "예술",
                                               style: TextStyle(
                                                   color: button29State
                                                       ? Colors.grey
@@ -412,7 +516,7 @@ class _EditProfileState extends State<EditProfile> {
                                               });
                                             },
                                             child: Text(
-                                              "연구",
+                                              "법률",
                                               style: TextStyle(
                                                   color: button30State
                                                       ? Colors.grey
@@ -437,9 +541,34 @@ class _EditProfileState extends State<EditProfile> {
                                               });
                                             },
                                             child: Text(
-                                              "기타",
+                                              "연구",
                                               style: TextStyle(
                                                   color: button31State
+                                                      ? Colors.grey
+                                                      : Color(0xA5000000),
+                                                  fontWeight: FontWeight.bold),
+                                            )),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              elevation: 0.0,
+                                              backgroundColor: button32State
+                                                  ? Color(0xFFCADFEF)
+                                                  : Colors.white,
+                                              minimumSize: Size(20, 30),
+                                            ),
+                                            onPressed: () {
+                                              setState(() {
+                                                button32State = !button32State;
+                                                print(button32State);
+                                              });
+                                            },
+                                            child: Text(
+                                              "기타",
+                                              style: TextStyle(
+                                                  color: button32State
                                                       ? Colors.grey
                                                       : Color(0xA5000000),
                                                   fontWeight: FontWeight.bold),
@@ -459,15 +588,24 @@ class _EditProfileState extends State<EditProfile> {
                                   onPressed: () async {
                                     List<String> selectedInterests = [];
 
-                                    if (button23State) selectedInterests.add("IT");
-                                    if (button24State) selectedInterests.add("의학/보건");
-                                    if (button25State) selectedInterests.add("공학");
-                                    if (button26State) selectedInterests.add("경영");
-                                    if (button27State) selectedInterests.add("교육");
-                                    if (button28State) selectedInterests.add("예술");
-                                    if (button29State) selectedInterests.add("법률");
-                                    if (button30State) selectedInterests.add("연구");
-                                    if (button31State) selectedInterests.add("기타");
+                                    if (button24State)
+                                      selectedInterests.add("IT");
+                                    if (button25State)
+                                      selectedInterests.add("의학/보건");
+                                    if (button26State)
+                                      selectedInterests.add("공학");
+                                    if (button27State)
+                                      selectedInterests.add("경영");
+                                    if (button28State)
+                                      selectedInterests.add("교육");
+                                    if (button29State)
+                                      selectedInterests.add("예술");
+                                    if (button30State)
+                                      selectedInterests.add("법률");
+                                    if (button31State)
+                                      selectedInterests.add("연구");
+                                    if (button32State)
+                                      selectedInterests.add("기타");
 
                                     setState(() {
                                       selectedInterestsText = selectedInterests;
@@ -556,19 +694,19 @@ class _EditProfileState extends State<EditProfile> {
                 SizedBox(
                   width: 10,
                 ),
-                buildElevatedButton(18, "학생"),
+                buildElevatedButton(19, "학생"),
                 SizedBox(
                   width: 5,
                 ),
-                buildElevatedButton(19, "회사원"),
+                buildElevatedButton(20, "회사원"),
                 SizedBox(
                   width: 5,
                 ),
-                buildElevatedButton(20, "사업가"),
+                buildElevatedButton(21, "사업가"),
                 SizedBox(
                   width: 5,
                 ),
-                buildElevatedButton(21, "무직"),
+                buildElevatedButton(22, "무직"),
               ],
             ),
             Row(
@@ -576,7 +714,7 @@ class _EditProfileState extends State<EditProfile> {
                 SizedBox(
                   width: 10,
                 ),
-                buildElevatedButton(22, "기타"),
+                buildElevatedButton(23, "기타"),
               ],
             ),
           ],
@@ -600,23 +738,23 @@ class _EditProfileState extends State<EditProfile> {
                 SizedBox(
                   width: 10,
                 ),
-                buildElevatedButton(9, "경기"),
+                buildElevatedButton(9, "서울"),
                 SizedBox(
                   width: 5,
                 ),
-                buildElevatedButton(10, "충북"),
+                buildElevatedButton(10, "경기"),
                 SizedBox(
                   width: 5,
                 ),
-                buildElevatedButton(11, "충남"),
+                buildElevatedButton(11, "충북"),
                 SizedBox(
                   width: 5,
                 ),
-                buildElevatedButton(12, "경북"),
+                buildElevatedButton(12, "충남"),
                 SizedBox(
                   width: 5,
                 ),
-                buildElevatedButton(13, "경남"),
+                buildElevatedButton(13, "경북"),
               ],
             ),
             Row(
@@ -624,19 +762,23 @@ class _EditProfileState extends State<EditProfile> {
                 SizedBox(
                   width: 10,
                 ),
-                buildElevatedButton(14, "전북"),
+                buildElevatedButton(14, "경남"),
                 SizedBox(
                   width: 5,
                 ),
-                buildElevatedButton(15, "전남"),
+                buildElevatedButton(15, "전북"),
                 SizedBox(
                   width: 5,
                 ),
-                buildElevatedButton(16, "강원"),
+                buildElevatedButton(16, "전남"),
                 SizedBox(
                   width: 5,
                 ),
-                buildElevatedButton(17, "제주"),
+                buildElevatedButton(17, "강원"),
+                SizedBox(
+                  width: 5,
+                ),
+                buildElevatedButton(18, "제주"),
               ],
             ),
           ],
@@ -681,10 +823,10 @@ class _EditProfileState extends State<EditProfile> {
         if (number >= 1 && number <= 6) {
           updateAgeState(number);
           print(getSelectedState(number));
-        } else if (number >= 18 && number <= 22) {
+        } else if (number >= 19 && number <= 23) {
           updatePositionState(number);
           print(getSelectedState(number));
-        } else if (number >= 9 && number <= 17) {
+        } else if (number >= 9 && number <= 18) {
           updateRegionState(number);
           print(getSelectedState(number));
         } else if (number == 7 || number == 8) {
@@ -705,9 +847,9 @@ class _EditProfileState extends State<EditProfile> {
   bool getSelectedState(int number) {
     if (number >= 1 && number <= 6) {
       return selectedAge == number;
-    } else if (number >= 18 && number <= 22) {
+    } else if (number >= 19 && number <= 23) {
       return selectedPosition == number;
-    } else if (number >= 9 && number <= 17) {
+    } else if (number >= 9 && number <= 18) {
       return selectedRegion == number;
     } else if (number == 7 || number == 8) {
       return selectedMarry == number;
