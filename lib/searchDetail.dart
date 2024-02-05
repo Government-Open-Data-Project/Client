@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nation/search.dart';
 
 class CustomSearchBar extends StatefulWidget {
   @override
@@ -21,7 +22,8 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
             prefixIconColor: Colors.black,
             suffixIcon: IconButton(
               onPressed: () {
-
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => search(laws: [],)));
               },
               icon: Text(
                 "검색",
@@ -31,14 +33,13 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
             fillColor: Color(0xFFD8D8D8),
             filled: true,
             focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.transparent),
-                borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderSide: BorderSide(color: Colors.transparent),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.transparent),
                 borderRadius: BorderRadius.all(Radius.circular(10))),
           ),
-
           controller: _textEditingController,
           onTap: () {
             setState(() {
@@ -82,11 +83,16 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
               return Column(
                 children: [
                   ListTile(
-                    title: Text(item, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),),
+                    title: Text(
+                      item,
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                    ),
                     trailing: ElevatedButton(
                         onPressed: () {},
-                        style:
-                            ElevatedButton.styleFrom(primary: Color(0xFFCADFEF), ),
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFCADFEF),
+                        ),
                         child: Text(
                           "추가",
                           style: TextStyle(
