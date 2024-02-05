@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nation/network/api_manager.dart';
 import 'package:nation/models/Law.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'models/Profile.dart';
 
 class recommend extends StatefulWidget {
   recommend({Key? key}) : super(key: key);
@@ -9,9 +11,6 @@ class recommend extends StatefulWidget {
   @override
   State<recommend> createState() => _recommendState();
 }
-
-bool _ison = false;
-List<bool> help = [false,true];
 
 class _recommendState extends State<recommend> {
   bool button1State = false;
@@ -49,10 +48,13 @@ class _recommendState extends State<recommend> {
 
 
   List<Law> laws = [];
+  Profile? profiles;
+
   @override
   void initState() {
     super.initState();
     fetchDataFromServer();
+    fetchDataFromServerProfile();
   }
 
   ApiManager apiManager = ApiManager().getApiManager();
@@ -64,6 +66,23 @@ class _recommendState extends State<recommend> {
 
       setState(() {
         laws = data!;
+      });
+
+      print("통신성공");
+    } catch (error) {
+      print('Error fetching data: $error');
+    }
+  }
+
+  //get
+  Future<void> fetchDataFromServerProfile() async {
+    try {
+      final data = await apiManager.getProfileData();
+
+      setState(() {
+        profiles = data!;
+        print("${profiles?.name}");
+        //getAgeButtonNum(profiles as String);
       });
 
       print("통신성공");
@@ -761,7 +780,7 @@ class _recommendState extends State<recommend> {
                                     children: [
                                       Container(
                                           //color: Colors.pink,
-                                          width: 130,
+                                          width: sizeX*0.25,
                                           height: 45,
                                           padding: EdgeInsets.fromLTRB(7, 0, 0, 0),
                                           child: RichText(
@@ -774,8 +793,27 @@ class _recommendState extends State<recommend> {
                                                   ),
                                                   children: [
                                                     TextSpan(
-                                                      text: "김민재님",
+                                                      text: profiles?.name,
                                                     ),
+                                                  ]
+                                              )
+                                          )
+                                      ),
+                                      Container(
+                                        //color: Colors.blueGrey,
+                                          width: 30,
+                                          height: 45,
+                                          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                          child: RichText(
+                                              textAlign: TextAlign.start,
+                                              text: TextSpan(
+                                                  style: TextStyle(
+                                                    fontFamily: 'soojin',
+                                                    fontSize: 30,
+                                                    color: Colors.black,
+                                                  ),
+                                                  children: [
+                                                    TextSpan(text: '님'),
                                                   ]
                                               )
                                           )
@@ -784,7 +822,7 @@ class _recommendState extends State<recommend> {
                                         //color: Colors.blueGrey,
                                           width: 100,
                                           height: 45,
-                                          padding: EdgeInsets.fromLTRB(5, 12, 0, 0),
+                                          padding: EdgeInsets.fromLTRB(0, 12, 0, 0),
                                           child: RichText(
                                               textAlign: TextAlign.start,
                                               text: TextSpan(
@@ -878,9 +916,9 @@ class _recommendState extends State<recommend> {
                               itemCount: laws.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return CustomContainer(
-                                  vtitle: laws[index].title,
+                                  vtitle: laws[index].BILL_NAME,
                                   vcomment: laws[index].content,
-                                  //vhelp: help[index],
+                                  vlink: laws[index].LINK_URL,
                                 );
                               },
                             )
@@ -896,15 +934,15 @@ class _recommendState extends State<recommend> {
 
 
 class CustomContainer extends StatefulWidget {
-  //final bool vhelp;
   final String vtitle;
   final String vcomment;
+  final String vlink;
 
   CustomContainer({
     super.key,
-    //required this.vhelp,
     required this.vtitle,
     required this.vcomment,
+    required this.vlink,
   });
 
   @override
@@ -953,20 +991,24 @@ class _CustomContainerState extends State<CustomContainer> {
                     color: Colors.white,
                   ),
                   SizedBox(height: 10,),
-                  Row(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(width: sizeX*0.38),
-                      Text("법안 해석 도우미", style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),),
-                      SizedBox(
-                        height: 18,
-                        child: CupertinoSwitch(
-                            value: _ison,
-                            activeColor: CupertinoColors.activeGreen,
-                            onChanged: (bool value){
-                              setState((){
-                                _ison = value;
-                              });
-                            }),
+                      Container(
+                        width: sizeX*0.8,
+                        child: Text("법안 자세히 보기",style: TextStyle(fontSize: 15),),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          launch(widget.vlink);
+                        },
+                        child: Text(
+                          "${widget.vlink}",
+                          style: TextStyle(
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
                       ),
                     ],
                   ),
