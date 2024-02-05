@@ -196,7 +196,7 @@ class _search extends State<search> {
                             if(index< laws.length){
                               return ListView.separated(
                                 shrinkWrap: true,
-                                itemCount: pages[index].length,
+                                itemCount: laws.length,
                                 itemBuilder:
                                     (BuildContext context, int innerIndex) {
                                   return Container(
@@ -209,7 +209,7 @@ class _search extends State<search> {
                                               15, 10, 3, 0),
                                           child: // 기사 제목 표시 (HTML 엔터티 디코딩)
                                           Text(
-                                            laws[index]
+                                            laws[innerIndex]
                                                 .BILL_NAME,
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
@@ -232,7 +232,7 @@ class _search extends State<search> {
                                           padding: EdgeInsets.fromLTRB(
                                               17, 5, 10, 0),
                                           child: Text(
-                                            laws[index].content,
+                                            laws[innerIndex].content,
                                             style: TextStyle(fontSize: 13),
                                             overflow: TextOverflow.ellipsis,
                                           ),
