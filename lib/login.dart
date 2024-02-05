@@ -3,6 +3,8 @@ import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:nation/main.dart';
 
+import 'network/api_manager.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting();
@@ -27,6 +29,9 @@ class _login extends State<login> {
   String? tel;
   String? sex;
   String? birth;
+
+  ApiManager apiManager = ApiManager().getApiManager();
+
 
   void signInWithNaver() async {
     try {
@@ -56,24 +61,32 @@ class _login extends State<login> {
         });
 
         print('이름: $name, 전화번호: $tel,성별: $sex, 출생년도: $birth');
-        print("$isLogin, 토큰 : [$accessToken, $refreshToken, $tokenType]");
+        print("$isLogin, 토큰 : [<$accessToken>, $refreshToken, $tokenType]");
 
-        //여기에 우리서버에 accessToken post요청하는 함수 예정
+        String? jwtAccessToken = await apiManager.sendToken(accessToken!, "naver");
+
+        if (jwtAccessToken != null) {
+          // jwtAccessToken이 null이 아닌 경우에만 Navigator.push 수행
+          Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
+        } else {
+          print('jwtAccessToken이 null입니다. 로그인 실패');
+          showDialog(
+              context: context,
+              builder: (BuildContext context){
+                return AlertDialog(
+                  title: Text('로그인 실패'),
+                  content: Text('안됩니다'),
+                  actions: [
+                    TextButton(onPressed: (){
+                      Navigator.of(context).pop();
+                    }, child: Text("확인"),)
+                  ],
+                );
+              });
+        }
       }
-
     } catch (error) {
-      setState(() {
-        isLogin = false;
-      });
       print(error.toString());
-
-    }
-    if (isLogin == true) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => MyApp()));
-    }
-    else{
-      print('로그인 실패');
     }
   }
 
