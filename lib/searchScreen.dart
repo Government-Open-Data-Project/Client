@@ -18,6 +18,7 @@ class searchScreen extends StatefulWidget {
 }
 
 class _search extends State<searchScreen> {
+
   ApiManager apiManager = ApiManager().getApiManager();
 
   @override
