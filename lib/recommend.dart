@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:nation/network/api_manager.dart';
 import 'package:nation/models/Law.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'models/Profile.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class recommend extends StatefulWidget {
   recommend({Key? key}) : super(key: key);
@@ -88,6 +90,28 @@ class _recommendState extends State<recommend> {
       print("통신성공");
     } catch (error) {
       print('Error fetching data: $error');
+    }
+  }
+
+  String? name;
+
+  void signInWithNaver() async {
+    try {
+      final NaverLoginResult result = await FlutterNaverLogin.logIn();
+      NaverAccessToken accessTokenRes =
+      await FlutterNaverLogin.currentAccessToken;
+
+      if (result.status == NaverLoginStatus.loggedIn) {
+
+        setState(() {
+          name = result.account.name;
+        });
+
+        print('이름: $name');
+
+      }
+    } catch (error) {
+      print(error.toString());
     }
   }
 
@@ -793,7 +817,7 @@ class _recommendState extends State<recommend> {
                                                   ),
                                                   children: [
                                                     TextSpan(
-                                                      text: profiles?.name,
+                                                      text: name,
                                                     ),
                                                   ]
                                               )
@@ -960,13 +984,13 @@ class _CustomContainerState extends State<CustomContainer> {
         SizedBox(height: 20,),
         Container(
           width: sizeX,
-          height: 430,
+          height: 600,
           color: Color(0xFFDEDEDE),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(15, 30, 15, 30),
             child: Container(
               width: sizeX*0.7,
-              height: 190,
+              height: 260,
               decoration: BoxDecoration(
                 color: Color(0xFFE8E8E8),
                 borderRadius: BorderRadius.circular(7),
@@ -983,7 +1007,7 @@ class _CustomContainerState extends State<CustomContainer> {
                 children: [
                   Text(widget.vtitle, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),textAlign: TextAlign.center),
                   SizedBox(height: 30,),
-                  Text(widget.vcomment, style: TextStyle(fontSize: 20),),
+                  Expanded(child: SingleChildScrollView(child: Text(widget.vcomment, style: TextStyle(fontSize: 15),maxLines: 50,))),
                   SizedBox(height: 10,),
                   Container(
                     height: 2,
