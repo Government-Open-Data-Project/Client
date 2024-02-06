@@ -7,6 +7,8 @@ import 'search.dart';
 import 'chat.dart';
 import 'category.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import '/models/Newstopic.dart';
+
 
 void main() async {
   await dotenv.load(fileName: '.env');
@@ -40,9 +42,8 @@ class _MyAppState extends State<MyApp> {
             ageNews: [],
             localNews: [],
             newsTopic: Newstopic(
-              date: DateTime.now(),
-              local: "서울",
-              age: 50,
+                local: " ",
+                age: 0,
             ),
           ),
           search(

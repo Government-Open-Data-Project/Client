@@ -19,7 +19,11 @@ class search extends StatefulWidget {
   _search createState() => _search();
 }
 
-class _search extends State<search> {
+class _search extends State<search>
+{
+  String? selectedKeyword;
+
+
 
   final List<List<String>> pages = [
     ["1", "2", "3"],
@@ -41,7 +45,12 @@ class _search extends State<search> {
         _currentPageIndex = _pageController.page!.round();
       });
     });
+
+    print("selected keyword 바뀐 거 :: ${selectedKeyword}");
+
   }
+
+
 
   Future<void> fetchDataFromServer(String keyword) async {
     try {
@@ -74,23 +83,26 @@ class _search extends State<search> {
   }
 
   List<String> keyword = [
-    "#국회의원",
-    "#국민",
-    "#대통령",
-    "#경제",
-    "#청와대",
-    "#무역",
-    "#공정",
-    "#다람쥐",
-    "#사자",
-    "#족제비",
-    "#강아지",
-    "#고양이"
+    "경제",
+    "부동산",
+    "환경",
+    "보건",
+    "사회 복지",
+    "국방",
+    "근로",
+    "교통",
+    "인권",
+    "소비자",
+    "과학 기술",
+    "동물",
+    "예산",
+    "교육",
   ];
 
   @override
   Widget build(BuildContext context) {
     List<Lawsearch> laws = widget.laws;
+
 
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
@@ -98,7 +110,6 @@ class _search extends State<search> {
       body: GestureDetector(
         onTap: (){
           FocusScope.of(context).unfocus();
-
         },
         child: Container(
           width: sizeX,
@@ -141,14 +152,26 @@ class _search extends State<search> {
                               ),
                               selectedColor: Colors.deepOrange,
                               backgroundColor: Color(0xFFCADFEF),
-                              selected: _isSelected,
-                              onSelected: (_isSelected) {
+                              selected: selectedKeyword == item,
+                              onSelected: (isSelected) {
                                 setState(() {
-                                  _isSelected = !_isSelected;
+                                  if (isSelected) {
+                                    selectedKeyword = item;
+                                  } else {
+                                    selectedKeyword = null;
+                                  }
+
+                                  // 선택한 키워드로 데이터 다시 불러오기
+                                  fetchDataFromServer(selectedKeyword ?? keyword.first);
+
+                                  print("선택한 아이템: $selectedKeyword");
+
+
                                 });
                               },
                             );
                           }),
+                          Text(selectedKeyword ?? "선택된 키워드 없음"),
                         ],
                       ),
                       Align(

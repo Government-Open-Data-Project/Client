@@ -9,6 +9,8 @@ import 'package:nation/home.dart';
 import 'package:intl/intl.dart';
 import '../models/Lawsearch.dart';
 import 'package:nation/models/Profile.dart';
+import '../models/NewsDetail.dart';
+
 
 class ApiManager {
   static ApiManager apiManager = new ApiManager();
@@ -235,7 +237,7 @@ class ApiManager {
   Future<List<NewsDetail>> getNews() async {
     String endPoint = "/api/news";
 
-    String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime(2024, 1, 17));
+    String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime(2024, 1, 19));
 
     final response = await http.get(
       Uri.parse('$baseUrl$endPoint?date=$formattedDate'),
@@ -252,7 +254,7 @@ class ApiManager {
       List<dynamic> rawData = responseData['newsList'];
 
       print("News statistics data: " + response.body);
-      print("뉴스 성공 ");
+      print("오늘 뉴스 성공 ");
 
       List<NewsDetail> MSatisdata = rawData.map((data) {
         return NewsDetail(
@@ -270,9 +272,87 @@ class ApiManager {
     }
   }
 
+
+
+  // 연령대 뉴스 get
+  Future<List<NewsDetail>> getAgeNews(int age) async {
+    String endPoint = "/api/top-by-age-group/$age";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+    );
+    if (response.statusCode == 200) {
+      Map<String, dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
+
+      // "newsList" 키에 해당하는 값을 가져옵니다.
+      List<dynamic> rawData = responseData['newsList'];
+
+      print("Age News statistics data: " + response.body);
+      print("age 뉴스 성공 ");
+
+
+      List<NewsDetail> MSatisdata = rawData.map((data) {
+        return NewsDetail(
+          reg_date: DateTime.parse(data['REG_DATE']),
+          link_url: data['LINK_URL'] ?? '',
+          comp_main_title: data['COMP_MAIN_TITLE'] ?? '',
+          comp_content: data['COMP_CONTENT'] ?? '',
+        );
+      }).toList();
+
+      return MSatisdata;
+    } else {
+      print("Age News data response: " + response.body);
+      print("앤드 포인듀${endPoint}" );
+      throw Exception("Fail to load Age News data from the API ${response.statusCode}");
+    }
+  }
+
+  // 지역대 뉴스 get
+  Future<List<NewsDetail>> getRegionNews(String region) async {
+    String endPoint = "/api/news/region";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint?region=$region'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+    );
+    if (response.statusCode == 200) {
+      Map<String, dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
+
+      // "newsList" 키에 해당하는 값을 가져옵니다.
+      List<dynamic> rawData = responseData['newsList'];
+
+      print("local News statistics data: " + response.body);
+      print("local 뉴스 성공 ");
+
+
+      List<NewsDetail> MSatisdata = rawData.map((data) {
+        return NewsDetail(
+          reg_date: DateTime.parse(data['REG_DATE']),
+          link_url: data['LINK_URL'] ?? '',
+          comp_main_title: data['COMP_MAIN_TITLE'] ?? '',
+          comp_content: data['COMP_CONTENT'] ?? '',
+        );
+      }).toList();
+
+      return MSatisdata;
+    } else {
+      print("local News data response: " + response.body);
+      print("앤드 포인듀${endPoint}" );
+      throw Exception("Fail to load local News data from the API ${response.statusCode}");
+    }
+  }
+
+
   Future<List<Lawsearch>> getLawSearchData(String keyword) async {
     String endPoint = "/api/law/search";
-
+    //String keyword = "string"; // 키워드를 원하는 값으로 변경
     final response = await http.get(
       Uri.parse('$baseUrl$endPoint?keyword=$keyword'),
       headers: <String, String>{
