@@ -154,7 +154,43 @@ class ApiManager {
       );
 
       if (response.statusCode == 201) {
-        print("post 응답 성공");
+        print("프로필 post 응답 성공");
+      } else {
+        print("응답 코드: ${response.statusCode}");
+        throw Exception(
+            'Failed to make a POST request. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('에러 발생: $e');
+
+      throw e;
+    }
+  }
+
+  // 맞춤필터 post
+  void sendfilter(List<String> age, List<String> region, List<String> position, List<String> interests, List<String> married) async {
+    String endpoint = "/api/law/recommended";
+
+    Dio _dio = Dio();
+    Map<String, dynamic> headers = {
+      'Content-Type': 'application/json',
+    };
+
+    try {
+      var response = await _dio.post(
+        '$baseUrl$endpoint',
+        data: {
+          "age" : age,
+          "region" : region,
+          "position" : position,
+          "interests" : interests,
+          "married" : married,
+        }, // 요청 데이터
+        options: Options(headers: headers), // 요청 헤더 설정
+      );
+
+      if (response.statusCode == 201) {
+        print("맞춤필터 post 응답 성공");
       } else {
         print("응답 코드: ${response.statusCode}");
         throw Exception(

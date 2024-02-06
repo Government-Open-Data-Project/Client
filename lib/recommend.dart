@@ -72,7 +72,7 @@ class _recommendState extends State<recommend> {
         laws = data!;
       });
 
-      print("통신성공");
+      print("법안 get 통신성공");
     } catch (error) {
       print('Error fetching data: $error');
     }
@@ -92,9 +92,32 @@ class _recommendState extends State<recommend> {
         getInterestsButtonNum(profiles!.interests);
       });
 
-      print("통신성공");
+      print("프로필 get 통신성공");
     } catch (error) {
       print('Error fetching data: $error');
+    }
+  }
+
+  List<String> selectedAgeText = [];
+  List<String> selectedPositionText = [];
+  List<String> selectedRegionText = [];
+  List<String> selectedMarryText = [];
+  List<String> selectedInterestsText = [];
+
+  void sendfilter() async {
+    try {
+      List<String> age = selectedAgeText;
+      List<String> region = selectedRegionText;
+      List<String> position = selectedPositionText;
+      List<String> interests = selectedInterestsText;
+      List<String> married = selectedMarryText;
+
+      apiManager.sendfilter(age, region, position, interests, married);
+
+      // Use a separate function to handle the asynchronous operations
+      //await _updateMyPage();
+    } catch (error) {
+      print('Error sending MyPage: $error');
     }
   }
 
@@ -888,7 +911,88 @@ class _recommendState extends State<recommend> {
                           elevation: 0.0,
                           backgroundColor: Color(0xFF00005B),
                           minimumSize: Size(130, 30)),
-                      onPressed: () async {},
+                      onPressed: () async {
+                        List<String> selectedAge = [];
+                        List<String> selectedPosition = [];
+                        List<String> selectedRegion = [];
+                        List<String> selectedMarry = [];
+                        List<String> selectedInterests = [];
+
+                        if (states.button1State)
+                          selectedAge.add("20대");
+                        if (states.button2State)
+                          selectedAge.add("30대");
+                        if (states.button3State)
+                          selectedAge.add("40대");
+                        if (states.button4State)
+                          selectedAge.add("50대");
+                        if (states.button5State)
+                          selectedAge.add("60대");
+                        if (states.button6State)
+                          selectedAge.add("70대이상");
+                        if (states.button7State)
+                          selectedMarry.add("미혼");
+                        if (states.button8State)
+                          selectedMarry.add("기혼");
+                        if (states.button9State)
+                          selectedRegion.add("서울");
+                        if (states.button10State)
+                          selectedRegion.add("경기");
+                        if (states.button11State)
+                          selectedRegion.add("충북");
+                        if (states.button12State)
+                          selectedRegion.add("충남");
+                        if (states.button13State)
+                          selectedRegion.add("경북");
+                        if (states.button14State)
+                          selectedRegion.add("경남");
+                        if (states.button15State)
+                          selectedRegion.add("전북");
+                        if (states.button16State)
+                          selectedRegion.add("전남");
+                        if (states.button17State)
+                          selectedRegion.add("강원");
+                        if (states.button18State)
+                          selectedRegion.add("제주");
+                        if (states.button19State)
+                          selectedPosition.add("학생");
+                        if (states.button20State)
+                          selectedPosition.add("회사원");
+                        if (states.button21State)
+                          selectedPosition.add("사업가");
+                        if (states.button22State)
+                          selectedPosition.add("무직");
+                        if (states.button23State)
+                          selectedPosition.add("기타");
+                        if (states.button24State)
+                          selectedInterests.add("IT");
+                        if (states.button25State)
+                          selectedInterests.add("의학/보건");
+                        if (states.button26State)
+                          selectedInterests.add("공학");
+                        if (states.button27State)
+                          selectedInterests.add("경영");
+                        if (states.button28State)
+                          selectedInterests.add("교육");
+                        if (states.button29State)
+                          selectedInterests.add("예술");
+                        if (states.button30State)
+                          selectedInterests.add("법률");
+                        if (states.button31State)
+                          selectedInterests.add("연구");
+                        if (states.button32State)
+                          selectedInterests.add("기타");
+
+                        setState(() {
+                          selectedAgeText = selectedAge;
+                          selectedRegionText = selectedRegion;
+                          selectedPositionText = selectedPosition;
+                          selectedMarryText = selectedMarry;
+                          selectedInterestsText = selectedInterests;
+                        });
+                        sendfilter();
+                        Navigator.of(context).pop();
+                      },
                       child: Text('적용하기',
                           style: TextStyle(
                               color: Colors.white,
@@ -906,7 +1010,6 @@ class _recommendState extends State<recommend> {
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
-    print("버튼 상태 : ${states.button1State}");
 
     return Scaffold(
       backgroundColor: Color(0xFFD0D0D0),
@@ -1112,13 +1215,11 @@ class _CustomContainerState extends State<CustomContainer> {
         SizedBox(height: 20,),
         Container(
           width: sizeX,
-          height: 600,
           color: Color(0xFFDEDEDE),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(15, 30, 15, 30),
             child: Container(
               width: sizeX*0.7,
-              height: 260,
               decoration: BoxDecoration(
                 color: Color(0xFFE8E8E8),
                 borderRadius: BorderRadius.circular(7),
@@ -1135,7 +1236,7 @@ class _CustomContainerState extends State<CustomContainer> {
                 children: [
                   Text(widget.vtitle, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),textAlign: TextAlign.center),
                   SizedBox(height: 30,),
-                  Expanded(child: SingleChildScrollView(child: Text(widget.vcomment, style: TextStyle(fontSize: 15),maxLines: 50,))),
+                  Text(widget.vcomment, style: TextStyle(fontSize: 15),maxLines: 50,),
                   SizedBox(height: 10,),
                   Container(
                     height: 2,

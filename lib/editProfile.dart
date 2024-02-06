@@ -68,7 +68,7 @@ class _EditProfileState extends State<EditProfile> {
         getInterestsButtonNum(profiles!.interests);
       });
 
-      print("통신성공");
+      print("프로필 get 통신성공");
     } catch (error) {
       print('Error fetching data: $error');
     }
