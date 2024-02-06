@@ -24,12 +24,13 @@ class _search extends State<searchScreen> {
   @override
   void initState() {
     super.initState();
-    fetchDataFromServer();
+    //fetchDataFromServer();
   }
 
-  Future<void> fetchDataFromServer() async {
+
+  Future<void> fetchDataFromServer(String keyword) async {
     try {
-      final data = await apiManager.getLawSearchData();
+      final data = await apiManager.getLawSearchData(keyword);
 
       setState(() {
         widget.laws.addAll(data);
@@ -38,6 +39,7 @@ class _search extends State<searchScreen> {
       print('Error fetching data: ${error.toString()}');
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
