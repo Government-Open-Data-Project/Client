@@ -41,12 +41,11 @@ class _search extends State<search> {
         _currentPageIndex = _pageController.page!.round();
       });
     });
-    fetchDataFromServer();
   }
 
-  Future<void> fetchDataFromServer() async {
+  Future<void> fetchDataFromServer(String keyword) async {
     try {
-      final data = await apiManager.getLawSearchData();
+      final data = await apiManager.getLawSearchData(keyword);
 
       setState(() {
         widget.laws.addAll(data);
@@ -321,7 +320,7 @@ void showsPopup(BuildContext context, Lawsearch popupInfo) {
                     launch(popupInfo.LINK_URL);
                   },
                   child: Text(
-                    "기사 링크: ${popupInfo.LINK_URL}",
+                    "링크: ${popupInfo.LINK_URL}",
                     style: TextStyle(
                       color: Colors.blue,
                       decoration: TextDecoration.underline,
