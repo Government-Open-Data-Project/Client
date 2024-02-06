@@ -23,7 +23,11 @@ class _search extends State<searchScreen> {
   @override
   void initState() {
     super.initState();
+
+    //fetchDataFromServer();
   }
+
+
 
   Future<void> fetchDataFromServer(String keyword) async {
     try {
@@ -36,6 +40,7 @@ class _search extends State<searchScreen> {
       print('Error fetching data: ${error.toString()}');
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

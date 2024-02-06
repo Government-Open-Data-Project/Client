@@ -2,35 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'network/api_manager.dart';
 import 'package:html/parser.dart';
-
-class NewsDetail {
-  DateTime reg_date; //올리는 날짜
-  String link_url; //기사 링크
-  String comp_main_title; // 기사 제목
-  String comp_content; // 기사 내용
-
-  NewsDetail({
-    required this.reg_date,
-    required this.link_url,
-    required this.comp_main_title,
-    required this.comp_content,
-  });
-}
-
-class Newstopic {
-  DateTime date;
-  String local;
-  int age;
-
-  Newstopic({
-    required this.date,
-    this.local = " ",
-    this.age = 0,
-  });
-}
+import 'models/NewsDetail.dart';
+import 'models/Newstopic.dart';
+import 'models/Profile.dart';
 
 class home extends StatefulWidget {
   late final List<NewsDetail> todayNews;
@@ -54,15 +30,19 @@ class _homeState extends State<home> {
   final PageController _pageController = PageController();
   int _currentPageIndex = 0;
   ApiManager apiManager = ApiManager().getApiManager();
+  int ageint = 0;
+  String local = "";
 
   @override
   void initState() {
+    print("홈화면 실행");
     super.initState();
     _pageController.addListener(() {
       setState(() {
         _currentPageIndex = _pageController.page!.round();
       });
     });
+    fetchDataFromServerProfile();
     fetchDataFromServer();
   }
 
@@ -72,10 +52,110 @@ class _homeState extends State<home> {
 
       setState(() {
         widget.todayNews.addAll(data);
+      });
+
+      ageNewsFromServer();
+      localNewsFromServer();
+    } catch (error) {
+      print('Error fetching data: ${error.toString()}');
+    }
+  }
+
+  Profile? profiles;
+
+  Future<void> fetchDataFromServerProfile() async {
+    try {
+      final data = await apiManager.getProfileData();
+
+      setState(() {
+        profiles = data!;
+        ageint = getAgeButtonNum(profiles!.age);
+        print("수쟌의 나이는 ${ageint} ");
+        local = getRegionButtonNum(profiles!.region);
+        print("수쟌의 지역은 ${local} ");
+      });
+
+      print("통신 성공");
+    } catch (error) {
+      print('Error fetching data: $error');
+    }
+  }
+
+  int getAgeButtonNum(String button) {
+    switch (button) {
+      case "20대":
+        return 20;
+      case "30대":
+        return 30;
+      case "40대":
+        return 40;
+      case "50대":
+        return 50;
+      case "60대":
+        return 60;
+      case "70대이상":
+        return 70;
+      default:
+        return 0; // 디폴트 값으로 설정할 값 할당
+    }
+  }
+
+  String getRegionButtonNum(String button) {
+    switch (button) {
+      case "서울":
+        return "서울";
+      case "경기":
+        return "경기";
+      case "충북":
+        return "충북";
+      case "충남":
+        return "충남";
+      case "경북":
+        return "경북";
+      case "경남":
+        return "경남";
+      case "전북":
+        return "전북";
+      case "전남":
+        return "전남";
+      case "강원":
+        return "강원";
+      case "제주":
+        return "제주";
+      default:
+        return " ";
+    }
+  }
+
+  //나이별 뉴스 get
+  Future<void> ageNewsFromServer() async {
+    try {
+      await Future.delayed(Duration(milliseconds: 1000));
+
+      final data = await apiManager.getAgeNews(ageint);
+
+      setState(() {
         widget.ageNews.addAll(data);
       });
     } catch (error) {
-      print('Error fetching data: ${error.toString()}');
+      print("나이 딹깎 $ageint");
+      print('Error age fetching data: ${error.toString()}');
+    }
+  }
+
+  //지역별 뉴스 get
+  Future<void> localNewsFromServer() async {
+    try {
+      await Future.delayed(Duration(milliseconds: 1000));
+
+      final data = await apiManager.getRegionNews(local);
+
+      setState(() {
+        widget.ageNews.addAll(data);
+      });
+    } catch (error) {
+      print("지역 딸ㄹ각  $local");
+      print('Error local fetching data: ${error.toString()}');
     }
   }
 
@@ -101,7 +181,7 @@ class _homeState extends State<home> {
     final sizeX = MediaQuery.of(context).size.width;
 
     // 현재 날짜 가져오기
-    DateTime now = DateTime(2024, 1, 17);
+    DateTime now = DateTime(2024, 1, 19);
 
     String formattedDate = "${now.year}년 ${now.month}월 ${now.day}일";
 
@@ -124,7 +204,7 @@ class _homeState extends State<home> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "$formattedDate 뉴스",
+                        "P.P의 HOT 뉴스",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -255,7 +335,7 @@ class _homeState extends State<home> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${widget.newsTopic.age}대가 관심있게 본 뉴스",
+                        "${ageint}대가 관심있게 본 뉴스",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),
@@ -287,7 +367,7 @@ class _homeState extends State<home> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${widget.newsTopic.local}에서 관심있게 본 뉴스",
+                        "${local}에서 관심있게 본 뉴스",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),
@@ -382,7 +462,8 @@ class _NewsState extends State<News> {
                                     child: Text(
                                       HtmlUnescape().convert(_truncateText(
                                         widget.popupInfos[index].comp_content
-                                            .replaceAll('\n', ' '), 40,
+                                            .replaceAll('\n', ' '),
+                                        40,
                                       )),
                                       style: TextStyle(
                                         fontSize: 16,
@@ -443,10 +524,12 @@ void showsPopup(BuildContext context, NewsDetail popupInfo) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text(HtmlUnescape().convert(popupInfo.comp_main_title),
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),),
+        title: Text(
+          HtmlUnescape().convert(popupInfo.comp_main_title),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         content: SingleChildScrollView(
           // Scrollable content
           child: Container(

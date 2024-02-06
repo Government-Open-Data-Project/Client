@@ -11,24 +11,38 @@ class community extends StatefulWidget {
   _community createState() => _community();
 }
 
+Map<int, FavoriteCount> favoriteMap = {};
+
+class FavoriteCount {
+  bool favoriteColor = false;
+  int favoriteCount = 0;
+}
+
+Map<int, UnFavoriteCount> unFavoriteMap = {};
+
+class UnFavoriteCount {
+  bool unfavoriteColor = false;
+  int unfavoriteCount = 0;
+}
+
 class _community extends State<community> {
   bool _ison = false;
-  bool _isgood = false;
-  bool _isbad = true;
+  // bool _isgood = false;
+  // bool _isbad = true;
 
   List<Community> communites = [];
 
-  onGoodTap() async {
-    setState(() {
-      _isgood = !_isgood;
-    });
-  }
-
-  onBadTap() async {
-    setState(() {
-      _isbad = !_isbad;
-    });
-  }
+  // onGoodTap() async {
+  //   setState(() {
+  //     _isgood = !_isgood;
+  //   });
+  // }
+  //
+  // onBadTap() async {
+  //   setState(() {
+  //     _isbad = !_isbad;
+  //   });
+  // }
 
   @override
   void initState() {
@@ -43,10 +57,30 @@ class _community extends State<community> {
       final data = await apiManager.getCommunity();
       setState(() {
         communites = data!;
+
+
+
       });
       print("통신성공");
     } catch (error) {
       print('Error fetching data: $error');
+    }
+  }
+
+  String voteTumbsType = "";
+  int billIdNum = 0;
+
+  void sendThumbs() async {
+    try {
+      String voteType = voteTumbsType;
+      int billId = billIdNum;
+
+      apiManager.sendThumbs(voteType, billId);
+
+      // Use a separate function to handle the asynchronous operations
+      //await _updateMyPage();
+    } catch (error) {
+      print('Error sending MyPage: $error');
     }
   }
 
@@ -63,12 +97,15 @@ class _community extends State<community> {
           child: ListView.builder(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: 3,
+              itemCount: communites.length,
               itemBuilder: (BuildContext context, int index) {
                 return CustomContainer(
                   vtitle: communites[index].BILL_NAME,
                   vcomment: communites[index].content,
                   vlink: communites[index].LINK_URL,
+                  BILL_NO: communites[index].BILL_NO,
+                  vlikes: communites[index].likes,
+                  vdislikes : communites[index].dislikes,
                 );
 
               }
@@ -83,12 +120,18 @@ class CustomContainer extends StatefulWidget {
   final String vtitle;
   final String vcomment;
   final String vlink;
+  final int BILL_NO;
+  final int vlikes;
+  final int vdislikes;
 
   CustomContainer({
-    super.key,
+    Key? key,
     required this.vtitle,
     required this.vcomment,
     required this.vlink,
+    required this.BILL_NO,
+    required this.vlikes,
+    required this.vdislikes,
   });
 
   @override
@@ -97,20 +140,45 @@ class CustomContainer extends StatefulWidget {
 
 class _CustomContainerState extends State<CustomContainer> {
   bool _ison = false;
-  bool _isgood = false;
-  bool _isbad = true;
+  late bool sfavoritColor;
+  late bool sunfavoritColor;
+  int vlikes = 0;
+  int vdislikes = 0;
+  int BILL_NO = 36;
 
-  onGoodTap() async {
-    setState(() {
-      _isgood = !_isgood;
-    });
+  void initState(){
+    super.initState();
+
+    // favoriteMap과 unFavoriteMap 초기화
+    favoriteMap[BILL_NO] ??= FavoriteCount();
+    unFavoriteMap[BILL_NO] ??= UnFavoriteCount();
+
+    vlikes = favoriteMap[BILL_NO]!.favoriteCount;
+    sfavoritColor = favoriteMap[BILL_NO]!.favoriteColor;
+    sunfavoritColor = unFavoriteMap[BILL_NO]!.unfavoriteColor;
   }
 
-  onBadTap() async {
-    setState(() {
-      _isbad = !_isbad;
-    });
+  void sendThumbs() async {
+    try {
+      String jwt = widget.jwt;
+      String age = selectedAgeText;
+      String married = selectedMarryText;
+      String region = selectedRegionText;
+      String position = selectedPositionText;
+      List<String> interests = selectedInterestsText;
+
+
+      print("정보들 : $age $region $position $interests $married");
+
+      apiManager.sendProfile(jwt ,age, region, position, interests, married);
+
+      // Use a separate function to handle the asynchronous operations
+      //await _updateMyPage();
+    } catch (error) {
+      print('Error sending MyPage: $error');
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -188,14 +256,140 @@ class _CustomContainerState extends State<CustomContainer> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(125, 15, 0, 0),
+                      SizedBox(height: 10,),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("50", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                            IconButton(onPressed: onGoodTap, icon: Icon(Icons.thumb_up_alt, color: _isgood ? Colors.red : Colors.white,size: 35,)),
-                            IconButton(onPressed: onBadTap, icon: Icon(Icons.thumb_down_alt, color: _isbad ? Colors.blue : Colors.white,size: 35,)),
-                            Text("13", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                            Row(
+                              children: [
+                                Text(
+                                '${vlikes}',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                                SizedBox(width: 5,),
+                                GestureDetector(
+                                  onTap: () async {
+                                    //await apiManager.putFavoriteCount(BILL_NO);
+                                    print("좋아요 누름 :${BILL_NO}");
+                                    try {
+                                      setState(() {
+                                        if (sfavoritColor) {
+                                          vlikes = vlikes - 1;
+                                          favoriteMap[BILL_NO]!.favoriteCount = vlikes;
+
+                                        } else {//좋아요 안누른 상태
+                                          if(sunfavoritColor){ //싫어요 누른상태
+                                            if(vdislikes == 0){//싫어요 0인 상황
+                                              vdislikes = 0;
+
+                                              vlikes = vlikes + 1;
+                                              favoriteMap[BILL_NO]!.favoriteCount = vlikes;
+
+                                              sfavoritColor = !sfavoritColor;
+                                              favoriteMap[BILL_NO]!.favoriteColor = sfavoritColor;
+                                            }
+                                            else{//아닌 상황
+                                              vdislikes = vdislikes - 1;
+                                              unFavoriteMap[BILL_NO]!.unfavoriteCount = vdislikes;
+
+                                              sunfavoritColor = !sunfavoritColor;
+                                              unFavoriteMap[BILL_NO]!.unfavoriteColor = sfavoritColor;
+
+                                              vlikes = vlikes + 1;
+                                              favoriteMap[BILL_NO]!.favoriteCount = vlikes;
+
+                                              sfavoritColor = !sfavoritColor;
+                                              favoriteMap[BILL_NO]!.favoriteColor = sfavoritColor;
+                                            }
+                                          }
+                                          else{
+                                            vlikes = vlikes + 1;
+                                            favoriteMap[BILL_NO]!.favoriteCount = vlikes;
+
+                                            sfavoritColor = !sfavoritColor;
+                                            favoriteMap[BILL_NO]!.favoriteColor = sfavoritColor;
+                                          }
+                                        }
+                                      });
+                                    } catch (error) {
+                                      print('Error updating favorite count: $error');
+                                    }
+                                  },
+                                  child: Icon(
+                                    Icons.thumb_up_alt,
+                                    color: sfavoritColor ? Colors.red : Colors.white,
+                                    size: 40,
+                                  ),
+                                ),
+
+                              ],
+                            ),
+                            SizedBox(width: 5,),
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    //await apiManager.putFavoriteCount(BILL_NO);
+                                    print("싫어요 누름 :${BILL_NO}");
+                                    try {
+                                      setState(() {
+                                        if (sunfavoritColor) {
+                                          vdislikes = vdislikes - 1;
+                                          unFavoriteMap[BILL_NO]!.unfavoriteCount = vdislikes;
+
+                                        } else {
+                                          if(sfavoritColor){
+                                            if(vlikes == 0){
+                                              vlikes = 0;
+
+                                              vdislikes = vdislikes + 1;
+                                              unFavoriteMap[BILL_NO]!.unfavoriteCount = vdislikes;
+
+                                              sunfavoritColor = !sunfavoritColor;
+                                              unFavoriteMap[BILL_NO]!.unfavoriteColor = sfavoritColor;
+                                            }
+                                            else{
+                                              vlikes = vlikes - 1;
+                                              favoriteMap[BILL_NO]!.favoriteCount = vlikes;
+
+                                              sfavoritColor = !sfavoritColor;
+                                              favoriteMap[BILL_NO]!.favoriteColor = sfavoritColor;
+
+                                              vdislikes = vdislikes + 1;
+                                              unFavoriteMap[BILL_NO]!.unfavoriteCount = vdislikes;
+
+                                              sunfavoritColor = !sunfavoritColor;
+                                              unFavoriteMap[BILL_NO]!.unfavoriteColor = sfavoritColor;
+                                            }
+                                          }
+                                          else{
+                                            vdislikes = vdislikes + 1;
+                                            unFavoriteMap[BILL_NO]!.unfavoriteCount = vdislikes;
+
+                                            sunfavoritColor = !sunfavoritColor;
+                                            unFavoriteMap[BILL_NO]!.unfavoriteColor = sfavoritColor;
+                                          }
+                                        }
+                                      });
+                                    } catch (error) {
+                                      print('Error updating favorite count: $error');
+                                    }
+                                  },
+                                  child: Icon(
+                                    Icons.thumb_down_alt,
+                                    color: sunfavoritColor ? Colors.blue : Colors.white,
+                                    size: 40,
+                                  ),
+                                ),
+                                SizedBox(width: 5,),
+                                Text(
+                                  '${vdislikes}',
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
