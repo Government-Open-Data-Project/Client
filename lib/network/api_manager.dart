@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:nation/models/Community.dart';
 import 'package:nation/models/Law.dart';
 import 'package:dio/dio.dart';
 import 'package:nation/home.dart';
@@ -13,6 +14,7 @@ import '../models/NewsDetail.dart';
 
 class ApiManager {
   static ApiManager apiManager = new ApiManager();
+  // accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJzTzRqbXlvUU5sOGFiMmQ0Q0pscUl3d2U1ZzY1bXhXU1VnLWN4bC16VVhjIiwiaWF0IjoxNzA3MjAyMjEyLCJleHAiOjE3MDk3OTQyMTJ9.zdjSFZofvNMtvqGYGEuNAgS21vjdXqh26pL0aKoTIm0";
 
   ApiManager getApiManager() {
     return apiManager;
@@ -93,48 +95,81 @@ class ApiManager {
   }
 
   //프로필 GET
-  Future<Profile> getProfileData() async {
+  Future<Profile> getProfileData(String jwt) async {
     String endPoint = "/api/user/profile";
+    //String authorizationToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJzTzRqbXlvUU5sOGFiMmQ0Q0pscUl3d2U1ZzY1bXhXU1VnLWN4bC16VVhjIiwiaWF0IjoxNzA3MjAyMjEyLCJleHAiOjE3MDk3OTQyMTJ9.zdjSFZofvNMtvqGYGEuNAgS21vjdXqh26pL0aKoTIm0";
 
     final response = await http.get(
       Uri.parse('$baseUrl$endPoint'),
       headers: <String, String>{
+        'accept': 'application/json',
+        'Authorization': 'Bearer $jwt',
       },
     );
 
     if (response.statusCode == 200) {
       dynamic rawData = json.decode(utf8.decode(response.bodyBytes));
-      print("profile List Data: " + response.body);
+      print("프로필 데이터: $rawData");
 
-      // List<Profile> profiles = rawData.map((data) {
-      //   return Profile(
-      //     name: data['name'],
-      //     age: data['age'],
-      //     isMarried: data['isMarried'],
-      //     region: data['region'],
-      //     position: data['position'],
-      //     interests: List<String>.from(data['interests']),
-      //   );
-      // }).toList();
-
-      Profile profiles = Profile(
+      Profile profile = Profile(
         name: rawData['name'],
         age: rawData['age'],
-        isMarried: rawData['isMarried'],
+        isMarried: rawData['isMarried'] ?? '',
         region: rawData['region'],
         position: rawData['position'],
         interests: List<String>.from(rawData['interests']),
       );
 
-      return profiles;
+      return profile;
     } else {
-      throw Exception("Fail to load diary data from the API");
+      print("프로필 데이터 가져오기 실패: ${utf8.decode(response.bodyBytes)}");
+      throw Exception("API로부터 프로필 데이터를 불러오는 데 실패했습니다");
     }
   }
 
   //프로필 Post
-  void sendProfile(String age, String region, String position, List<String> interests, String married) async {
+  void sendProfile(String jwt,String age, String region, String position, List<String> interests, String married) async {
     String endpoint = "/api/user/profile";
+
+    Dio _dio = Dio();
+    Map<String, dynamic> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $jwt',
+    };
+
+    print("jwt ${jwt}");
+
+    try {
+      var response = await _dio.post(
+        '$baseUrl$endpoint',
+        data: {
+          "age" : age,
+          "region" : region,
+          "position" : position,
+          "interests" : interests,
+          "isMarried" : married,
+        }, // 요청 데이터
+        options: Options(headers: headers), // 요청 헤더 설정
+      );
+
+      if (response.statusCode == 201) {
+        
+        print("프로필 post 응답 성공");
+      } else {
+        print("응답 코드: ${response.statusCode}");
+        throw Exception(
+            'Failed to make a POST request. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('에러 발생: $e');
+
+      throw e;
+    }
+  }
+
+  // 맞춤필터 post
+  void sendfilter(List<String> age, List<String> region, List<String> position, List<String> interests, List<String> married) async {
+    String endpoint = "/api/law/recommended";
 
     Dio _dio = Dio();
     Map<String, dynamic> headers = {
@@ -155,7 +190,7 @@ class ApiManager {
       );
 
       if (response.statusCode == 201) {
-        print("post 응답 성공");
+        print("맞춤필터 post 응답 성공");
       } else {
         print("응답 코드: ${response.statusCode}");
         throw Exception(
@@ -238,6 +273,7 @@ class ApiManager {
   }
 
 
+
   // 연령대 뉴스 get
   Future<List<NewsDetail>> getAgeNews(int age) async {
     String endPoint = "/api/top-by-age-group/$age";
@@ -317,7 +353,6 @@ class ApiManager {
   Future<List<Lawsearch>> getLawSearchData(String keyword) async {
     String endPoint = "/api/law/search";
     //String keyword = "string"; // 키워드를 원하는 값으로 변경
-
     final response = await http.get(
       Uri.parse('$baseUrl$endPoint?keyword=$keyword'),
       headers: <String, String>{
@@ -336,9 +371,11 @@ class ApiManager {
         );
       }).toList();
 
+      print('keyword: $keyword');
       return lawsea;
+
     } else {
-      throw Exception("Fail to load search data from the API");
+      throw Exception("Failed to make a POST request. Status code: ${response.statusCode}");
     }
   }
 
@@ -375,6 +412,69 @@ class ApiManager {
         throw Exception(
             'Failed to make a POST request. Status code: ${response
                 .statusCode}');
+      }
+    } catch (e) {
+      print('에러 발생: $e');
+
+      throw e;
+    }
+  }
+  Future<List<Community>> getCommunity() async {
+    String endPoint = "/api/law/community";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("law List Data: " + response.body);
+
+      List<Community> Commdata = rawData.map((data) {
+        return Community(
+          LINK_URL: data['LINK_URL'],
+          likes: data['likes'],
+          content: data['content'],
+          dislikes: data['dislikes'],
+          BILL_NO: data['BILL_NO'],
+          BILL_NAME: data['BILL_NAME'],
+        );
+      }).toList();
+
+      return Commdata;
+    } else {
+      print("Community data response: " + response.body);
+      throw Exception("Fail to load community data from the API ${response.statusCode}");
+    }
+  }
+
+  //좋반 post
+  void sendThumbs(String voteType, int billId) async {
+    String endpoint = "/api/law/$billId/vote";
+
+    Dio _dio = Dio();
+    Map<String, dynamic> headers = {
+      'Content-Type': 'application/json',
+    };
+
+    try {
+      var response = await _dio.post(
+        '$baseUrl$endpoint',
+        data: {
+          "voteType" : voteType,
+        }, // 요청 데이터
+        options: Options(headers: headers), // 요청 헤더 설정
+      );
+
+      if (response.statusCode == 201) {
+        print("post 응답 성공 $voteType");
+      } else {
+        print("응답 코드: ${response.statusCode}");
+        throw Exception(
+            'Failed to make a POST request. Status code: ${response.statusCode}');
       }
     } catch (e) {
       print('에러 발생: $e');

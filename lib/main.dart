@@ -12,11 +12,12 @@ import '/models/Newstopic.dart';
 
 void main() async {
   await dotenv.load(fileName: '.env');
-  runApp(MaterialApp(home: MyApp()));
+  runApp(MaterialApp(home: MyApp(jwt: '',)));
 }
 
 class MyApp extends StatefulWidget {
-  MyApp({Key? key}) : super(key: key);
+  String jwt;
+  MyApp({Key? key, required this.jwt,}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -49,7 +50,7 @@ class _MyAppState extends State<MyApp> {
             laws: [],
           ),
           community(),
-          recommend()
+          recommend(jwt: widget.jwt,)
         ][tab],
         bottomNavigationBar: BottomNavigationBar(
           showUnselectedLabels: false,
@@ -130,7 +131,7 @@ class _MyAppState extends State<MyApp> {
           leading: IconButton(
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Category()));
+                  context, MaterialPageRoute(builder: (context) => Category(jwt: widget.jwt,)));
             },
             icon: Icon(Icons.menu),
           ),
@@ -152,7 +153,7 @@ class _MyAppState extends State<MyApp> {
           leading: IconButton(
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Category()));
+                  context, MaterialPageRoute(builder: (context) => Category(jwt: widget.jwt,)));
             },
             icon: Icon(Icons.menu),
           ),
@@ -174,7 +175,7 @@ class _MyAppState extends State<MyApp> {
           leading: IconButton(
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Category()));
+                  context, MaterialPageRoute(builder: (context) => Category(jwt: widget.jwt,)));
             },
             icon: Icon(Icons.menu),
           ),
@@ -196,7 +197,7 @@ class _MyAppState extends State<MyApp> {
           leading: IconButton(
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Category()));
+                  context, MaterialPageRoute(builder: (context) => Category(jwt: widget.jwt,)));
             },
             icon: Icon(Icons.menu),
           ),

@@ -18,14 +18,15 @@ class searchScreen extends StatefulWidget {
 }
 
 class _search extends State<searchScreen> {
-
   ApiManager apiManager = ApiManager().getApiManager();
 
   @override
   void initState() {
     super.initState();
+
     //fetchDataFromServer();
   }
+
 
 
   Future<void> fetchDataFromServer(String keyword) async {
@@ -191,7 +192,7 @@ void showsPopup(BuildContext context, Lawsearch popupInfo) {
                     launch(popupInfo.LINK_URL);
                   },
                   child: Text(
-                    "기사 링크: ${popupInfo.LINK_URL}",
+                    "링크: ${popupInfo.LINK_URL}",
                     style: TextStyle(
                       color: Colors.blue,
                       decoration: TextDecoration.underline,

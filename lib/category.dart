@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'editProfile.dart';
 
 class Category extends StatefulWidget {
-  const Category({super.key});
+  final String jwt;
+  const Category({Key? key, required this.jwt}) : super(key: key);
 
   @override
   State<Category> createState() => _CategoryState();
@@ -58,9 +59,9 @@ class _CategoryState extends State<Category> {
                           minimumSize: Size(sizeX * 0.75, 50)),
                       onPressed: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => EditProfile()));
+
+                            context, MaterialPageRoute(builder: (context) => EditProfile(jwt: widget.jwt,)));
+
                       },
                       child: Text(
                         "프로필 수정",
