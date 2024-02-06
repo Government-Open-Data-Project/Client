@@ -76,7 +76,7 @@ class _login extends State<login> {
 
         if (jwtAccessToken != null) {
           // jwtAccessToken이 null이 아닌 경우에만 Navigator.push 수행
-          Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp(jwt: jwtAccessToken)));
         } else {
           print('jwtAccessToken이 null입니다. 로그인 실패');
           showDialog(

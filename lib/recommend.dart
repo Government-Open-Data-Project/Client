@@ -42,7 +42,8 @@ class ButtonStates{
 }
 
 class recommend extends StatefulWidget {
-  recommend({Key? key}) : super(key: key);
+  String jwt;
+  recommend({Key? key, required this.jwt}) : super(key: key);
 
   @override
   State<recommend> createState() => _recommendState();
@@ -81,7 +82,7 @@ class _recommendState extends State<recommend> {
   //프로필 get
   Future<void> fetchDataFromServerProfile() async {
     try {
-      final data = await apiManager.getProfileData();
+      final data = await apiManager.getProfileData(widget.jwt);
 
       setState(() {
         profiles = data!;
@@ -457,176 +458,179 @@ class _recommendState extends State<recommend> {
                           margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
                           color: Colors.white,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                                margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                child: Text("거주 지역",style: TextStyle(fontWeight: FontWeight.bold),)
-                            ),
-                            Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(width: 10,),
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          elevation: 0.0,
-                                          backgroundColor: states.button9State ? Color(0xFFCADFEF) : Colors.white,
-                                          minimumSize: Size(20, 30),
-                                        ),
-                                        onPressed: (){
-                                          setState(() {
-                                            states.button9State = !states.button9State;
-                                            print(states.button9State);
-                                          });
-                                        },
-                                        child: Text("서울",style: TextStyle(color: states.button9State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                    ),
-                                    SizedBox(width: 5,),
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          elevation: 0.0,
-                                          backgroundColor: states.button10State ? Color(0xFFCADFEF) : Colors.white,
-                                          minimumSize: Size(20, 30),
-                                        ),
-                                        onPressed: (){
-                                          setState(() {
-                                            states.button10State = !states.button10State;
-                                            print(states.button10State);
-                                          });
-                                        },
-                                        child: Text("경기",style: TextStyle(color: states.button10State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                    ),
-                                    SizedBox(width: 5,),
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          elevation: 0.0,
-                                          backgroundColor: states.button11State ? Color(0xFFCADFEF) : Colors.white,
-                                          minimumSize: Size(20, 30),
-                                        ),
-                                        onPressed: (){
-                                          setState(() {
-                                            states.button11State = !states.button11State;
-                                            print(states.button11State);
-                                          });
-                                        },
-                                        child: Text("충북",style: TextStyle(color: states.button11State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                    ),
-                                    SizedBox(width: 5,),
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          elevation: 0.0,
-                                          backgroundColor: states.button12State ? Color(0xFFCADFEF) : Colors.white,
-                                          minimumSize: Size(20, 30),
-                                        ),
-                                        onPressed: (){
-                                          setState(() {
-                                            states.button12State = !states.button12State;
-                                            print(states.button12State);
-                                          });
-                                        },
-                                        child: Text("충남",style: TextStyle(color: states.button12State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                    ),
-                                    SizedBox(width: 5,),
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          elevation: 0.0,
-                                          backgroundColor: states.button13State ? Color(0xFFCADFEF) : Colors.white,
-                                          minimumSize: Size(20, 30),
-                                        ),
-                                        onPressed: (){
-                                          setState(() {
-                                            states.button13State = !states.button13State;
-                                            print(states.button13State);
-                                          });
-                                        },
-                                        child: Text("경북",style: TextStyle(color: states.button13State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    SizedBox(width: 10,),
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          elevation: 0.0,
-                                          backgroundColor: states.button14State ? Color(0xFFCADFEF) : Colors.white,
-                                          minimumSize: Size(20, 30),
-                                        ),
-                                        onPressed: (){
-                                          setState(() {
-                                            states.button14State = !states.button14State;
-                                            print(states.button14State);
-                                          });
-                                        },
-                                        child: Text("경남",style: TextStyle(color: states.button14State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                    ),
-                                    SizedBox(width: 5,),
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          elevation: 0.0,
-                                          backgroundColor: states.button15State ? Color(0xFFCADFEF) : Colors.white,
-                                          minimumSize: Size(20, 30),
-                                        ),
-                                        onPressed: (){
-                                          setState(() {
-                                            states.button15State = !states.button15State;
-                                            print(states.button15State);
-                                          });
-                                        },
-                                        child: Text("전북",style: TextStyle(color: states.button15State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                    ),
-                                    SizedBox(width: 5,),
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          elevation: 0.0,
-                                          backgroundColor: states.button16State ? Color(0xFFCADFEF) : Colors.white,
-                                          minimumSize: Size(20, 30),
-                                        ),
-                                        onPressed: (){
-                                          setState(() {
-                                            states.button16State = !states.button16State;
-                                            print(states.button16State);
-                                          });
-                                        },
-                                        child: Text("전남",style: TextStyle(color: states.button16State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                    ),
-                                    SizedBox(width: 5,),
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          elevation: 0.0,
-                                          backgroundColor: states.button17State ? Color(0xFFCADFEF) : Colors.white,
-                                          minimumSize: Size(20, 30),
-                                        ),
-                                        onPressed: (){
-                                          setState(() {
-                                            states.button17State = !states.button17State;
-                                            print(states.button17State);
-                                          });
-                                        },
-                                        child: Text("강원",style: TextStyle(color: states.button17State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                    ),
-                                    SizedBox(width: 5,),
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          elevation: 0.0,
-                                          backgroundColor: states.button18State ? Color(0xFFCADFEF) : Colors.white,
-                                          minimumSize: Size(20, 30),
-                                        ),
-                                        onPressed: (){
-                                          setState(() {
-                                            states.button18State = !states.button18State;
-                                            print(states.button18State);
-                                          });
-                                        },
-                                        child: Text("제주",style: TextStyle(color: states.button18State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                  margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                  child: Text("거주 지역",style: TextStyle(fontWeight: FontWeight.bold),)
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      SizedBox(width: 10,),
+                                      ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            elevation: 0.0,
+                                            backgroundColor: states.button9State ? Color(0xFFCADFEF) : Colors.white,
+                                            minimumSize: Size(20, 30),
+                                          ),
+                                          onPressed: (){
+                                            setState(() {
+                                              states.button9State = !states.button9State;
+                                              print(states.button9State);
+                                            });
+                                          },
+                                          child: Text("서울",style: TextStyle(color: states.button9State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                      ),
+                                      SizedBox(width: 5,),
+                                      ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            elevation: 0.0,
+                                            backgroundColor: states.button10State ? Color(0xFFCADFEF) : Colors.white,
+                                            minimumSize: Size(20, 30),
+                                          ),
+                                          onPressed: (){
+                                            setState(() {
+                                              states.button10State = !states.button10State;
+                                              print(states.button10State);
+                                            });
+                                          },
+                                          child: Text("경기",style: TextStyle(color: states.button10State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                      ),
+                                      SizedBox(width: 5,),
+                                      ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            elevation: 0.0,
+                                            backgroundColor: states.button11State ? Color(0xFFCADFEF) : Colors.white,
+                                            minimumSize: Size(20, 30),
+                                          ),
+                                          onPressed: (){
+                                            setState(() {
+                                              states.button11State = !states.button11State;
+                                              print(states.button11State);
+                                            });
+                                          },
+                                          child: Text("충북",style: TextStyle(color: states.button11State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                      ),
+                                      SizedBox(width: 5,),
+                                      ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            elevation: 0.0,
+                                            backgroundColor: states.button12State ? Color(0xFFCADFEF) : Colors.white,
+                                            minimumSize: Size(20, 30),
+                                          ),
+                                          onPressed: (){
+                                            setState(() {
+                                              states.button12State = !states.button12State;
+                                              print(states.button12State);
+                                            });
+                                          },
+                                          child: Text("충남",style: TextStyle(color: states.button12State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                      ),
+                                      SizedBox(width: 5,),
+                                      ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            elevation: 0.0,
+                                            backgroundColor: states.button13State ? Color(0xFFCADFEF) : Colors.white,
+                                            minimumSize: Size(20, 30),
+                                          ),
+                                          onPressed: (){
+                                            setState(() {
+                                              states.button13State = !states.button13State;
+                                              print(states.button13State);
+                                            });
+                                          },
+                                          child: Text("경북",style: TextStyle(color: states.button13State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      SizedBox(width: 10,),
+                                      ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            elevation: 0.0,
+                                            backgroundColor: states.button14State ? Color(0xFFCADFEF) : Colors.white,
+                                            minimumSize: Size(20, 30),
+                                          ),
+                                          onPressed: (){
+                                            setState(() {
+                                              states.button14State = !states.button14State;
+                                              print(states.button14State);
+                                            });
+                                          },
+                                          child: Text("경남",style: TextStyle(color: states.button14State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                      ),
+                                      SizedBox(width: 5,),
+                                      ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            elevation: 0.0,
+                                            backgroundColor: states.button15State ? Color(0xFFCADFEF) : Colors.white,
+                                            minimumSize: Size(20, 30),
+                                          ),
+                                          onPressed: (){
+                                            setState(() {
+                                              states.button15State = !states.button15State;
+                                              print(states.button15State);
+                                            });
+                                          },
+                                          child: Text("전북",style: TextStyle(color: states.button15State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                      ),
+                                      SizedBox(width: 5,),
+                                      ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            elevation: 0.0,
+                                            backgroundColor: states.button16State ? Color(0xFFCADFEF) : Colors.white,
+                                            minimumSize: Size(20, 30),
+                                          ),
+                                          onPressed: (){
+                                            setState(() {
+                                              states.button16State = !states.button16State;
+                                              print(states.button16State);
+                                            });
+                                          },
+                                          child: Text("전남",style: TextStyle(color: states.button16State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                      ),
+                                      SizedBox(width: 5,),
+                                      ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            elevation: 0.0,
+                                            backgroundColor: states.button17State ? Color(0xFFCADFEF) : Colors.white,
+                                            minimumSize: Size(20, 30),
+                                          ),
+                                          onPressed: (){
+                                            setState(() {
+                                              states.button17State = !states.button17State;
+                                              print(states.button17State);
+                                            });
+                                          },
+                                          child: Text("강원",style: TextStyle(color: states.button17State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                      ),
+                                      SizedBox(width: 5,),
+                                      ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            elevation: 0.0,
+                                            backgroundColor: states.button18State ? Color(0xFFCADFEF) : Colors.white,
+                                            minimumSize: Size(20, 30),
+                                          ),
+                                          onPressed: (){
+                                            setState(() {
+                                              states.button18State = !states.button18State;
+                                              print(states.button18State);
+                                            });
+                                          },
+                                          child: Text("제주",style: TextStyle(color: states.button18State ? Colors.grey :Color(0xA5000000),fontWeight: FontWeight.bold),)
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width,
@@ -1137,7 +1141,7 @@ class _recommendState extends State<recommend> {
                                 ],
                               ),
                               Container(
-                                margin: EdgeInsets.fromLTRB(30, 80, 0, 0),
+                                margin: EdgeInsets.fromLTRB(10, 80, 0, 0),
                                 width: sizeX*0.3,
                                 height: 30,
                                 //color: Colors.blue,
