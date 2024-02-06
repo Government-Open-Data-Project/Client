@@ -4,7 +4,8 @@ import 'network/api_manager.dart';
 import 'models/Profile.dart';
 
 class EditProfile extends StatefulWidget {
-  const EditProfile({super.key});
+  final String jwt;
+  const EditProfile({Key? key, required this.jwt}) : super(key: key);
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -14,36 +15,40 @@ class _EditProfileState extends State<EditProfile> {
   ApiManager apiManager = ApiManager().getApiManager();
   String? name;
 
-  void signInWithNaver() async {
-    try {
-      final NaverLoginResult result = await FlutterNaverLogin.logIn();
-      NaverAccessToken accessTokenRes =
-      await FlutterNaverLogin.currentAccessToken;
-
-      if (result.status == NaverLoginStatus.loggedIn) {
-
-        setState(() {
-          name = result.account.name;
-        });
-
-        print('이름: $name');
-
-      }
-    } catch (error) {
-      print(error.toString());
-    }
-  }
+  // void signInWithNaver() async {
+  //   try {
+  //     final NaverLoginResult result = await FlutterNaverLogin.logIn();
+  //     NaverAccessToken accessTokenRes =
+  //     await FlutterNaverLogin.currentAccessToken;
+  //
+  //     if (result.status == NaverLoginStatus.loggedIn) {
+  //
+  //       setState(() {
+  //         name = result.account.name;
+  //       });
+  //
+  //       print('이름: $name');
+  //
+  //     }
+  //   } catch (error) {
+  //     print(error.toString());
+  //   }
+  // }
 
   //post
   void sendProfile() async {
     try {
+      String jwt = widget.jwt;
       String age = selectedAgeText;
+      String married = selectedMarryText;
       String region = selectedRegionText;
       String position = selectedPositionText;
       List<String> interests = selectedInterestsText;
-      String married = selectedMarryText;
 
-      apiManager.sendProfile(age, region, position, interests, married);
+
+      print("정보들 : $age $region $position $interests $married");
+
+      apiManager.sendProfile(jwt ,age, region, position, interests, married);
 
       // Use a separate function to handle the asynchronous operations
       //await _updateMyPage();
@@ -57,10 +62,12 @@ class _EditProfileState extends State<EditProfile> {
   //get
   Future<void> fetchDataFromServerProfile() async {
     try {
-      final data = await apiManager.getProfileData();
+      final data = await apiManager.getProfileData(widget.jwt);
 
       setState(() {
+        print("jwt ${widget.jwt}");
         profiles = data!;
+
         getAgeButtonNum(profiles!.age);
         getMarryButtonNum(profiles!.isMarried);
         getRegionButtonNum(profiles!.region);
@@ -70,7 +77,8 @@ class _EditProfileState extends State<EditProfile> {
 
       print("프로필 get 통신성공");
     } catch (error) {
-      print('Error fetching data: $error');
+      print('Error fetching data: $error ');
+      print("jwt ${widget.jwt}");
     }
   }
 
@@ -296,7 +304,7 @@ class _EditProfileState extends State<EditProfile> {
                               ),
                               children: [
                                 TextSpan(
-                                  text: name,
+                                  text: "${profiles?.name}님",
                                 ),
                               ]))),
                   Container(
@@ -630,6 +638,7 @@ class _EditProfileState extends State<EditProfile> {
                                       selectedInterests.add("기타");
 
                                     setState(() {
+                                      saveSelectedOptions();
                                       selectedInterestsText = selectedInterests;
                                     });
 
@@ -898,32 +907,34 @@ class _EditProfileState extends State<EditProfile> {
       case 8:
         return "기혼";
       case 9:
-        return "경기";
+        return "서울";
       case 10:
-        return "충북";
+        return "경기";
       case 11:
-        return "충남";
+        return "충북";
       case 12:
-        return "경북";
+        return "충남";
       case 13:
-        return "경남";
+        return "경북";
       case 14:
-        return "전북";
+        return "경남";
       case 15:
-        return "전남";
+        return "전북";
       case 16:
-        return "강원";
+        return "전남";
       case 17:
-        return "제주";
+        return "강원";
       case 18:
-        return "학생";
+        return "제주";
       case 19:
-        return "회사원";
+        return "학생";
       case 20:
-        return "사업가";
+        return "회사원";
       case 21:
-        return "무직";
+        return "사업가";
       case 22:
+        return "무직";
+        case 22:
         return "기타";
       default:
         return " ";
