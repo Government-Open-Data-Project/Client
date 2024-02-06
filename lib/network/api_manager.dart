@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:nation/models/Community.dart';
 import 'package:nation/models/Law.dart';
 import 'package:dio/dio.dart';
 import 'package:nation/home.dart';
@@ -302,6 +303,37 @@ class ApiManager {
       print('에러 발생: $e');
 
       throw e;
+    }
+  }
+  Future<List<Community>> getCommunity() async {
+    String endPoint = "/api/law/community";
+
+    final response = await http.get(
+      Uri.parse('$baseUrl$endPoint'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
+      print("law List Data: " + response.body);
+
+      List<Community> Commdata = rawData.map((data) {
+        return Community(
+          LINK_URL: data['LINK_URL'],
+          likes: data['likes'],
+          content: data['content'],
+          dislikes: data['dislikes'],
+          BILL_NO: data['BILL_NO'],
+          BILL_NAME: data['BILL_NAME'],
+        );
+      }).toList();
+
+      return Commdata;
+    } else {
+      print("Community data response: " + response.body);
+      throw Exception("Fail to load community data from the API ${response.statusCode}");
     }
   }
 }
