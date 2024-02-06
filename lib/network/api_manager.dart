@@ -235,9 +235,8 @@ class ApiManager {
     }
   }
 
-  Future<List<Lawsearch>> getLawSearchData() async {
+  Future<List<Lawsearch>> getLawSearchData(String keyword) async {
     String endPoint = "/api/law/search";
-    String keyword = "string"; // 키워드를 원하는 값으로 변경
 
     final response = await http.get(
       Uri.parse('$baseUrl$endPoint?keyword=$keyword'),
@@ -257,9 +256,11 @@ class ApiManager {
         );
       }).toList();
 
+      print('keyword: $keyword');
       return lawsea;
+
     } else {
-      throw Exception("Fail to load search data from the API");
+      throw Exception("Failed to make a POST request. Status code: ${response.statusCode}");
     }
   }
 
