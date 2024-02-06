@@ -452,12 +452,13 @@ class ApiManager {
   }
 
   //좋반 post
-  void sendThumbs(String voteType, int billId) async {
+  void sendThumbs(String jwt,String voteType, int billId) async {
     String endpoint = "/api/law/$billId/vote";
 
     Dio _dio = Dio();
     Map<String, dynamic> headers = {
       'Content-Type': 'application/json',
+      'Authorization': 'Bearer $jwt',
     };
 
     try {

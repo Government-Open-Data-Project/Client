@@ -158,6 +158,27 @@ class _CustomContainerState extends State<CustomContainer> {
     sunfavoritColor = unFavoriteMap[BILL_NO]!.unfavoriteColor;
   }
 
+  void sendThumbs() async {
+    try {
+      String jwt = widget.jwt;
+      String age = selectedAgeText;
+      String married = selectedMarryText;
+      String region = selectedRegionText;
+      String position = selectedPositionText;
+      List<String> interests = selectedInterestsText;
+
+
+      print("정보들 : $age $region $position $interests $married");
+
+      apiManager.sendProfile(jwt ,age, region, position, interests, married);
+
+      // Use a separate function to handle the asynchronous operations
+      //await _updateMyPage();
+    } catch (error) {
+      print('Error sending MyPage: $error');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
