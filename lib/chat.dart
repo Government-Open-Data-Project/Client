@@ -128,7 +128,6 @@ class _ChatState extends State<Chat> {
     String messageText = _textController.text;
     _messages.add(ChatMessage(text: messageText, isMe: true));
     setState(() {
-
     });
 
     if (messageText.isNotEmpty) {
@@ -375,18 +374,18 @@ class _ChatMessageState extends State<ChatMessage> {
             constraints: BoxConstraints(
               maxWidth: 300.0, // 최대 넓이를 원하는 값으로 설정
             ),
-            margin: const EdgeInsets.all(5.0),
-            padding: const EdgeInsets.all(16.0),
+            margin: const EdgeInsets.fromLTRB(9, 5, 9, 0),
+            padding: const EdgeInsets.all(15.0),
             decoration: BoxDecoration(
               color: widget.isMe ? Color(0xFFCADFEF) : Colors.white,
               //나면 파랑 봇 흰색
               borderRadius: BorderRadius.only(
                 topLeft:
-                widget.isMe ? Radius.circular(20.0) : Radius.circular(1.0),
+                widget.isMe ? Radius.circular(23.0) : Radius.circular(1.0),
                 topRight:
-                widget.isMe ? Radius.circular(1.0) : Radius.circular(20.0),
-                bottomLeft: Radius.circular(20.0),
-                bottomRight: Radius.circular(20.0),
+                widget.isMe ? Radius.circular(1.0) : Radius.circular(23.0),
+                bottomLeft: Radius.circular(23.0),
+                bottomRight: Radius.circular(23.0),
               ),
             ),
             child: Text(

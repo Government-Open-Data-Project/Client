@@ -382,8 +382,7 @@ class _NewsState extends State<News> {
                                     child: Text(
                                       HtmlUnescape().convert(_truncateText(
                                         widget.popupInfos[index].comp_content
-                                            .replaceAll('\n', ' '),
-                                        40,
+                                            .replaceAll('\n', ' '), 40,
                                       )),
                                       style: TextStyle(
                                         fontSize: 16,
