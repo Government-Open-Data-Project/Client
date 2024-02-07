@@ -3,7 +3,6 @@ class Law {
   String content;
   String LINK_URL;
 
-
   Law({
     required this.BILL_NAME,
     required this.content,

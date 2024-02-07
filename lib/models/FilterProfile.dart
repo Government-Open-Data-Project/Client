@@ -1,12 +1,12 @@
-class Profile {
-  String name;
-  String age;
-  String isMarried;
-  String region;
-  String position;
+class FilterProfile {
+  List<String> name;
+  List<String> age;
+  List<String> isMarried;
+  List<String> region;
+  List<String> position;
   List<String> interests;
 
-  Profile({
+  FilterProfile({
     required this.name,
     required this.age,
     required this.isMarried,

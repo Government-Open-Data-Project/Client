@@ -2,49 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'network/api_manager.dart';
 import 'package:html/parser.dart';
-
-class NewsDetail {
-  DateTime reg_date; //올리는 날짜
-  String link_url; //기사 링크
-  String comp_main_title; // 기사 제목
-  String comp_content; // 기사 내용
-
-  NewsDetail({
-    required this.reg_date,
-    required this.link_url,
-    required this.comp_main_title,
-    required this.comp_content,
-  });
-}
-
-class Newstopic {
-  DateTime date;
-  String local;
-  int age;
-
-  Newstopic({
-    required this.date,
-    this.local = " ",
-    this.age = 0,
-  });
-}
+import 'models/NewsDetail.dart';
+import 'models/Newstopic.dart';
+import 'models/Profile.dart';
 
 class home extends StatefulWidget {
-  late final List<NewsDetail> todayNews;
-  final List<NewsDetail> ageNews;
-  final List<NewsDetail> localNews;
-  final Newstopic newsTopic;
+  final String jwt;
 
-  home(
-      {Key? key,
-      required this.todayNews,
-      required this.ageNews,
-      required this.localNews,
-      required this.newsTopic})
-      : super(key: key);
+  home({
+    Key? key,
+    required this.jwt,
+  }) : super(key: key);
 
   @override
   State<home> createState() => _homeState();
@@ -54,6 +24,13 @@ class _homeState extends State<home> {
   final PageController _pageController = PageController();
   int _currentPageIndex = 0;
   ApiManager apiManager = ApiManager().getApiManager();
+  int ageint = 0;
+  String local = "";
+
+  List<NewsDetail> todayNews = [];
+  List<NewsDetail> ageNews = [];
+  List<NewsDetail> localNews = [];
+
 
   @override
   void initState() {
@@ -63,6 +40,13 @@ class _homeState extends State<home> {
         _currentPageIndex = _pageController.page!.round();
       });
     });
+
+    final Newstopic newstopic = Newstopic(local: local, age: ageint);
+
+    setState(() {
+      newstopic;
+    });
+    fetchDataFromServerProfile();
     fetchDataFromServer();
   }
 
@@ -71,13 +55,174 @@ class _homeState extends State<home> {
       final data = await apiManager.getNews();
 
       setState(() {
-        widget.todayNews.addAll(data);
-        widget.ageNews.addAll(data);
+        todayNews = data!;
       });
+      ageNewsFromServer();
+      localNewsFromServer();
+
     } catch (error) {
-      print('Error fetching data: ${error.toString()}');
+      print(' News Error fetching data: ${error.toString()}');
     }
   }
+
+  Future<void> fetchUrl(String url) async {
+    try {
+      await apiManager.getUrlNewsCheck(widget.jwt, url);
+      print("Url 성공 ");
+
+    } catch (error) {
+      print(' News Error fetching data: ${error.toString()}');
+    }
+  }
+
+  //해당 뉴스 클릭 시 뜨는 팝업창
+  void showsPopup(BuildContext context, NewsDetail popupInfo) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            parse(HtmlUnescape().convert(popupInfo.comp_main_title)).body!.text,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: SingleChildScrollView(
+            // Scrollable content
+            child: Container(
+              padding: const EdgeInsets.all(2.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(parse(HtmlUnescape().convert(popupInfo.comp_content)).body!.text),                SizedBox(height: 8),
+                  GestureDetector(
+                    onTap: () {
+                      launch(popupInfo.link_url);
+                      fetchUrl(popupInfo.link_url);
+                    },
+                    child: Text(
+                      "기사 링크: ${popupInfo.link_url}",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("닫기"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Profile? profiles;
+
+  Future<void> fetchDataFromServerProfile() async {
+    try {
+      final data = await apiManager.getProfileData(widget.jwt);
+
+      setState(() {
+        profiles = data!;
+        print("jwt ${widget.jwt}");
+
+        ageint = getAgeButtonNum(profiles!.age);
+        local = getRegionButtonNum(profiles!.region);
+      });
+
+    } catch (error) {
+      print('Error home profile fetching data: $error');
+      print("jwt ${widget.jwt}");
+    }
+  }
+
+  int getAgeButtonNum(String button) {
+    switch (button) {
+      case "20대":
+        return 20;
+      case "30대":
+        return 30;
+      case "40대":
+        return 40;
+      case "50대":
+        return 50;
+      case "60대":
+        return 60;
+      case "70대이상":
+        return 70;
+      default:
+        return 0; // 디폴트 값으로 설정할 값 할당
+    }
+  }
+
+  String getRegionButtonNum(String button) {
+    switch (button) {
+      case "서울":
+        return "서울";
+      case "경기":
+        return "경기";
+      case "충북":
+        return "충북";
+      case "충남":
+        return "충남";
+      case "경북":
+        return "경북";
+      case "경남":
+        return "경남";
+      case "전북":
+        return "전북";
+      case "전남":
+        return "전남";
+      case "강원":
+        return "강원";
+      case "제주":
+        return "제주";
+      default:
+        return " ";
+    }
+  }
+
+  //나이별 뉴스 get
+  Future<void> ageNewsFromServer() async {
+    try {
+      await Future.delayed(Duration(milliseconds: 1000));
+
+      final data = await apiManager.getAgeNews(ageint);
+
+      setState(() {
+        ageNews.addAll(data);
+      });
+    } catch (error) {
+      print('Error age fetching data: ${error.toString()}');
+    }
+  }
+
+
+  //지역별 뉴스 get
+  Future<void> localNewsFromServer() async {
+    try {
+      await Future.delayed(Duration(milliseconds: 1000));
+
+      final data = await apiManager.getRegionNews(local);
+
+      setState(() {
+        localNews.addAll(data);
+      });
+    } catch (error) {
+      print('Error local fetching data: ${error.toString()}');
+    }
+  }
+
+
 
   Widget _buildPageIndicator() {
     return Row(
@@ -103,7 +248,7 @@ class _homeState extends State<home> {
     // 현재 날짜 가져오기
     DateTime now = DateTime(2024, 1, 17);
 
-    String formattedDate = "${now.year}년 ${now.month}월 ${now.day}일";
+    //   String formattedDate = "${now.year}년 ${now.month}월 ${now.day}일";
 
     return Container(
       color: Color(0xFFD0D0D0),
@@ -124,7 +269,7 @@ class _homeState extends State<home> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "$formattedDate 뉴스",
+                        " P.P의 HOT 뉴스",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -132,7 +277,7 @@ class _homeState extends State<home> {
                         textAlign: TextAlign.left,
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 18,
                       ),
                       Expanded(
                         child: Container(
@@ -156,32 +301,34 @@ class _homeState extends State<home> {
                                 itemCount: 5,
                                 itemBuilder: (context, itemIndex) {
                                   final index = pageIndex * 5 + itemIndex;
-                                  if (index < widget.todayNews.length) {
+                                  if (index < todayNews.length) {
                                     return GestureDetector(
                                       onTap: () {
-                                        showsPopup(
-                                            context, widget.todayNews[index]);
+                                        showsPopup(context, todayNews[index]);
                                       },
                                       child: Container(
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: [
                                             Padding(
                                               padding: EdgeInsets.fromLTRB(
-                                                  15, 10, 3, 0),
+                                                  15, 5, 3, 0),
                                               child: // 기사 제목 표시 (HTML 엔터티 디코딩)
-                                                  Text(
-                                                HtmlUnescape().convert(widget
-                                                    .todayNews[index]
-                                                    .comp_main_title),
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15,
+                                              Container(
+                                                margin: EdgeInsets.only(bottom: 3),
+                                                child: Text(
+                                                  parse(HtmlUnescape().convert(
+                                                    todayNews[index].comp_main_title,
+                                                  )).body!.text,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 14,
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(height: 4),
                                             Container(
                                               padding: EdgeInsets.symmetric(
                                                   horizontal: 10),
@@ -196,23 +343,22 @@ class _homeState extends State<home> {
                                               padding: EdgeInsets.fromLTRB(
                                                   17, 5, 10, 0),
                                               child: Text(
-                                                HtmlUnescape().convert(
+                                                parse(HtmlUnescape().convert(
                                                   _truncateText(
-                                                    widget.todayNews[index]
-                                                        .comp_content,
+                                                    todayNews[index].comp_content,
                                                     40,
                                                   ).replaceAll('\n', ' '),
-                                                ),
+                                                )).body!.text,
                                                 style: TextStyle(fontSize: 13),
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
                                             Container(
                                               padding: EdgeInsets.symmetric(
-                                                  horizontal: 8),
+                                                  horizontal: 6),
                                               child: Divider(
                                                 color: Colors.white,
-                                                height: 2,
+                                                height: 1,
                                               ),
                                             ),
                                           ],
@@ -255,14 +401,14 @@ class _homeState extends State<home> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${widget.newsTopic.age}대가 관심있게 본 뉴스",
+                        "${ageint}대가 관심있게 본 뉴스",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),
                       SizedBox(
                         height: 25,
                       ),
-                      News(popupInfos: widget.ageNews), // 팝업 정보 전달
+                      News(jwt: widget.jwt, popupInfos: ageNews), // 팝업 정보 전달
                     ], //                    ],
                   ),
                 ),
@@ -287,14 +433,14 @@ class _homeState extends State<home> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${widget.newsTopic.local}에서 관심있게 본 뉴스",
+                        "${local}에서 관심있게 본 뉴스",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),
                       SizedBox(
                         height: 25,
                       ),
-                      News(popupInfos: widget.localNews),
+                      News(jwt: widget.jwt, popupInfos: localNews),
                       // 팝업 정보 전달
                     ],
                   ),
@@ -321,8 +467,10 @@ class _homeState extends State<home> {
 
 // 나이,지역별 관심있게 본 뉴스
 class News extends StatefulWidget {
+  final String jwt;
   final List<NewsDetail> popupInfos; // 생성자를 통해 전달되는 정보
-  const News({Key? key, required this.popupInfos}) : super(key: key);
+  const News({Key? key, required this.popupInfos, required this.jwt})
+      : super(key: key);
 
   @override
   _NewsState createState() => _NewsState();
@@ -334,6 +482,7 @@ class _NewsState extends State<News> {
 
   @override
   Widget build(BuildContext context) {
+
     final sizeX = MediaQuery.of(context).size.width;
 
     return Container(
@@ -380,10 +529,10 @@ class _NewsState extends State<News> {
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(12, 8, 5, 0),
                                     child: Text(
-                                      HtmlUnescape().convert(_truncateText(
-                                        widget.popupInfos[index].comp_content
-                                            .replaceAll('\n', ' '), 40,
-                                      )),
+                                      parse(HtmlUnescape().convert(_truncateText(
+                                        widget.popupInfos[index].comp_content.replaceAll('\n', ' '),
+                                        40,
+                                      ))).body!.text,
                                       style: TextStyle(
                                         fontSize: 16,
                                       ),
@@ -435,6 +584,7 @@ class _NewsState extends State<News> {
       return text.substring(0, maxLength) + "...";
     }
   }
+
 }
 
 //해당 뉴스 클릭 시 뜨는 팝업창
@@ -443,10 +593,12 @@ void showsPopup(BuildContext context, NewsDetail popupInfo) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text(HtmlUnescape().convert(popupInfo.comp_main_title),
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),),
+        title: Text(
+          parse(HtmlUnescape().convert(popupInfo.comp_main_title)).body!.text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         content: SingleChildScrollView(
           // Scrollable content
           child: Container(
@@ -454,8 +606,7 @@ void showsPopup(BuildContext context, NewsDetail popupInfo) {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(HtmlUnescape().convert(popupInfo.comp_content)),
-                SizedBox(height: 8),
+                Text(parse(HtmlUnescape().convert(popupInfo.comp_content)).body!.text),                SizedBox(height: 8),
                 GestureDetector(
                   onTap: () {
                     launch(popupInfo.link_url);
@@ -484,3 +635,5 @@ void showsPopup(BuildContext context, NewsDetail popupInfo) {
     },
   );
 }
+
+
