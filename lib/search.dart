@@ -177,7 +177,7 @@ class _search extends State<search> {
               ),
               Container(
                 width: sizeX * 0.9,
-                height: 510,
+                height: 470,
                 decoration: BoxDecoration(
                   color: Color(0xFFE8E8E8),
                   borderRadius: BorderRadius.circular(7),
