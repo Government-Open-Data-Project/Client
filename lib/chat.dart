@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/physics.dart';
 import 'package:nation/network/api_manager.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -21,13 +19,12 @@ class _ChatState extends State<Chat> {
   final TextEditingController _textController = TextEditingController();
   late List<ChatMessage> _messages = [];
   final ScrollController _scrollController = ScrollController();
-
   late String myLastMessage = "";
 
   //TTS
   FlutterTts flutterTts = FlutterTts();
 
-//STT
+  //STT
   bool _speechEnabled = false;
   String _wordSpoken = " ";
   double _confidenceLevel = 0;
@@ -44,24 +41,19 @@ class _ChatState extends State<Chat> {
   Future<void> fetchDataFromServer2() async {
     try {
       final data = await apiManager.getGPTMessages();
-
       List<ChatMessage> newMessages = [];
+      bool isLastMessageMe = true;
 
-      // 데이터를 ChatMessage 객체로 변환하여 newMessages에 추가
       for (var message in data) {
         newMessages.add(ChatMessage(
           text: message["value"],
           isMe: message["role"] == "user" ? true : false,
         ));
       }
-
-      bool isLastMessageMe = true;
       if (newMessages.first.text.length > 0 && !newMessages.first.isMe) {
         isLastMessageMe = false;
       }
-
       if (!isLastMessageMe) {
-        // 기존의 _messages 리스트에 새로운 메시지들을 추가
         setState(() {
           _messages = List.from(newMessages.reversed);
         });
@@ -87,18 +79,14 @@ class _ChatState extends State<Chat> {
   Future<void> fetchDataFromServer() async {
     try {
       final data = await apiManager.getGPTMessages();
-
       List<ChatMessage> newMessages = [];
 
-      // 데이터를 ChatMessage 객체로 변환하여 newMessages에 추가
       for (var message in data) {
         newMessages.add(ChatMessage(
           text: message["value"],
           isMe: message["role"] == "user" ? true : false,
         ));
       }
-
-      // 기존의 _messages 리스트에 새로운 메시지들을 추가
       setState(() {
         _messages.addAll(newMessages.reversed);
       });
@@ -115,19 +103,15 @@ class _ChatState extends State<Chat> {
     }
   }
 
-  //메세지 보내는 함수
   void sendMessage() {
     String messageText = _textController.text;
     _messages.add(ChatMessage(text: messageText, isMe: true));
     setState(() {});
-
     if (messageText.isNotEmpty) {
       apiManager.sendMessage(messageText);
-
       print("보낸 말 + $messageText");
       _textController.clear();
 
-      // 메시지를 전송한 후 스크롤을 아래로 이동
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
@@ -149,7 +133,6 @@ class _ChatState extends State<Chat> {
         onStatus: (val) => print('onstatus : $val'),
         onError: (val) => print('onError: $val '),
       );
-
       if (initialized) {
         setState(() {
           _speechEnabled = true;
@@ -189,7 +172,6 @@ class _ChatState extends State<Chat> {
     setState(() {
       _wordSpoken = "${result.recognizedWords}";
       _confidenceLevel = result.confidence;
-
       if (_confidenceLevel > 0.5) {
         _textController.text = _wordSpoken;
         isTyping = true;
@@ -201,7 +183,6 @@ class _ChatState extends State<Chat> {
   void dispose() {
     // STT 리스너 제거
     _speechToText.cancel();
-
     flutterTts.stop(); // 페이지 종료 시 TTS 중지
     super.dispose();
   }
@@ -209,7 +190,7 @@ class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true, // true값 할당
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text("Chat P.P"),
         backgroundColor: Color(0xFF00005B),
@@ -229,11 +210,11 @@ class _ChatState extends State<Chat> {
           });
         },
         child: Container(
-          color: Color(0xFFDEDEDE), // 배경 색상 설정
+          color: Color(0xFFDEDEDE),
           child: Column(
             children: [
               Expanded(
-                //스크롤 다 떙기면? 나오는 색
+                //스크롤 다 떙기면 나오는 색
                 child: GlowingOverscrollIndicator(
                   color: Colors.black,
                   axisDirection: AxisDirection.down,
@@ -251,10 +232,8 @@ class _ChatState extends State<Chat> {
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    // Background color
                     borderRadius: BorderRadius.circular(50.0),
-                    // Circular border radius
-                    border: Border.all(color: Colors.black), // Black border
+                    border: Border.all(color: Colors.black),
                   ),
                   child: Row(
                     children: [

@@ -6,7 +6,6 @@ class Profile {
   String position;
   List<String> interests;
 
-
   Profile({
     required this.name,
     required this.age,
@@ -14,6 +13,5 @@ class Profile {
     required this.region,
     required this.position,
     required this.interests,
-
   });
 }

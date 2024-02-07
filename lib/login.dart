@@ -3,15 +3,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:nation/main.dart';
-
 import 'network/api_manager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting();
-  await dotenv.load(); // dotenv를 초기화합니다.
-
-
+  await dotenv.load();
   runApp(MaterialApp(home: login()));
 }
 
@@ -32,15 +29,12 @@ class _login extends State<login> {
   String? tel;
   String? sex;
   String? birth;
+  ApiManager apiManager = ApiManager().getApiManager();
 
   @override
   void initState() {
     super.initState();
-    // 필요한 초기화 작업 수행
   }
-
-  ApiManager apiManager = ApiManager().getApiManager();
-
 
   void signInWithNaver() async {
     try {
@@ -49,10 +43,8 @@ class _login extends State<login> {
           await FlutterNaverLogin.currentAccessToken;
 
       if (result.status == NaverLoginStatus.loggedIn) {
-
         setState(() {
           isLogin = true;
-
           name = result.account.name;
           tel = result.account.mobile
               .replaceAll('+82', '0')
@@ -66,29 +58,33 @@ class _login extends State<login> {
           tokenType = accessTokenRes.tokenType;
           refreshToken = accessTokenRes.refreshToken;
           print(accessTokenRes);
-          print(result.accessToken.tokenType);
         });
-
         print('이름: $name, 전화번호: $tel,성별: $sex, 출생년도: $birth');
         print("$isLogin, 토큰 : [<$accessToken>, $refreshToken, $tokenType]");
 
-        String? jwtAccessToken = await apiManager.sendToken(accessToken!, "naver");
+        String? jwtAccessToken =
+            await apiManager.sendToken(accessToken!, "naver");
 
         if (jwtAccessToken != null) {
-          // jwtAccessToken이 null이 아닌 경우에만 Navigator.push 수행
-          Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp(jwt: jwtAccessToken)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MyApp(jwt: jwtAccessToken)));
         } else {
           print('jwtAccessToken이 null입니다. 로그인 실패');
           showDialog(
               context: context,
-              builder: (BuildContext context){
+              builder: (BuildContext context) {
                 return AlertDialog(
                   title: Text('로그인 실패'),
                   content: Text('안됩니다'),
                   actions: [
-                    TextButton(onPressed: (){
-                      Navigator.of(context).pop();
-                    }, child: Text("확인"),)
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text("확인"),
+                    )
                   ],
                 );
               });

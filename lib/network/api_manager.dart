@@ -11,9 +11,9 @@ import '../models/Lawsearch.dart';
 import 'package:nation/models/Profile.dart';
 import '../models/NewsDetail.dart';
 
-
 class ApiManager {
   static ApiManager apiManager = new ApiManager();
+
   // accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJzTzRqbXlvUU5sOGFiMmQ0Q0pscUl3d2U1ZzY1bXhXU1VnLWN4bC16VVhjIiwiaWF0IjoxNzA3MjAyMjEyLCJleHAiOjE3MDk3OTQyMTJ9.zdjSFZofvNMtvqGYGEuNAgS21vjdXqh26pL0aKoTIm0";
 
   ApiManager getApiManager() {
@@ -72,8 +72,7 @@ class ApiManager {
 
     final response = await http.get(
       Uri.parse('$baseUrl$endPoint'),
-      headers: <String, String>{
-      },
+      headers: <String, String>{},
     );
 
     if (response.statusCode == 200) {
@@ -104,6 +103,7 @@ class ApiManager {
       headers: <String, String>{
         'accept': 'application/json',
         'Authorization': 'Bearer $jwt',
+
       },
     );
 
@@ -128,7 +128,8 @@ class ApiManager {
   }
 
   //프로필 Post
-  void sendProfile(String jwt,String age, String region, String position, List<String> interests, String married) async {
+  void sendProfile(String jwt, String age, String region, String position,
+      List<String> interests, String married) async {
     String endpoint = "/api/user/profile";
 
     Dio _dio = Dio();
@@ -143,17 +144,16 @@ class ApiManager {
       var response = await _dio.post(
         '$baseUrl$endpoint',
         data: {
-          "age" : age,
-          "region" : region,
-          "position" : position,
-          "interests" : interests,
-          "isMarried" : married,
+          "age": age,
+          "region": region,
+          "position": position,
+          "interests": interests,
+          "isMarried": married,
         }, // 요청 데이터
         options: Options(headers: headers), // 요청 헤더 설정
       );
 
       if (response.statusCode == 201) {
-        
         print("프로필 post 응답 성공");
       } else {
         print("응답 코드: ${response.statusCode}");
@@ -168,7 +168,8 @@ class ApiManager {
   }
 
   // 맞춤필터 post
-  void sendfilter(List<String> age, List<String> region, List<String> position, List<String> interests, List<String> married) async {
+  void sendfilter(List<String> age, List<String> region, List<String> position,
+      List<String> interests, List<String> married) async {
     String endpoint = "/api/law/recommended";
 
     Dio _dio = Dio();
@@ -180,11 +181,11 @@ class ApiManager {
       var response = await _dio.post(
         '$baseUrl$endpoint',
         data: {
-          "age" : age,
-          "region" : region,
-          "position" : position,
-          "interests" : interests,
-          "married" : married,
+          "age": age,
+          "region": region,
+          "position": position,
+          "interests": interests,
+          "married": married,
         }, // 요청 데이터
         options: Options(headers: headers), // 요청 헤더 설정
       );
@@ -237,7 +238,8 @@ class ApiManager {
   Future<List<NewsDetail>> getNews() async {
     String endPoint = "/api/news";
 
-    String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime(2024, 1, 17));
+    String formattedDate =
+        DateFormat('yyyy-MM-dd').format(DateTime(2024, 1, 17));
 
     final response = await http.get(
       Uri.parse('$baseUrl$endPoint?date=$formattedDate'),
@@ -247,29 +249,25 @@ class ApiManager {
     );
 
     if (response.statusCode == 200) {
-      Map<String, dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
-
+      Map<String, dynamic> responseData =
+          json.decode(utf8.decode(response.bodyBytes));
 
       // "newsList" 키에 해당하는 값을 가져옵니다.
       List<dynamic> rawData = responseData['newsList'];
 
       print("News statistics data: " + response.body);
 
-      print("오늘 뉴스 성공");
 
-
-
+      print(rawData.toString());
       List<NewsDetail> MSatisdata = rawData.map((data) {
         return NewsDetail(
-          reg_date: DateTime.parse(data['REG_DATE']),
+          reg_date: data['REG_DATE'] ?? '',
           link_url: data['LINK_URL'] ?? '',
           comp_main_title: data['COMP_MAIN_TITLE'] ?? '',
           comp_content: data['COMP_CONTENT'] ?? '',
         );
       }).toList();
 
-
-      print("오늘 뉴스 성공");
       return MSatisdata;
     } else {
       print("News data response: " + response.body);
@@ -277,32 +275,28 @@ class ApiManager {
     }
   }
 
-
-
   // 연령대 뉴스 get
   Future<List<NewsDetail>> getAgeNews(int age) async {
     String endPoint = "/api/top-by-age-group/$age";
 
     final response = await http.get(
       Uri.parse('$baseUrl$endPoint'),
-
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
     );
     if (response.statusCode == 200) {
-      Map<String, dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
+      Map<String, dynamic> responseData =
+          json.decode(utf8.decode(response.bodyBytes));
 
       // "newsList" 키에 해당하는 값을 가져옵니다.
       List<dynamic> rawData = responseData['newsList'];
 
       print("Age News statistics data: " + response.body);
-      print("age 뉴스 성공 ");
-
 
       List<NewsDetail> MSatisdata = rawData.map((data) {
         return NewsDetail(
-          reg_date: DateTime.parse(data['REG_DATE']),
+          reg_date: data['REG_DATE'],
           link_url: data['LINK_URL'] ?? '',
           comp_main_title: data['COMP_MAIN_TITLE'] ?? '',
           comp_content: data['COMP_CONTENT'] ?? '',
@@ -312,8 +306,8 @@ class ApiManager {
       return MSatisdata;
     } else {
       print("Age News data response: " + response.body);
-      print("앤드 포인듀${endPoint}" );
-      throw Exception("Fail to load Age News data from the API ${response.statusCode}");
+      throw Exception(
+          "Fail to load Age News data from the API ${response.statusCode}");
     }
   }
 
@@ -328,18 +322,17 @@ class ApiManager {
       },
     );
     if (response.statusCode == 200) {
-      Map<String, dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
+      Map<String, dynamic> responseData =
+          json.decode(utf8.decode(response.bodyBytes));
 
       // "newsList" 키에 해당하는 값을 가져옵니다.
       List<dynamic> rawData = responseData['newsList'];
 
       print("local News statistics data: " + response.body);
-      print("local 뉴스 성공 ");
-
 
       List<NewsDetail> MSatisdata = rawData.map((data) {
         return NewsDetail(
-          reg_date: DateTime.parse(data['REG_DATE']),
+          reg_date: data['REG_DATE'],
           link_url: data['LINK_URL'] ?? '',
           comp_main_title: data['COMP_MAIN_TITLE'] ?? '',
           comp_content: data['COMP_CONTENT'] ?? '',
@@ -349,19 +342,41 @@ class ApiManager {
       return MSatisdata;
     } else {
       print("local News data response: " + response.body);
-      print("앤드 포인듀${endPoint}" );
-      throw Exception("Fail to load local News data from the API ${response.statusCode}");
+      throw Exception(
+          "Fail to load local News data from the API ${response.statusCode}");
     }
   }
 
+  //url
+  Future<void> getUrlNewsCheck(String jwt, url) async {
+    String endPoint = "/api/news/increaseViews?url=$url";
+
+    final response = await http.get(
+      Uri.parse('http://34.64.78.56:8080$endPoint'),
+      headers: <String, String>{
+        'accept': '*/*',
+        'Authorization': 'Bearer $jwt',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // "newsList" 키에 해당하는 값을 가져옵니다.
+      print("Url statistics data: " + response.body);
+      print("URL 성공");
+
+    } else {
+      print("Url data response: " + response.body);
+      throw Exception(
+          "Fail to load url News data from the API ${response.statusCode}");
+    }
+  }
 
   Future<List<Lawsearch>> getLawSearchData(String keyword) async {
     String endPoint = "/api/law/search";
     //String keyword = "string"; // 키워드를 원하는 값으로 변경
     final response = await http.get(
       Uri.parse('$baseUrl$endPoint?keyword=$keyword'),
-      headers: <String, String>{
-      },
+      headers: <String, String>{},
     );
 
     if (response.statusCode == 200) {
@@ -378,9 +393,9 @@ class ApiManager {
 
       print('keyword: $keyword');
       return lawsea;
-
     } else {
-      throw Exception("Failed to make a POST request. Status code: ${response.statusCode}");
+      throw Exception(
+          "Failed to make a POST request. Status code: ${response.statusCode}");
     }
   }
 
@@ -415,8 +430,7 @@ class ApiManager {
       } else {
         print("응답 코드: ${response.statusCode}");
         throw Exception(
-            'Failed to make a POST request. Status code: ${response
-                .statusCode}');
+            'Failed to make a POST request. Status code: ${response.statusCode}');
       }
     } catch (e) {
       print('에러 발생: $e');
@@ -426,6 +440,7 @@ class ApiManager {
   }
 
   Future<List<Community>> getCommunity(String jwt) async {
+
     String endPoint = "/api/law/community";
 
     final response = await http.get(
@@ -457,7 +472,8 @@ class ApiManager {
       return commData;
     } else {
       print("Community data response: " + response.body);
-      throw Exception("Fail to load community data from the API ${response.statusCode}");
+      throw Exception(
+          "Fail to load community data from the API ${response.statusCode}");
     }
   }
 

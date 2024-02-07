@@ -7,6 +7,5 @@ class Lawsearch {
     required this.BILL_NAME,
     required this.content,
     required this.LINK_URL
-
   });
 }

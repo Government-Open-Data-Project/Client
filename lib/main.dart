@@ -44,13 +44,7 @@ class _MyAppState extends State<MyApp> {
         body: [
           home(
             jwt: widget.jwt,
-            todayNews: [],
-            ageNews: [],
-            localNews: [],
-            newsTopic: Newstopic(
-              local: " ",
-              age: 0,
-            ),
+
           ),
           search(
             laws: [],
