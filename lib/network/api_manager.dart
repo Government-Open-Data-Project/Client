@@ -258,6 +258,7 @@ class ApiManager {
       print("오늘 뉴스 성공");
 
 
+
       List<NewsDetail> MSatisdata = rawData.map((data) {
         return NewsDetail(
           reg_date: DateTime.parse(data['REG_DATE']),
@@ -266,8 +267,11 @@ class ApiManager {
           comp_content: data['COMP_CONTENT'] ?? '',
         );
       }).toList();
-      
-      print("오늘 뉴스 성공 ");
+
+
+      print("오늘 뉴스 성공");
+
+
       return MSatisdata;
     } else {
       print("News data response: " + response.body);
