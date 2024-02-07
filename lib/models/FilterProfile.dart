@@ -6,7 +6,6 @@ class FilterProfile {
   List<String> position;
   List<String> interests;
 
-
   FilterProfile({
     required this.name,
     required this.age,
@@ -14,6 +13,5 @@ class FilterProfile {
     required this.region,
     required this.position,
     required this.interests,
-
   });
 }

@@ -10,6 +10,7 @@ class Category extends StatefulWidget {
 }
 
 class _CategoryState extends State<Category> {
+
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
@@ -59,9 +60,11 @@ class _CategoryState extends State<Category> {
                           minimumSize: Size(sizeX * 0.75, 50)),
                       onPressed: () {
                         Navigator.push(
-
-                            context, MaterialPageRoute(builder: (context) => EditProfile(jwt: widget.jwt,)));
-
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EditProfile(
+                                      jwt: widget.jwt,
+                                    )));
                       },
                       child: Text(
                         "프로필 수정",
@@ -138,7 +141,6 @@ void showsPopup(
     builder: (BuildContext context) {
       return AlertDialog(
         title: SingleChildScrollView(
-          // Scrollable content
           child: Container(
             padding: const EdgeInsets.all(2.0),
             child: Column(
