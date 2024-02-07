@@ -55,12 +55,12 @@ class _homeState extends State<home> {
       final data = await apiManager.getNews();
 
       setState(() {
-        widget.todayNews.addAll(data);
+        widget.todayNews = data!;
       });
        ageNewsFromServer();
       localNewsFromServer();
     } catch (error) {
-      print('Error fetching data: ${error.toString()}');
+      print(' News Error fetching data: ${error.toString()}');
     }
   }
 
@@ -80,7 +80,7 @@ class _homeState extends State<home> {
         print("수쟌의 지역은 ${local} ");
       });
 
-      print("통신 성공");
+      print("home profile 통신 성공");
     } catch (error) {
       print('Error home profile fetching data: $error');
       print("jwt ${widget.jwt}");
