@@ -264,7 +264,7 @@ class ApiManager {
           comp_content: data['COMP_CONTENT'] ?? '',
         );
       }).toList();
-      
+
       print("오늘 뉴스 성공 ");
       return MSatisdata;
     } else {
