@@ -59,9 +59,70 @@ class _homeState extends State<home> {
       });
       ageNewsFromServer();
       localNewsFromServer();
+
     } catch (error) {
       print(' News Error fetching data: ${error.toString()}');
     }
+  }
+
+  Future<void> fetchUrl(String url) async {
+    try {
+      await apiManager.getUrlNewsCheck(widget.jwt, url);
+      print("Url 성공 ");
+
+    } catch (error) {
+      print(' News Error fetching data: ${error.toString()}');
+    }
+  }
+
+  //해당 뉴스 클릭 시 뜨는 팝업창
+  void showsPopup(BuildContext context, NewsDetail popupInfo) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            parse(HtmlUnescape().convert(popupInfo.comp_main_title)).body!.text,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: SingleChildScrollView(
+            // Scrollable content
+            child: Container(
+              padding: const EdgeInsets.all(2.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(parse(HtmlUnescape().convert(popupInfo.comp_content)).body!.text),                SizedBox(height: 8),
+                  GestureDetector(
+                    onTap: () {
+                      launch(popupInfo.link_url);
+                      fetchUrl(popupInfo.link_url);
+                    },
+                    child: Text(
+                      "기사 링크: ${popupInfo.link_url}",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("닫기"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Profile? profiles;
@@ -145,6 +206,7 @@ class _homeState extends State<home> {
     }
   }
 
+
   //지역별 뉴스 get
   Future<void> localNewsFromServer() async {
     try {
@@ -159,6 +221,8 @@ class _homeState extends State<home> {
       print('Error local fetching data: ${error.toString()}');
     }
   }
+
+
 
   Widget _buildPageIndicator() {
     return Row(
@@ -418,6 +482,7 @@ class _NewsState extends State<News> {
 
   @override
   Widget build(BuildContext context) {
+
     final sizeX = MediaQuery.of(context).size.width;
 
     return Container(
@@ -519,6 +584,7 @@ class _NewsState extends State<News> {
       return text.substring(0, maxLength) + "...";
     }
   }
+
 }
 
 //해당 뉴스 클릭 시 뜨는 팝업창
@@ -569,3 +635,5 @@ void showsPopup(BuildContext context, NewsDetail popupInfo) {
     },
   );
 }
+
+
