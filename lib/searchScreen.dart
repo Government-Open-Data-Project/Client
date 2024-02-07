@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'login.dart';
 import 'models/Lawsearch.dart';
 import 'network/api_manager.dart';
 
@@ -23,16 +22,11 @@ class _search extends State<searchScreen> {
   @override
   void initState() {
     super.initState();
-
-    //fetchDataFromServer();
   }
-
-
 
   Future<void> fetchDataFromServer(String keyword) async {
     try {
       final data = await apiManager.getLawSearchData(keyword);
-
       setState(() {
         widget.laws.addAll(data);
       });
@@ -41,13 +35,12 @@ class _search extends State<searchScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     List<Lawsearch> laws = widget.laws;
-
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("검색"),
@@ -97,11 +90,9 @@ class _search extends State<searchScreen> {
                             children: [
                               Padding(
                                 padding: EdgeInsets.fromLTRB(15, 10, 3, 0),
-                                child: // 기사 제목 표시 (HTML 엔터티 디코딩)
-                                Text(
-                                  HtmlUnescape().convert(widget
-                                      .laws[index]
-                                      .BILL_NAME),
+                                child: Text(
+                                  HtmlUnescape()
+                                      .convert(widget.laws[index].BILL_NAME),
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
@@ -123,8 +114,7 @@ class _search extends State<searchScreen> {
                                 child: Text(
                                   HtmlUnescape().convert(
                                     _truncateText(
-                                      widget.laws[index]
-                                          .content,
+                                      widget.laws[index].content,
                                       40,
                                     ).replaceAll('\n', ' '),
                                   ),
@@ -158,6 +148,7 @@ class _search extends State<searchScreen> {
       ),
     );
   }
+
   // 텍스트가 50자 이상이면 뒤에는 ...으로 표시
   String _truncateText(String text, int maxLength) {
     if (text.length <= maxLength) {
@@ -174,10 +165,12 @@ void showsPopup(BuildContext context, Lawsearch popupInfo) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text(HtmlUnescape().convert(popupInfo.BILL_NAME),
+        title: Text(
+          HtmlUnescape().convert(popupInfo.BILL_NAME),
           style: TextStyle(
             fontWeight: FontWeight.bold,
-          ),),
+          ),
+        ),
         content: SingleChildScrollView(
           // Scrollable content
           child: Container(
