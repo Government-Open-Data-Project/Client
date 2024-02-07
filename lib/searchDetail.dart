@@ -78,6 +78,7 @@ class searchDetail extends StatefulWidget {
 }
 
 class _searchDetail extends State<searchDetail> {
+
   @override
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;

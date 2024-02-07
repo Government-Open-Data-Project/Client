@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'login.dart';
 import 'models/Lawsearch.dart';
 import 'network/api_manager.dart';
 import 'searchDetail.dart';
@@ -196,90 +195,87 @@ class _search extends State<search> {
                     children: [
                       Expanded(
                         child: PageView.builder(
-                          controller: _pageController,
-                          //scrollDirection: Axis.horizontal,
-                          itemCount: 3,
-                          onPageChanged: (index) {
-                            setState(() {
-                              _currentPageIndex = index;
-                            });
-                          },
-                          itemBuilder: (context, pageIndex) {
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: 5,
-                              itemBuilder:
-                                  (BuildContext context, int itemIndex) {
-                                final index = pageIndex * 5 + itemIndex;
-                                if (index < laws.length) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      showsPopup(context, widget.laws[index]);
-                                    },
-                                    child: Container(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.fromLTRB(
-                                                15, 10, 3, 0),
-                                            child: // 기사 제목 표시 (HTML 엔터티 디코딩)
-                                            Text(
-                                              HtmlUnescape().convert(widget
-                                                  .laws[index].BILL_NAME),
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 15,
+                            controller: _pageController,
+                            itemCount: 3,
+                            onPageChanged: (index) {
+                              setState(() {
+                                _currentPageIndex = index;
+                              });
+                            },
+                            itemBuilder: (context, pageIndex) {
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: 5,
+                                itemBuilder:
+                                    (BuildContext context, int itemIndex) {
+                                  final index = pageIndex * 5 + itemIndex;
+                                  if (index < laws.length) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        showsPopup(context, widget.laws[index]);
+                                      },
+                                      child: Container(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  15, 10, 3, 0),
+                                              child: // 기사 제목 표시 (HTML 엔터티 디코딩)
+                                                  Text(
+                                                HtmlUnescape().convert(widget
+                                                    .laws[index].BILL_NAME),
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          SizedBox(height: 4),
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 10),
-                                            child: Divider(
-                                              color: Colors.grey,
-                                              height: 1,
-                                            ),
-                                          ),
-                                          Container(
-                                            width: double.infinity,
-                                            height: 37.5,
-                                            padding: EdgeInsets.fromLTRB(
-                                                17, 5, 10, 0),
-                                            child: Text(
-                                              HtmlUnescape().convert(
-                                                _truncateText(
-                                                  widget
-                                                      .laws[index].content,
-                                                  40,
-                                                ).replaceAll('\n', ' '),
+                                            SizedBox(height: 4),
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10),
+                                              child: Divider(
+                                                color: Colors.grey,
+                                                height: 1,
                                               ),
-                                              style: TextStyle(fontSize: 13),
-                                              overflow: TextOverflow.ellipsis,
                                             ),
-                                          ),
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 8),
-                                            child: Divider(
-                                              color: Colors.white,
-                                              height: 2,
+                                            Container(
+                                              width: double.infinity,
+                                              height: 37.5,
+                                              padding: EdgeInsets.fromLTRB(
+                                                  17, 5, 10, 0),
+                                              child: Text(
+                                                HtmlUnescape().convert(
+                                                  _truncateText(
+                                                    widget.laws[index].content,
+                                                    40,
+                                                  ).replaceAll('\n', ' '),
+                                                ),
+                                                style: TextStyle(fontSize: 13),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 8),
+                                              child: Divider(
+                                                color: Colors.white,
+                                                height: 2,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                } else {
-                                  return Container();
-                                }
-                              },
-                            );
-                          }
+                                    );
+                                  } else {
+                                    return Container();
+                                  }
+                                },
+                              );
+                            }),
                       ),
-    ),
                       _buildPageIndicator(),
                     ],
                   ),
@@ -315,7 +311,6 @@ void showsPopup(BuildContext context, Lawsearch popupInfo) {
           ),
         ),
         content: SingleChildScrollView(
-          // Scrollable content
           child: Container(
             padding: const EdgeInsets.all(2.0),
             child: Column(
