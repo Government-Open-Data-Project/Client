@@ -237,7 +237,7 @@ class ApiManager {
   Future<List<NewsDetail>> getNews() async {
     String endPoint = "/api/news";
 
-    String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime(2024, 1, 19));
+    String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime(2024, 1, 17));
 
     final response = await http.get(
       Uri.parse('$baseUrl$endPoint?date=$formattedDate'),
@@ -255,6 +255,9 @@ class ApiManager {
 
       print("News statistics data: " + response.body);
 
+      print("오늘 뉴스 성공");
+
+
 
       List<NewsDetail> MSatisdata = rawData.map((data) {
         return NewsDetail(
@@ -265,7 +268,8 @@ class ApiManager {
         );
       }).toList();
 
-      print("오늘 뉴스 성공 ");
+
+      print("오늘 뉴스 성공");
       return MSatisdata;
     } else {
       print("News data response: " + response.body);
