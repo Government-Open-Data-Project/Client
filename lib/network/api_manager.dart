@@ -452,7 +452,7 @@ class ApiManager {
   }
 
   //좋반 post
-  void sendThumbs(String jwt,String voteType, int billId) async {
+  void sendThumbs(String jwt, String voteType, int billId) async {
     String endpoint = "/api/law/$billId/vote";
 
     Dio _dio = Dio();
@@ -463,14 +463,14 @@ class ApiManager {
 
     try {
       var response = await _dio.post(
-        '$baseUrl$endpoint',
+        'http://34.64.78.56:8080$endpoint', // 요청 URL
         data: {
-          "voteType" : voteType,
+          "voteType": voteType,
         }, // 요청 데이터
         options: Options(headers: headers), // 요청 헤더 설정
       );
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         print("post 응답 성공 $voteType");
       } else {
         print("응답 코드: ${response.statusCode}");
@@ -479,7 +479,6 @@ class ApiManager {
       }
     } catch (e) {
       print('에러 발생: $e');
-
       throw e;
     }
   }

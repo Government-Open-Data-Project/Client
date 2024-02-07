@@ -5,7 +5,8 @@ import 'models/Community.dart';
 import 'network/api_manager.dart';
 
 class community extends StatefulWidget {
-  community({Key? key}) : super(key: key);
+  String jwt;
+  community({Key? key, required this.jwt}) : super(key: key);
 
   @override
   _community createState() => _community();
@@ -67,9 +68,10 @@ class _community extends State<community> {
     }
   }
 
-  String voteTumbsType = "";
-  int billIdNum = 0;
-
+  // String voteTumbsType = "";
+  // int billIdNum = 0;
+  //
+/*
   void sendThumbs() async {
     try {
       String voteType = voteTumbsType;
@@ -82,7 +84,7 @@ class _community extends State<community> {
     } catch (error) {
       print('Error sending MyPage: $error');
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -139,6 +141,9 @@ class CustomContainer extends StatefulWidget {
 }
 
 class _CustomContainerState extends State<CustomContainer> {
+
+  ApiManager apiManager = ApiManager().getApiManager();
+
   bool _ison = false;
   late bool sfavoritColor;
   late bool sunfavoritColor;
@@ -158,19 +163,16 @@ class _CustomContainerState extends State<CustomContainer> {
     sunfavoritColor = unFavoriteMap[BILL_NO]!.unfavoriteColor;
   }
 
+  String vote = '';
+  late int billNum;
+
   void sendThumbs() async {
     try {
-      String jwt = widget.jwt;
-      String age = selectedAgeText;
-      String married = selectedMarryText;
-      String region = selectedRegionText;
-      String position = selectedPositionText;
-      List<String> interests = selectedInterestsText;
+      String jwp = widget.jwt;
+      String votetype = vote;
+      int billid = billNum;
 
-
-      print("정보들 : $age $region $position $interests $married");
-
-      apiManager.sendProfile(jwt ,age, region, position, interests, married);
+      apiManager.sendThumbs(jwp,votetype, billid);
 
       // Use a separate function to handle the asynchronous operations
       //await _updateMyPage();
