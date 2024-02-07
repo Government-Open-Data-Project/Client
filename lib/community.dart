@@ -291,6 +291,8 @@ class _CustomContainerState extends State<CustomContainer> {
 
                                               vlikes = vlikes + 1;
                                               favoriteMap[BILL_NO]!.favoriteCount = vlikes;
+                                              vote = "LIKE";
+                                              sendThumbs();
 
                                               sfavoritColor = !sfavoritColor;
                                               favoriteMap[BILL_NO]!.favoriteColor = sfavoritColor;
@@ -304,6 +306,8 @@ class _CustomContainerState extends State<CustomContainer> {
 
                                               vlikes = vlikes + 1;
                                               favoriteMap[BILL_NO]!.favoriteCount = vlikes;
+                                              vote = "LIKE";
+                                              sendThumbs();
 
                                               sfavoritColor = !sfavoritColor;
                                               favoriteMap[BILL_NO]!.favoriteColor = sfavoritColor;
@@ -312,6 +316,8 @@ class _CustomContainerState extends State<CustomContainer> {
                                           else{
                                             vlikes = vlikes + 1;
                                             favoriteMap[BILL_NO]!.favoriteCount = vlikes;
+                                            vote = "LIKE";
+                                            sendThumbs();
 
                                             sfavoritColor = !sfavoritColor;
                                             favoriteMap[BILL_NO]!.favoriteColor = sfavoritColor;
@@ -351,6 +357,8 @@ class _CustomContainerState extends State<CustomContainer> {
 
                                               vdislikes = vdislikes + 1;
                                               unFavoriteMap[BILL_NO]!.unfavoriteCount = vdislikes;
+                                              vote = "DISLIKE";
+                                              sendThumbs();
 
                                               sunfavoritColor = !sunfavoritColor;
                                               unFavoriteMap[BILL_NO]!.unfavoriteColor = sfavoritColor;
@@ -364,6 +372,8 @@ class _CustomContainerState extends State<CustomContainer> {
 
                                               vdislikes = vdislikes + 1;
                                               unFavoriteMap[BILL_NO]!.unfavoriteCount = vdislikes;
+                                              vote = "DISLIKE";
+                                              sendThumbs();
 
                                               sunfavoritColor = !sunfavoritColor;
                                               unFavoriteMap[BILL_NO]!.unfavoriteColor = sfavoritColor;
@@ -372,6 +382,8 @@ class _CustomContainerState extends State<CustomContainer> {
                                           else{
                                             vdislikes = vdislikes + 1;
                                             unFavoriteMap[BILL_NO]!.unfavoriteCount = vdislikes;
+                                            vote = "DISLIKE";
+                                            sendThumbs();
 
                                             sunfavoritColor = !sunfavoritColor;
                                             unFavoriteMap[BILL_NO]!.unfavoriteColor = sfavoritColor;
