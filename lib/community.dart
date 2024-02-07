@@ -108,6 +108,7 @@ class _community extends State<community> {
                   BILL_NO: communites[index].BILL_NO,
                   vlikes: communites[index].likes,
                   vdislikes : communites[index].dislikes,
+                  vjwt: widget.jwt,
                 );
 
               }
@@ -125,6 +126,7 @@ class CustomContainer extends StatefulWidget {
   final int BILL_NO;
   final int vlikes;
   final int vdislikes;
+  final String vjwt;
 
   CustomContainer({
     Key? key,
@@ -134,6 +136,7 @@ class CustomContainer extends StatefulWidget {
     required this.BILL_NO,
     required this.vlikes,
     required this.vdislikes,
+    required this.vjwt,
   });
 
   @override
@@ -168,7 +171,7 @@ class _CustomContainerState extends State<CustomContainer> {
 
   void sendThumbs() async {
     try {
-      String jwp = widget.jwt;
+      String jwp = widget.vjwt;
       String votetype = vote;
       int billid = billNum;
 
