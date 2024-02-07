@@ -5,6 +5,7 @@ class Community {
   int BILL_NO;
   String BILL_NAME;
   String LINK_URL;
+  String isChecked;
 
   Community({
     required this.BILL_NAME,
@@ -13,5 +14,6 @@ class Community {
     required this.likes,
     required this.dislikes,
     required this.BILL_NO,
+    required this.isChecked,
   });
 }
