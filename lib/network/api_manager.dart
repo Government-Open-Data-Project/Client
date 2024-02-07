@@ -103,6 +103,7 @@ class ApiManager {
       headers: <String, String>{
         'accept': 'application/json',
         'Authorization': 'Bearer $jwt',
+
       },
     );
 
@@ -256,7 +257,6 @@ class ApiManager {
 
       print("News statistics data: " + response.body);
 
-      print("오늘 뉴스 성공");
 
       print(rawData.toString());
       List<NewsDetail> MSatisdata = rawData.map((data) {
@@ -268,7 +268,6 @@ class ApiManager {
         );
       }).toList();
 
-      print("오늘 뉴스 성공");
       return MSatisdata;
     } else {
       print("News data response: " + response.body);
@@ -294,7 +293,6 @@ class ApiManager {
       List<dynamic> rawData = responseData['newsList'];
 
       print("Age News statistics data: " + response.body);
-      print("age 뉴스 성공 ");
 
       List<NewsDetail> MSatisdata = rawData.map((data) {
         return NewsDetail(
@@ -308,7 +306,6 @@ class ApiManager {
       return MSatisdata;
     } else {
       print("Age News data response: " + response.body);
-      print("앤드 포인듀${endPoint}");
       throw Exception(
           "Fail to load Age News data from the API ${response.statusCode}");
     }
@@ -332,7 +329,6 @@ class ApiManager {
       List<dynamic> rawData = responseData['newsList'];
 
       print("local News statistics data: " + response.body);
-      print("local 뉴스 성공 ");
 
       List<NewsDetail> MSatisdata = rawData.map((data) {
         return NewsDetail(
@@ -346,9 +342,32 @@ class ApiManager {
       return MSatisdata;
     } else {
       print("local News data response: " + response.body);
-      print("앤드 포인듀${endPoint}");
       throw Exception(
           "Fail to load local News data from the API ${response.statusCode}");
+    }
+  }
+
+  //url
+  Future<void> getUrlNewsCheck(String jwt, url) async {
+    String endPoint = "/api/news/increaseViews?url=$url";
+
+    final response = await http.get(
+      Uri.parse('http://34.64.78.56:8080$endPoint'),
+      headers: <String, String>{
+        'accept': '*/*',
+        'Authorization': 'Bearer $jwt',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // "newsList" 키에 해당하는 값을 가져옵니다.
+      print("Url statistics data: " + response.body);
+      print("URL 성공");
+
+    } else {
+      print("Url data response: " + response.body);
+      throw Exception(
+          "Fail to load url News data from the API ${response.statusCode}");
     }
   }
 
