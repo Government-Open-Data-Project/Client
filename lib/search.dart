@@ -6,33 +6,20 @@ import 'models/Lawsearch.dart';
 import 'network/api_manager.dart';
 import 'searchDetail.dart';
 
-
 class search extends StatefulWidget {
   final List<Lawsearch> laws;
 
-  search({Key? key,
+  search({
+    Key? key,
     required this.laws,
-   })
-      : super(key: key);
+  }) : super(key: key);
 
   @override
   _search createState() => _search();
 }
 
-class _search extends State<search>
-{
+class _search extends State<search> {
   String? selectedKeyword;
-
-
-
-  final List<List<String>> pages = [
-    ["1", "2", "3"],
-    ["4", "5", "6"],
-    ["7", "8", "9"],
-  ];
-
-  bool _isSelected = false;
-
   final PageController _pageController = PageController();
   int _currentPageIndex = 0;
   ApiManager apiManager = ApiManager().getApiManager();
@@ -45,18 +32,13 @@ class _search extends State<search>
         _currentPageIndex = _pageController.page!.round();
       });
     });
-
-    print("selected keyword 바뀐 거 :: ${selectedKeyword}");
-
   }
-
-
 
   Future<void> fetchDataFromServer(String keyword) async {
     try {
       final data = await apiManager.getLawSearchData(keyword);
-
       setState(() {
+        widget.laws.clear();
         widget.laws.addAll(data);
       });
     } catch (error) {
@@ -64,11 +46,10 @@ class _search extends State<search>
     }
   }
 
-
   Widget _buildPageIndicator() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(pages.length, (index) {
+      children: List.generate(5, (index) {
         return Container(
           width: 8.0,
           height: 8.0,
@@ -102,13 +83,11 @@ class _search extends State<search>
   @override
   Widget build(BuildContext context) {
     List<Lawsearch> laws = widget.laws;
-
-
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
     return Scaffold(
       body: GestureDetector(
-        onTap: (){
+        onTap: () {
           FocusScope.of(context).unfocus();
         },
         child: Container(
@@ -150,7 +129,7 @@ class _search extends State<search>
                                   fontSize: 15,
                                 ),
                               ),
-                              selectedColor: Colors.deepOrange,
+                              selectedColor: Colors.blue,
                               backgroundColor: Color(0xFFCADFEF),
                               selected: selectedKeyword == item,
                               onSelected: (isSelected) {
@@ -160,18 +139,14 @@ class _search extends State<search>
                                   } else {
                                     selectedKeyword = null;
                                   }
-
                                   // 선택한 키워드로 데이터 다시 불러오기
-                                  fetchDataFromServer(selectedKeyword ?? keyword.first);
-
+                                  fetchDataFromServer(
+                                      selectedKeyword ?? keyword.first);
                                   print("선택한 아이템: $selectedKeyword");
-
-
                                 });
                               },
                             );
                           }),
-                          Text(selectedKeyword ?? "선택된 키워드 없음"),
                         ],
                       ),
                       Align(
@@ -179,17 +154,25 @@ class _search extends State<search>
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.push(
-                              context, MaterialPageRoute(builder: (context) => searchDetail()));
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => searchDetail()));
                           },
-                          style: ElevatedButton.styleFrom(backgroundColor: Color(0xFFEAEAEA)),
-                          child: Text("검색", style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFFEAEAEA)),
+                          child: Text(
+                            "검색",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-
               SizedBox(
                 height: 15,
               ),
@@ -214,19 +197,25 @@ class _search extends State<search>
                       Expanded(
                         child: PageView.builder(
                           controller: _pageController,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: pages.length,
-                          itemBuilder: (context, index) {
-                            if(index< laws.length){
-                              return ListView.separated(
-                                shrinkWrap: true,
-                                itemCount: laws.length,
-                                itemBuilder:
-                                    (BuildContext context, int innerIndex) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          showsPopup(context, widget.laws[index]);
-                                        },
+                          //scrollDirection: Axis.horizontal,
+                          itemCount: 3,
+                          onPageChanged: (index) {
+                            setState(() {
+                              _currentPageIndex = index;
+                            });
+                          },
+                          itemBuilder: (context, pageIndex) {
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: 5,
+                              itemBuilder:
+                                  (BuildContext context, int itemIndex) {
+                                final index = pageIndex * 5 + itemIndex;
+                                if (index < laws.length) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      showsPopup(context, widget.laws[index]);
+                                    },
                                     child: Container(
                                       child: Column(
                                         crossAxisAlignment:
@@ -238,8 +227,7 @@ class _search extends State<search>
                                             child: // 기사 제목 표시 (HTML 엔터티 디코딩)
                                             Text(
                                               HtmlUnescape().convert(widget
-                                                  .laws[innerIndex]
-                                                  .BILL_NAME),
+                                                  .laws[index].BILL_NAME),
                                               style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 15,
@@ -263,7 +251,8 @@ class _search extends State<search>
                                             child: Text(
                                               HtmlUnescape().convert(
                                                 _truncateText(
-                                                  widget.laws[innerIndex].content,
+                                                  widget
+                                                      .laws[index].content,
                                                   40,
                                                 ).replaceAll('\n', ' '),
                                               ),
@@ -283,21 +272,14 @@ class _search extends State<search>
                                       ),
                                     ),
                                   );
-                                },
-                                separatorBuilder:
-                                    (BuildContext context, int index) => Divider(
-                                  height: 5,
-                                  color: Colors.white,
-                                ),
-                              );
-    }
-                            else
-                              {
-                                return Container();
-                              }
-                          },
-                        ),
+                                } else {
+                                  return Container();
+                                }
+                              },
+                            );
+                          }
                       ),
+    ),
                       _buildPageIndicator(),
                     ],
                   ),
@@ -309,6 +291,7 @@ class _search extends State<search>
       ),
     );
   }
+
   // 텍스트가 50자 이상이면 뒤에는 ...으로 표시
   String _truncateText(String text, int maxLength) {
     if (text.length <= maxLength) {
@@ -325,10 +308,12 @@ void showsPopup(BuildContext context, Lawsearch popupInfo) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text(HtmlUnescape().convert(popupInfo.BILL_NAME),
+        title: Text(
+          HtmlUnescape().convert(popupInfo.BILL_NAME),
           style: TextStyle(
             fontWeight: FontWeight.bold,
-          ),),
+          ),
+        ),
         content: SingleChildScrollView(
           // Scrollable content
           child: Container(
