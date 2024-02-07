@@ -57,8 +57,7 @@ class _homeState extends State<home> {
       setState(() {
         widget.todayNews = data!;
       });
-
-      ageNewsFromServer();
+       ageNewsFromServer();
       localNewsFromServer();
     } catch (error) {
       print(' News Error fetching data: ${error.toString()}');
@@ -83,7 +82,7 @@ class _homeState extends State<home> {
 
       print("home profile 통신 성공");
     } catch (error) {
-      print('Error fetching data: $error');
+      print('Error home profile fetching data: $error');
       print("jwt ${widget.jwt}");
 
     }
@@ -189,7 +188,7 @@ class _homeState extends State<home> {
     final sizeX = MediaQuery.of(context).size.width;
 
     // 현재 날짜 가져오기
-    DateTime now = DateTime(2024, 1, 19);
+    DateTime now = DateTime(2024, 1, 17);
 
     String formattedDate = "${now.year}년 ${now.month}월 ${now.day}일";
 
@@ -212,7 +211,7 @@ class _homeState extends State<home> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "P.P의 HOT 뉴스",
+                        "$formattedDate P.P의 HOT 뉴스",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
