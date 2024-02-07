@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
           search(
             laws: [],
           ),
-          community(),
+          community(jwt: widget.jwt),
           recommend(
             jwt: widget.jwt,
           )
