@@ -270,8 +270,6 @@ class ApiManager {
 
 
       print("오늘 뉴스 성공");
-
-
       return MSatisdata;
     } else {
       print("News data response: " + response.body);

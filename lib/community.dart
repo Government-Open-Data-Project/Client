@@ -71,20 +71,6 @@ class _community extends State<community> {
   // String voteTumbsType = "";
   // int billIdNum = 0;
   //
-/*
-  void sendThumbs() async {
-    try {
-      String voteType = voteTumbsType;
-      int billId = billIdNum;
-
-      apiManager.sendThumbs(voteType, billId);
-
-      // Use a separate function to handle the asynchronous operations
-      //await _updateMyPage();
-    } catch (error) {
-      print('Error sending MyPage: $error');
-    }
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -180,7 +166,7 @@ class _CustomContainerState extends State<CustomContainer> {
       // Use a separate function to handle the asynchronous operations
       //await _updateMyPage();
     } catch (error) {
-      print('Error sending MyPage: $error');
+      print('Error sending Thumbs: $error');
     }
   }
 
