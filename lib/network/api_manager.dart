@@ -114,7 +114,7 @@ class ApiManager {
       Profile profile = Profile(
         name: rawData['name'],
         age: rawData['age'],
-        isMarried: rawData['isMarried'] ?? '',
+        isMarried: rawData['isMarried'],
         region: rawData['region'],
         position: rawData['position'],
         interests: List<String>.from(rawData['interests']),
@@ -255,6 +255,10 @@ class ApiManager {
 
       print("News statistics data: " + response.body);
 
+      print("오늘 뉴스 성공");
+
+
+
       List<NewsDetail> MSatisdata = rawData.map((data) {
         return NewsDetail(
           reg_date: DateTime.parse(data['REG_DATE']),
@@ -264,7 +268,9 @@ class ApiManager {
         );
       }).toList();
 
+
       print("오늘 뉴스 성공");
+
 
       return MSatisdata;
     } else {
@@ -472,7 +478,7 @@ class ApiManager {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print("post 응답 성공 $voteType");
+        print("좋반 post 응답 성공 $voteType");
       } else {
         print("응답 코드: ${response.statusCode}");
         throw Exception(
