@@ -254,7 +254,6 @@ class ApiManager {
       List<dynamic> rawData = responseData['newsList'];
 
       print("News statistics data: " + response.body);
-      print("오늘 뉴스 성공");
 
       List<NewsDetail> MSatisdata = rawData.map((data) {
         return NewsDetail(
@@ -264,6 +263,8 @@ class ApiManager {
           comp_content: data['COMP_CONTENT'] ?? '',
         );
       }).toList();
+
+      print("오늘 뉴스 성공");
 
       return MSatisdata;
     } else {
