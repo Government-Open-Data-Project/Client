@@ -424,32 +424,37 @@ class ApiManager {
       throw e;
     }
   }
-  Future<List<Community>> getCommunity() async {
+
+  Future<List<Community>> getCommunity(String jwt) async {
     String endPoint = "/api/law/community";
 
     final response = await http.get(
       Uri.parse('$baseUrl$endPoint'),
       headers: <String, String>{
         'Content-Type': 'application/json',
+        'Authorization': 'Bearer $jwt',
       },
     );
 
     if (response.statusCode == 200) {
+      print("getCommunity response:${utf8.decode(response.bodyBytes)}");
+
       List<dynamic> rawData = json.decode(utf8.decode(response.bodyBytes));
       print("law List Data: " + response.body);
 
-      List<Community> Commdata = rawData.map((data) {
+      List<Community> commData = rawData.map((data) {
         return Community(
-          LINK_URL: data['LINK_URL'],
-          likes: data['likes'],
-          content: data['content'],
-          dislikes: data['dislikes'],
-          BILL_NO: data['BILL_NO'],
-          BILL_NAME: data['BILL_NAME'],
+          LINK_URL: data['linkUrl'],
+          likes: data['likes'] ?? 0,
+          content: data['content'] ?? "NONE",
+          dislikes: data['dislikes'] ?? 0,
+          BILL_NO: data['billId'] ?? 0,
+          BILL_NAME: data['title'] ?? "NONE",
+          isChecked: data["isChecked"].toString() ?? "NONE",
         );
       }).toList();
 
-      return Commdata;
+      return commData;
     } else {
       print("Community data response: " + response.body);
       throw Exception("Fail to load community data from the API ${response.statusCode}");

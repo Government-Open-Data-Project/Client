@@ -27,23 +27,7 @@ class UnFavoriteCount {
 }
 
 class _community extends State<community> {
-  bool _ison = false;
-  // bool _isgood = false;
-  // bool _isbad = true;
-
   List<Community> communites = [];
-
-  // onGoodTap() async {
-  //   setState(() {
-  //     _isgood = !_isgood;
-  //   });
-  // }
-  //
-  // onBadTap() async {
-  //   setState(() {
-  //     _isbad = !_isbad;
-  //   });
-  // }
 
   @override
   void initState() {
@@ -55,18 +39,26 @@ class _community extends State<community> {
 
   Future<void> fetchDataFromServer() async {
     try {
-      final data = await apiManager.getCommunity();
+      final data = await apiManager.getCommunity(widget.jwt);
       setState(() {
-        communites = data!;
-
-
-
+        // data가 널이 아니면 데이터를 할당하고 출력
+        if (data != null) {
+          communites = data;
+          print("billnum ${communites[0].BILL_NO}");
+          print("likes ${communites[0].likes}");
+          print("dislikes ${communites[0].dislikes}");
+        } else {
+          // 널 값인 경우에 대한 처리
+          print("데이터가 널입니다.");
+        }
       });
       print("통신성공");
     } catch (error) {
-      print('Error fetching data: $error');
+      print('dkdkdkdk Error fetching data: $error');
     }
   }
+
+
 
   // String voteTumbsType = "";
   // int billIdNum = 0;
@@ -95,6 +87,7 @@ class _community extends State<community> {
                   vlikes: communites[index].likes,
                   vdislikes : communites[index].dislikes,
                   vjwt: widget.jwt,
+                  checkme: communites[index].isChecked,
                 );
 
               }
@@ -110,9 +103,10 @@ class CustomContainer extends StatefulWidget {
   final String vcomment;
   final String vlink;
   final int BILL_NO;
-  final int vlikes;
-  final int vdislikes;
+  int vlikes;
+  int vdislikes;
   final String vjwt;
+  final String checkme;
 
   CustomContainer({
     Key? key,
@@ -123,6 +117,7 @@ class CustomContainer extends StatefulWidget {
     required this.vlikes,
     required this.vdislikes,
     required this.vjwt,
+    required this.checkme,
   });
 
   @override
@@ -134,32 +129,37 @@ class _CustomContainerState extends State<CustomContainer> {
   ApiManager apiManager = ApiManager().getApiManager();
 
   bool _ison = false;
-  late bool sfavoritColor;
-  late bool sunfavoritColor;
-  int vlikes = 0;
-  int vdislikes = 0;
-  int BILL_NO = 36;
+  late bool sfavoritColor = false;
+  late bool sunfavoritColor = false;
+
+  String vote = '';
+  List<Community> communites = [];
 
   void initState(){
     super.initState();
 
     // favoriteMap과 unFavoriteMap 초기화
-    favoriteMap[BILL_NO] ??= FavoriteCount();
-    unFavoriteMap[BILL_NO] ??= UnFavoriteCount();
+    // favoriteMap[widget.BILL_NO] ??= FavoriteCount();
+    // unFavoriteMap[widget.BILL_NO] ??= UnFavoriteCount();
+    if(widget.checkme == 'LIKE'){
+      sfavoritColor = true;
+      sunfavoritColor = false;
+    }else if(widget.checkme == 'DISLIKE'){
+      sfavoritColor = false;
+      sunfavoritColor = true;
+    }
 
-    vlikes = favoriteMap[BILL_NO]!.favoriteCount;
-    sfavoritColor = favoriteMap[BILL_NO]!.favoriteColor;
-    sunfavoritColor = unFavoriteMap[BILL_NO]!.unfavoriteColor;
+    // sfavoritColor = favoriteMap[widget.BILL_NO]!.favoriteColor;
+    // sunfavoritColor = unFavoriteMap[widget.BILL_NO]!.unfavoriteColor;
+
   }
 
-  String vote = '';
-  late int billNum;
 
   void sendThumbs() async {
     try {
       String jwp = widget.vjwt;
       String votetype = vote;
-      int billid = billNum;
+      int billid = widget.BILL_NO;
 
       apiManager.sendThumbs(jwp,votetype, billid);
 
@@ -170,6 +170,23 @@ class _CustomContainerState extends State<CustomContainer> {
     }
   }
 
+  Future<void> fetchDataFromServer() async {
+    try {
+      final data = await apiManager.getCommunity(widget.vjwt);
+      setState(() {
+        // data가 널이 아니면 데이터를 할당하고 출력
+        if (data != null) {
+          communites = data;
+        } else {
+          // 널 값인 경우에 대한 처리
+          print("데이터가 널입니다.");
+        }
+      });
+      print("통신성공");
+    } catch (error) {
+      print('dkdkdkdk Error fetching data: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -256,63 +273,52 @@ class _CustomContainerState extends State<CustomContainer> {
                             Row(
                               children: [
                                 Text(
-                                '${vlikes}',
+                                '${widget.vlikes}',
                                 style: TextStyle(fontSize: 20),
                               ),
                                 SizedBox(width: 5,),
                                 GestureDetector(
                                   onTap: () async {
                                     //await apiManager.putFavoriteCount(BILL_NO);
-                                    print("좋아요 누름 :${BILL_NO}");
+                                    print("좋아요 누름 :${widget.BILL_NO}");
                                     try {
                                       setState(() {
-                                        if (sfavoritColor) {
-                                          vlikes = vlikes - 1;
-                                          favoriteMap[BILL_NO]!.favoriteCount = vlikes;
-
-                                        } else {//좋아요 안누른 상태
-                                          if(sunfavoritColor){ //싫어요 누른상태
-                                            if(vdislikes == 0){//싫어요 0인 상황
-                                              vdislikes = 0;
-
-                                              vlikes = vlikes + 1;
-                                              favoriteMap[BILL_NO]!.favoriteCount = vlikes;
+                                        if (widget.checkme == "LIKE") {
+                                          sfavoritColor = true;
+                                        } else { // 좋아요를 누르지 않은 상태
+                                          if (widget.checkme == "DISLIKE") { // 싫어요를 누른 상태
+                                            if (widget.vdislikes == 0) { // 싫어요가 0인 경우
+                                              // 좋아요를 누르고 싫어요를 취소합니다.
                                               vote = "LIKE";
                                               sendThumbs();
-
-                                              sfavoritColor = !sfavoritColor;
-                                              favoriteMap[BILL_NO]!.favoriteColor = sfavoritColor;
-                                            }
-                                            else{//아닌 상황
-                                              vdislikes = vdislikes - 1;
-                                              unFavoriteMap[BILL_NO]!.unfavoriteCount = vdislikes;
-
-                                              sunfavoritColor = !sunfavoritColor;
-                                              unFavoriteMap[BILL_NO]!.unfavoriteColor = sfavoritColor;
-
-                                              vlikes = vlikes + 1;
-                                              favoriteMap[BILL_NO]!.favoriteCount = vlikes;
+                                              widget.vlikes += 1;
+                                              widget.vdislikes=0;
+                                              sfavoritColor = true;
+                                              sunfavoritColor = false;
+                                              // unFavoriteMap[widget.BILL_NO]!.unfavoriteColor = sunfavoritColor;
+                                            } else { // 싫어요가 0이 아닌 경우
+                                              // 좋아요를 누르고 싫어요를 취소합니다.
                                               vote = "LIKE";
                                               sendThumbs();
-
-                                              sfavoritColor = !sfavoritColor;
-                                              favoriteMap[BILL_NO]!.favoriteColor = sfavoritColor;
+                                              widget.vlikes += 1;
+                                              widget.vdislikes -=1;
+                                              sfavoritColor = true;
+                                              sunfavoritColor = false;
+                                              // unFavoriteMap[widget.BILL_NO]!.unfavoriteColor = sunfavoritColor;
                                             }
-                                          }
-                                          else{
-                                            vlikes = vlikes + 1;
-                                            favoriteMap[BILL_NO]!.favoriteCount = vlikes;
+                                          } else { // 싫어요도 좋아요도 누르지 않은 상태
                                             vote = "LIKE";
                                             sendThumbs();
-
-                                            sfavoritColor = !sfavoritColor;
-                                            favoriteMap[BILL_NO]!.favoriteColor = sfavoritColor;
+                                            widget.vlikes += 1;
+                                            sfavoritColor = true;
+                                            // favoriteMap[widget.BILL_NO]!.favoriteColor = sfavoritColor;
                                           }
                                         }
                                       });
                                     } catch (error) {
                                       print('Error updating favorite count: $error');
                                     }
+
                                   },
                                   child: Icon(
                                     Icons.thumb_up_alt,
@@ -329,50 +335,37 @@ class _CustomContainerState extends State<CustomContainer> {
                                 GestureDetector(
                                   onTap: () async {
                                     //await apiManager.putFavoriteCount(BILL_NO);
-                                    print("싫어요 누름 :${BILL_NO}");
+                                    print("싫어요 누름 :${widget.BILL_NO}");
                                     try {
                                       setState(() {
-                                        if (sunfavoritColor) {
-                                          vdislikes = vdislikes - 1;
-                                          unFavoriteMap[BILL_NO]!.unfavoriteCount = vdislikes;
-
-                                        } else {
-                                          if(sfavoritColor){
-                                            if(vlikes == 0){
-                                              vlikes = 0;
-
-                                              vdislikes = vdislikes + 1;
-                                              unFavoriteMap[BILL_NO]!.unfavoriteCount = vdislikes;
+                                        if (widget.checkme == "DISLIKE") {//싫어요 누른 상태
+                                          sunfavoritColor = true;
+                                        } else {//싫어요 안누른 상태
+                                          if(widget.checkme == "LIKE"){//좋아요만 눌린상태
+                                            if(widget.vlikes == 0){//좋아요 개수가 0일때
                                               vote = "DISLIKE";
                                               sendThumbs();
-
-                                              sunfavoritColor = !sunfavoritColor;
-                                              unFavoriteMap[BILL_NO]!.unfavoriteColor = sfavoritColor;
+                                              widget.vdislikes +=1;
+                                              widget.vlikes =0;
+                                              sunfavoritColor = false;
+                                              sunfavoritColor = true;
                                             }
-                                            else{
-                                              vlikes = vlikes - 1;
-                                              favoriteMap[BILL_NO]!.favoriteCount = vlikes;
+                                            else{//좋아요수가 0이 아닐때
 
-                                              sfavoritColor = !sfavoritColor;
-                                              favoriteMap[BILL_NO]!.favoriteColor = sfavoritColor;
-
-                                              vdislikes = vdislikes + 1;
-                                              unFavoriteMap[BILL_NO]!.unfavoriteCount = vdislikes;
                                               vote = "DISLIKE";
                                               sendThumbs();
+                                              widget.vdislikes +=1;
+                                              widget.vlikes -=1;
 
-                                              sunfavoritColor = !sunfavoritColor;
-                                              unFavoriteMap[BILL_NO]!.unfavoriteColor = sfavoritColor;
+                                              sfavoritColor = false;
+                                              sunfavoritColor = true;
                                             }
                                           }
-                                          else{
-                                            vdislikes = vdislikes + 1;
-                                            unFavoriteMap[BILL_NO]!.unfavoriteCount = vdislikes;
+                                          else{//좋아요 싫어요 둘다 안눌렀을 때
                                             vote = "DISLIKE";
                                             sendThumbs();
-
-                                            sunfavoritColor = !sunfavoritColor;
-                                            unFavoriteMap[BILL_NO]!.unfavoriteColor = sfavoritColor;
+                                            widget.vdislikes +=1;
+                                            sunfavoritColor = true;
                                           }
                                         }
                                       });
@@ -388,7 +381,7 @@ class _CustomContainerState extends State<CustomContainer> {
                                 ),
                                 SizedBox(width: 5,),
                                 Text(
-                                  '${vdislikes}',
+                                  '${widget.vdislikes}',
                                   style: TextStyle(fontSize: 20),
                                 ),
                               ],
