@@ -13,9 +13,12 @@ class home extends StatefulWidget {
   final List<NewsDetail> ageNews;
   final List<NewsDetail> localNews;
   final Newstopic newsTopic;
+  final String jwt;
+
 
   home(
       {Key? key,
+        required this.jwt,
       required this.todayNews,
       required this.ageNews,
       required this.localNews,
@@ -27,6 +30,7 @@ class home extends StatefulWidget {
 }
 
 class _homeState extends State<home> {
+
   final PageController _pageController = PageController();
   int _currentPageIndex = 0;
   ApiManager apiManager = ApiManager().getApiManager();
@@ -65,10 +69,12 @@ class _homeState extends State<home> {
 
   Future<void> fetchDataFromServerProfile() async {
     try {
-      final data = await apiManager.getProfileData();
+      final data = await apiManager.getProfileData(widget.jwt);
 
       setState(() {
         profiles = data!;
+        print("jwt ${widget.jwt}");
+
         ageint = getAgeButtonNum(profiles!.age);
         print("수쟌의 나이는 ${ageint} ");
         local = getRegionButtonNum(profiles!.region);
@@ -78,6 +84,8 @@ class _homeState extends State<home> {
       print("통신 성공");
     } catch (error) {
       print('Error fetching data: $error');
+      print("jwt ${widget.jwt}");
+
     }
   }
 
@@ -342,7 +350,7 @@ class _homeState extends State<home> {
                       SizedBox(
                         height: 25,
                       ),
-                      News(popupInfos: widget.ageNews), // 팝업 정보 전달
+                      News(jwt:widget.jwt, popupInfos: widget.ageNews), // 팝업 정보 전달
                     ], //                    ],
                   ),
                 ),
@@ -374,7 +382,7 @@ class _homeState extends State<home> {
                       SizedBox(
                         height: 25,
                       ),
-                      News(popupInfos: widget.localNews),
+                      News(jwt:widget.jwt,popupInfos: widget.localNews),
                       // 팝업 정보 전달
                     ],
                   ),
@@ -401,8 +409,9 @@ class _homeState extends State<home> {
 
 // 나이,지역별 관심있게 본 뉴스
 class News extends StatefulWidget {
+  final String jwt;
   final List<NewsDetail> popupInfos; // 생성자를 통해 전달되는 정보
-  const News({Key? key, required this.popupInfos}) : super(key: key);
+  const News({Key? key, required this.popupInfos,required this.jwt}) : super(key: key);
 
   @override
   _NewsState createState() => _NewsState();
